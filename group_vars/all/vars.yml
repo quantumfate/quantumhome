@@ -1,0 +1,9 @@
+username: sao
+packages:
+  - neovim
+  - htop
+  - neofetch
+  - lm-sensors
+  - hddtemp
+  - glances
+  - zsh
