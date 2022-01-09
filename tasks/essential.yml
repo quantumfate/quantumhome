@@ -27,3 +27,12 @@
     name: sshd
     state: restarted
   when: sshd_config.changed
+
+- name: Ensuring that git is configured for basic usage
+  template:
+    src: git-config.j2
+    dest: "/home/{{ username }}/.gitconfig"
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: 0644
+    newline_sequence: \n

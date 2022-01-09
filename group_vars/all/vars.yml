@@ -1,4 +1,6 @@
 username: sao
+gitmail: leon-holm@outlook.de
+gituser: Leon Holm
 packages:
   - neovim
   - htop
@@ -7,3 +9,4 @@ packages:
   - hddtemp
   - glances
   - zsh
+  - git
