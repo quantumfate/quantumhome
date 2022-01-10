@@ -1,0 +1,3 @@
+host_username: sao
+host_password: "{{ quantumhome_password_sao | password_hash('sha512') }}"
+host_ssh_public_key: ~/.ssh/quantumhome.pub

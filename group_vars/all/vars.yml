@@ -1,6 +1,6 @@
-username: sao
 gitmail: leon-holm@outlook.de
 gituser: Leon Holm
+shell: zsh
 packages:
   - neovim
   - htop

@@ -1,5 +1,0 @@
-all:
-  quantumhome:
-    host_username: sao
-  quantumtest: 
-    host_username: trp
