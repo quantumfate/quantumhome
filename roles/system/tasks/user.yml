@@ -1,0 +1,7 @@
+---
+- name: Enable passwordless sudo for "{{ host_username }}"
+  lineinfile:
+    dest: /etc/sudoers
+    regexp: "^%wheel"
+    line: "{{ host_username }} ALL=(ALL) NOPASSWD: ALL"
+    validate: "/usr/sbin/visudo -cf %s"

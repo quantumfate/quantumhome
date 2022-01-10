@@ -2,5 +2,17 @@
 - hosts: all
   become: yes
 
-  tasks:
+  pre_tasks:
     - import_tasks: tasks/essential.yml
+    - tag: essential basis
+  
+- hosts: all
+  become: yes
+  
+  roles:
+    - role: system
+      tags: 
+        - system
+    - role: security
+      tags: 
+        - security

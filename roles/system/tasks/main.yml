@@ -1,0 +1,5 @@
+---
+- include: essential.yml
+- include: remove_snap.yml
+- include: user.yml
+- include: git.yml

@@ -1,0 +1,9 @@
+---
+- name: Ensuring that git is configured for basic usage
+  template:
+    src: git-config.j2
+    dest: "/home/{{ host_username }}/.gitconfig"
+    owner: "{{ host_username }}"
+    group: "{{ host_username }}"
+    mode: 0644
+    newline_sequence: \n
