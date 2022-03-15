@@ -1,3 +1,0 @@
-host_username: trp
-host_password: "{{ quantumtest_password_trp | password_hash('sha512') }}"
-host_ssh_public_key: "{{ lookup('file', '/home/leonholm/.ssh/quantumtest.pub') }}"

@@ -1,13 +1,10 @@
 ---
-- hosts: quantumtest
+- hosts: all
   become: yes
 
   pre_tasks:
     - import_tasks: tasks/essential.yml
-  
-- hosts: quantumtest
-  become: yes
-  
+
   roles:
     - role: system
     - role: security

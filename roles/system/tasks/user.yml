@@ -3,34 +3,21 @@
   set_fact:
     sudo_group: sudo
 
-- name: Create a login user
-  become: true
-  user:
-    name: "{{ host_username }}"
-    password: "{{ host_password }}"
-    groups: 
-      - "{{ sudo_group }}"
-      - users
-    state: present
-    append: true
-    update_password: on_create
-
-- name: Enable passwordless sudo for "{{ host_username }}"
+- name: Enable passwordless sudo for "{{ ansible_user }}"
   lineinfile:
     dest: /etc/sudoers
     regexp: "^%wheel"
-    line: "{{ host_username }} ALL=(ALL) NOPASSWD: ALL"
+    line: "{{ ansible_user }} ALL=(ALL) NOPASSWD: ALL"
     validate: "/usr/sbin/visudo -cf %s"
 
 - name: Copy the public SSH key 
-  become: true
   authorized_key:
-    user: "{{ host_username }}"
+    user: "{{ ansible_user }}"
     state: present
-    key: "{{ host_ssh_public_key }}"
-    path: "/home/{{ host_username }}/.ssh/authorized_keys"
+    key: "{{ ansible_ssh_public_key_file }}"
+    path: "/home/{{ ansible_user }}/.ssh/authorized_keys"
 
 - name: Set the default shell
   user: 
-    name: "{{ host_username }}"
+    name: "{{ ansible_user }}"
     shell: "{{ shell }}"

@@ -2,8 +2,7 @@
 - name: Ensuring that git is configured for basic usage
   template:
     src: git-config.j2
-    dest: "/home/{{ host_username }}/.gitconfig"
-    owner: "{{ host_username }}"
-    group: "{{ host_username }}"
+    dest: "/home/{{ ansible_user }}/.gitconfig"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
     mode: 0644
-    newline_sequence: \n
