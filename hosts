@@ -1,2 +1,2 @@
 [home]
-quantumhome ansible_host=192.168.178.96 ansible_user=sao ansible_connection=ssh ansible_ssh_private_key_file=/home/quantum/.ssh/quantumhome
+quantumhome
