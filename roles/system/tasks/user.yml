@@ -17,6 +17,41 @@
     key: "{{ ansible_ssh_public_key_file }}"
     path: "/home/{{ ansible_user }}/.ssh/authorized_keys"
 
+- name: Ensuring that git is configured for basic usage
+  template:
+    src: git-config.j2
+    dest: "/home/{{ ansible_user }}/.gitconfig"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: 0644
+
+- name: Create directory for oh-my-zsh
+  file: 
+    path: /home/{{ ansible_user }}/oh-my-zsh
+    state: directory
+    mode: '755'
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+
+- name: Download the script for oh-my-zsh
+  ansible.builtin.get_url: 
+    url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+    dest: /home/{{ ansible_user }}/oh-my-zsh
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: '0700'
+
+- name: Check if oh-my-zsh is installed
+  stat:
+    path: ~/.oh-my-zsh
+  register: ohmyzsh_innstalled
+
+- name: install oh-my-zsh
+  command: yes | sh install.sh
+  args:
+    chdir: "/home/{{ ansible_user }}/oh-my-zsh"
+  when: not ohmyzsh_innstalled.stat.exists
+
 - name: Set the default shell
   user: 
     name: "{{ ansible_user }}"

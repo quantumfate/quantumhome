@@ -27,6 +27,7 @@
       name: "{{ item }}"
       state: absent
     with_items:
+      - /snap
       - /home/{{ ansible_user }}/snap
       - /var/snap
       - /var/lib/snap

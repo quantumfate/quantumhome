@@ -1,6 +1,6 @@
 gitmail: leon-holm@outlook.de
 gituser: Leon Holm
-shell: zsh
+shell: /bin/zsh
 packages:
   - neovim
   - htop
@@ -10,3 +10,5 @@ packages:
   - glances
   - zsh
   - git
+  - curl
+  - wget

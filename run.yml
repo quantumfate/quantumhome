@@ -1,6 +1,7 @@
 ---
 - hosts: all
   become: yes
+  #become_user: "{{ ansible_user }}"
 
   pre_tasks:
     - import_tasks: tasks/essential.yml

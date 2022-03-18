@@ -16,10 +16,20 @@
 mkdir -pv ~/.ssh/controlmasters/
 ```
 
-- add the following to your ```.ssh/config``` file
+- add the following to your `.ssh/config` file
 ```ssh
 Host *
         ControlMaster auto
         ControlPath ~/.ssh/controlmasters/%r@%h:%p
         ControlPersist yes
+```
+## Run the playbook
+
+- for the first time run the command with the `-K` flag to pass the "become" password for `sudo`
+```
+ansible-playbook run.yml -K
+```
+- every other time
+```
+ansible-playbook run.yml
 ```
