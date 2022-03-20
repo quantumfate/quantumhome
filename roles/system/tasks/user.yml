@@ -43,13 +43,11 @@
 
 - name: Check if oh-my-zsh is installed
   stat:
-    path: ~/.oh-my-zsh
+    path: /home/{{ ansible_user }}/.oh-my-zsh
   register: ohmyzsh_innstalled
 
 - name: install oh-my-zsh
-  command: yes | sh install.sh
-  args:
-    chdir: "/home/{{ ansible_user }}/oh-my-zsh"
+  ansible.builtin.command: yes | /home/{{ ansible_user }}/oh-my-zsh/install.sh
   when: not ohmyzsh_innstalled.stat.exists
 
 - name: Set the default shell
