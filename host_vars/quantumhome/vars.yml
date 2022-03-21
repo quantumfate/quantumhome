@@ -1,6 +1,46 @@
 ---
+#
+# Connection
+#
 ansible_host: 192.168.178.96
 ansible_user: sao
 ansible_connection: ssh
 ansible_ssh_private_key_file: /home/quantum/.ssh/quantumhome
 ansible_ssh_public_key_file: "{{ lookup('file', '~/.ssh/quantumhome.pub') }}"
+
+#
+# Drives
+#
+
+# lvm 
+main_volume_group: vg-ubuntu
+vg_cache_drive: Cache1
+
+# src
+src_parity1: /dev/sda/Parity1
+src_data1: /dev/sdb/Data1
+src_data2: /dev/sdc/Data2
+src_data3: /dev/sdd/Data3
+
+# Mount Points
+mnt_parity1: /mnt/parity1
+mnt_data1: /mnt/data1
+mnt_data2: /mnt/data2
+mnt_data3: /mnt/data3
+
+
+# actual disks
+parity_disks: 
+  - { path: "{{ mnt_parity1 }}", src: "{{ src_parity1 }}" , content: true }
+
+data_disks:
+  - { path: "{{ mnt_data1 }}", src: "{{ src_data1 }}", content: true }
+  - { path: "{{ mnt_data1 }}", src: "{{ src_data1 }}", content: true }
+  - { path: "{{ mnt_data1 }}", src: "{{ src_data1 }}", content: true }
+
+# cache disks  
+src_cache1: /dev/"{{ main_volume_group }}"/"{{ vg_cache_drive }}"
+src_cache2: /dev/sde/Cache2
+
+mnt_cache1: /mnt/cache1
+mnt_cache2: /mnt/cache2

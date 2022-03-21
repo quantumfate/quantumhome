@@ -12,3 +12,13 @@ packages:
   - git
   - curl
   - wget
+
+#
+# MergerFS
+#
+
+enable_mergerfs: yes
+
+mergerfs_root: /mnt/storage
+
+cache_root: /mnt/storage_cache
