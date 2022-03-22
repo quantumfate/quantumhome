@@ -18,16 +18,23 @@ vg_cache_drive: Cache1
 
 # src
 src_parity1: /dev/sda/Parity1
+
 src_data1: /dev/sdb/Data1
 src_data2: /dev/sdc/Data2
 src_data3: /dev/sdd/Data3
 
+src_cache1: /dev/"{{ main_volume_group }}"/"{{ vg_cache_drive }}"
+src_cache2: /dev/sde/Cache2
+
 # Mount Points
 mnt_parity1: /mnt/parity1
+
 mnt_data1: /mnt/data1
 mnt_data2: /mnt/data2
 mnt_data3: /mnt/data3
 
+mnt_cache1: /mnt/cache1
+mnt_cache2: /mnt/cache2
 
 # actual disks
 parity_disks: 
@@ -38,9 +45,8 @@ data_disks:
   - { path: "{{ mnt_data1 }}", src: "{{ src_data1 }}", content: true }
   - { path: "{{ mnt_data1 }}", src: "{{ src_data1 }}", content: true }
 
-# cache disks  
-src_cache1: /dev/"{{ main_volume_group }}"/"{{ vg_cache_drive }}"
-src_cache2: /dev/sde/Cache2
+cache_disks:
+  - { path: "{{ mnt_cache1 }}", src: "{{ src_cache1 }}", content: true }
+  - { path: "{{ mnt_cache2 }}", src: "{{ src_cache2 }}", content: true }
 
-mnt_cache1: /mnt/cache1
-mnt_cache2: /mnt/cache2
+

@@ -11,7 +11,7 @@
 - It is recommended to use [multiplexing](https://en.wikibooks.org/wiki/OpenSSH/Cookbook/Multiplexing) to speed up the processing of requests
 
 ### brief tutorial:
-- create the directory for controlscockets sockets
+- create the directory for controlscockets
 ```bash
 mkdir -pv ~/.ssh/controlmasters/
 ```

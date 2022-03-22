@@ -22,3 +22,20 @@ enable_mergerfs: yes
 mergerfs_root: /mnt/storage
 
 cache_root: /mnt/storage_cache
+
+#
+# Snapraid
+#
+
+enable_snapraid: yes
+
+snapraid_data_disks: "{{ disks }}"
+
+snapraid_parity_disks: "{{ parity_disks }}"
+
+snapraid_config_excludes:
+  - "*.unrecoverable"
+  - /lost+found/
+  - "*.!sync"
+  - /tmp/
+  - "/Downloads/*"
