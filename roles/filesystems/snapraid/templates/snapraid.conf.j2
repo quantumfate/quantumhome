@@ -40,9 +40,6 @@ content {{ item.path }}.snapraid.content
 {%- for item in {{ data_disks }} %}
 data d{{ loop.index0 }} {{ item.path }}
 {%- endfor %}
-data d1 /mnt/disk1/
-data d2 /mnt/disk2/
-data d3 /mnt/disk3/
 
 # Excludes hidden files and directories (uncomment to enable).
 #nohidden

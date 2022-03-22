@@ -7,5 +7,36 @@
     - import_tasks: tasks/essential.yml
 
   roles:
+
+    #
+    # Basics
+    #
     - role: system
+      tags: 
+        - system
+
+    #
+    # Security
+    #
     - role: security
+      tags: 
+        - security
+
+    #
+    # Filesystem
+    #
+    - role: filesystems/mount
+      tags: 
+        - mount
+      when: enable_mounting | default(False)
+
+    - role: filesystems/mergerfs
+      tags: 
+        - mergerfs
+      when: enable_mergerfs | default(False)
+    
+    - role: filesystems/snapraid
+      tags:
+        - snapraid
+      when: enable_snapraid | default(False)
+

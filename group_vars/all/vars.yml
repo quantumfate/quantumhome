@@ -14,6 +14,12 @@ packages:
   - wget
 
 #
+# Mount
+#
+
+enable_mounting: yes
+
+#
 # MergerFS
 #
 
@@ -33,9 +39,15 @@ snapraid_data_disks: "{{ disks }}"
 
 snapraid_parity_disks: "{{ parity_disks }}"
 
+snapraid_content_files:
+  - /var/snapraid.content
+
 snapraid_config_excludes:
   - "*.unrecoverable"
   - /lost+found/
   - "*.!sync"
   - /tmp/
   - "/Downloads/*"
+
+snapraid_runner_cron_jobs:
+- { job: 'docker stop $(docker ps -q); rsync -avz --delete --exclude cache {{ docker_dir }} {{ mergerfs_root }}/docker_data; docker start $(docker ps -a -q) && {{ snapraid_runner_command }} ', name: 'snapraid_runner', weekday: '0', hour: '3' }
