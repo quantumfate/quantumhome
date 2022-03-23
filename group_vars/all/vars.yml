@@ -25,9 +25,9 @@ enable_mounting: yes
 
 enable_mergerfs: yes
 
-mergerfs_root: /mnt/storage
+mergerfs_root: /mnt/storage/
 
-cache_root: /mnt/storage_cache
+cache_root: /mnt/storage_cache/
 
 #
 # Snapraid
@@ -51,3 +51,27 @@ snapraid_config_excludes:
 
 snapraid_runner_cron_jobs:
 - { job: 'docker stop $(docker ps -q); rsync -avz --delete --exclude cache {{ docker_dir }} {{ mergerfs_root }}/docker_data; docker start $(docker ps -a -q) && {{ snapraid_runner_command }} ', name: 'snapraid_runner', weekday: '0', hour: '3' }
+
+#
+# Docker
+#
+
+docker_dir: 
+
+docker_deps:
+  - 'apt-transport-https'
+  - 'ca-certificates'
+  - 'gnupg2'
+  - 'software-properties-common'
+  - 'python3-pip'
+  - 'virtualenv'
+  - 'python3-setuptools'
+  - 'docker-compose'
+  - 'lsb-release'
+
+docker_packages:
+  - 'docker-ce'
+  - 'docker-ce-cli'
+  - 'container.io'
+  - 'docker-compose'
+  - 'cgroupfs-mount'
