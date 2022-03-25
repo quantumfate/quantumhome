@@ -45,3 +45,13 @@
     name: docker
     state: started
     enabled: yes
+
+- name: Get a list of containers
+  delegate_to: localhost
+  become: false
+  find:
+    paths:
+      - "roles/containers/services"
+    file_type: directory
+    recurse: no
+  register: containers
