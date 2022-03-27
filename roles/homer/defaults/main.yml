@@ -1,0 +1,10 @@
+---
+container_name: homer
+
+url: "{{ host_local }}"
+
+homer_title: "Do not misunderstand it. This is not power of your creation."
+
+homer_subtitle: "When I die, I may not go to heaven"
+
+ip_address: "{{ swag_base }}.3"
