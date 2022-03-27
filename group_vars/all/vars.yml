@@ -13,6 +13,12 @@ packages:
   - curl
   - wget
 
+########
+# MISC #
+########
+
+# Functionality for drives, directories, redundancy etc
+enable_nas_stuff: yes
 #
 # Mount
 #
@@ -56,7 +62,7 @@ snapraid_runner_cron_jobs:
 # Docker
 #
 
-docker_dir: 
+docker_dir: /opt/docker/data 
 
 docker_deps:
   - 'apt-transport-https'
@@ -75,3 +81,16 @@ docker_packages:
   - 'container.io'
   - 'docker-compose'
   - 'cgroupfs-mount'
+
+#
+# container
+enable_nextcloud: yes
+#
+# Domains
+#
+
+subdomains: {
+      'www': www,
+      'home': 'home',
+      'nextcloud': 'nextcloud',
+}

@@ -9,6 +9,12 @@ ansible_ssh_private_key_file: /home/quantum/.ssh/quantumhome
 ansible_ssh_public_key_file: "{{ lookup('file', '~/.ssh/quantumhome.pub') }}"
 
 #
+# System specific variables
+#
+timezone: Europe/Amsterdam
+guid: "1000"
+
+#
 # Drives
 #
 
@@ -49,4 +55,10 @@ cache_disks:
   - { path: "{{ mnt_cache1 }}", src: "{{ src_cache1 }}", content: true }
   - { path: "{{ mnt_cache2 }}", src: "{{ src_cache2 }}", content: true }
 
+# Networks
+#
+lan_network: "192.168.178.96/24"
 
+swag_network: "10.0.0.0/27"
+
+swag_base: "{{ '.'.join(swag_network.split('.')[0:3]) }}"
