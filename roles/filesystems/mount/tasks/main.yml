@@ -1,11 +1,12 @@
 ---
 - name: Create the volume group for one of the cache drives and assign the label cache
-  block:
-  - community.general.lvol:
+  community.general.lvol:
     vg: "{{ main_volume_group }}"
     lv: "{{ vg_cache_drive }}"
     size: 100%FREE
-  - ansible.builtin.command: "e2label /dev/{{ main_volume_group }}/{{ vg_cache_drive }} cache"
+    
+- name: Rename the cache drive
+  ansible.builtin.command: "e2label /dev/{{ main_volume_group }}/{{ vg_cache_drive }} cache"
 
 - name: Mount the Parity drives used for Snapraid
   ansible.posix.mount:
