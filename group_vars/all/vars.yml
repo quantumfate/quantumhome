@@ -84,7 +84,45 @@ docker_packages:
 
 #
 # container
+#
+
+#
+# services
+
+# nextcloud
 enable_nextcloud: yes
+
+#
+# Network
+#
+
+# vpn
+vpn_network: "10.1.1.0/24"
+
+# lan
+lan_network: "192.168.178.0/24"
+
+lan_address: "{{ '.'.join(lan_network.split('.')[0:3]) }}.230"
+
+lan_gateway: "{{ '.'.join(lan_network.split('.')[0:3]) }}.1"
+
+dmz_network: "{{ '.'.join(lan_gateway.split('.')[0:2]) }}.44.0/24"
+
+dmz_gateway: "{{ '.'.join(dmz_network.split('.')[0:3]) }}.1"
+
+# swag
+enable_swag_internal: yes
+
+enable_swag_public: yes
+
+swag_network: "10.0.0.0/27"
+
+swag_base: "{{ '.'.join(swag_network.split('.')[0:3]) }}"
+
+swag_gateway: "{{ '.'.join(swag_network.split('.')[0:3]) }}.1"
+
+swag_interface: vlan.4
+
 #
 # Domains
 #

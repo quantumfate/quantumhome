@@ -51,7 +51,7 @@
     volumes:
       - "{{ docker_dir }}/{{ container_name }}/config:/config"
       - "{{ docker_dir }}/{{ container_name }}/data:/data"
-      - "{{ mergerfs_root }}/Nextcloud/{{ username }}:/data/{{ username }}"
+      - "{{ mergerfs_root }}/Nextcloud/{{ ansible_user }}:/data/{{ ansible_user }}"
     restart_policy: unless-stopped
 
 - name: Schedule a Nextcloud library scan at midnight every day

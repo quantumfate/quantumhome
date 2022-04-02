@@ -2,8 +2,8 @@
   file:
     path: "{{ docker_dir }}/swag/public/cloudflare/"
     state: directory
-    owner: "{{ username }}"
-    group: "{{ username }}"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
     mode: 0755
 
 - name: Download the real IP list for Cloudflare
@@ -19,8 +19,8 @@
     src: "{{ docker_dir }}/swag/public/cloudflare"
     dest: "{{ docker_dir }}/swag/public/nginx/cf_real_ip.conf"
     mode: 0644
-    owner: "{{ username }}"
-    group: "{{ username }}"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
   notify:
     - test nginx public
     - restart swag public
