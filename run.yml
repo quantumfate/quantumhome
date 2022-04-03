@@ -14,6 +14,16 @@
       tags: 
         - system
 
+    - role: geerlingguy.pip
+      tags:
+        - pip
+        - python
+        - docker
+
+    - role: geerlingguy.docker
+      tags: 
+        - docker
+
     - role: docker
       tags:
         - docker
@@ -22,6 +32,10 @@
     #
     - role: security
       tags: 
+        - security
+
+    - role: security/iptables
+      tags:
         - security
 
     #
@@ -52,21 +66,22 @@
     #
     # Filesystem
     #
-    - role: filesystems/mount
-      tags: 
-        - mount
-      when: enable_mounting | default(False)
 
     - role: filesystems/mergerfs
       tags: 
         - mergerfs
       when: enable_mergerfs | default(False)
     
-    - role: ironicbadger.ansible_role_snapraid
-      become: yes
-      tags:
-        - snapraid
-      when: enable_nas_stuff | default(False)
+    - role: filesystems/mount
+      tags: 
+        - mount
+      when: enable_mounting | default(False)
+    
+    # - role: ironicbadger.ansible_role_snapraid
+    #   become: yes
+    #   tags:
+    #     - snapraid
+    #   when: enable_nas_stuff | default(False)
 
     #
     # homer

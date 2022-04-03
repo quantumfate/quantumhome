@@ -17,10 +17,10 @@
       "PUID": "{{ guid }}"
       "PGID": "{{ guid }}"
       "TZ": "{{ timezone }}"
-      "MYSQL_ROOT_PASSWORD": "{{ mysql_root_password }}"
+      "MYSQL_ROOT_PASSWORD": "{{ nc_mysql_root_password }}"
       "MYSQL_DATABASE": "{{ mysql_db }}"
       "MYSQL_USER": "{{ mysql_user }}"
-      "MYSQL_PASSWORD": "{{ mysql_password }}"
+      "MYSQL_PASSWORD": "{{ nc_mysql_password }}"
     volumes:
       - "{{ docker_dir }}/{{ container_name }}/mariadb/mysql:/var/lib/mysql"
     restart_policy: unless-stopped

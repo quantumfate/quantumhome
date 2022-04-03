@@ -7,9 +7,4 @@ homer_title: "Do not misunderstand it. This is not power of your creation."
 
 homer_subtitle: "When I die, I may not go to heaven"
 
-enable_media: false
-enable_services: true
-enable_systen: false
-enable_homeautomation: false
-
 ip_address: "{{ swag_base }}.3"

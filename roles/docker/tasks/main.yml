@@ -1,37 +1,39 @@
 ---
+# - include_tasks: repo_arch.yml
 
-- name: Install the required system packages
-  ansible.builtin.package:
-    state: present
-    name: "{{ docker_deps }}"
+# - name: Install the required system packages
+#   ansible.builtin.package:
+#     update_cache: yes
+#     state: present
+#     name: "{{ docker_deps }}"
 
-- name: Install Docker
-  ansible.builtin.apt_key:
-  block:
-    - name: Add the Docker gpg key
-      apt_key:
-        url: https://download.docker.com/linux/ubuntu/gpg
-        state: present
-    - name: Add the Docker repository
-      apt_repository:
-        repo: "deb [arch={{ repo_arch }}] https://download.docker.com/linux/{{ ansible_facts['distribution'] | lower }} {{ ansible_lsb['codename'] }} stable"
-        state: present
 
-- name: Update apt and install docker-ce
-  when: ansible_facts['os_family'] == 'Debian'
-  apt:
-    update_cache: yes
-    name: "{{ docker_packages }}"
-    state: present
+# - name: Add the Docker gpg key
+#   apt_key:
+#     url: https://download.docker.com/linux/ubuntu/gpg
+#     state: present
+#     keyring: /usr/share/keyrings/docker-archive-keyring.gpg
+
+# - name: Add the Docker repository
+#   apt_repository:
+#     repo: "deb [arch={{ repo_arch }}] https://download.docker.com/linux/ubuntu {{ ansible_lsb.codename }} stable"
+#     update_cache: yes
+#     state: present
+
+# - name: Update apt and install docker-ce
+#   apt:
+#     update_cache: yes
+#     name: "{{ docker_packages }}"
+#     state: present
 
 - name: Ensure group docker exists
   group:
     name: docker
     state: present
 
-- name: Add user "{{ ansible_username }}" to group docker
+- name: Add user "{{ ansible_user }}" to group docker
   user:
-    name: '{{ ansible_username }}'
+    name: "{{ ansible_user }}"
     groups:
       - docker
     append: yes
@@ -83,6 +85,7 @@
     when: "enable_nas_stuff | default(False)"
 
   - name: Create the persistent data folder on the remote machine
+    become: yes
     file:
       dest: "{{ docker_dir }}"
       state: directory
@@ -100,6 +103,7 @@
       recurse: yes
     delegate_to: "{{ inventory_hostname }}"
     when: persistent_data_find.matched < 20 or not persistent_data.stat.exists
+    ignore_errors: true
 
 - name: Chmod the data folder
   become: true

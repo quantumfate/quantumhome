@@ -4,9 +4,36 @@
     vg: "{{ main_volume_group }}"
     lv: "{{ vg_cache_drive }}"
     size: 100%FREE
-    
-- name: Rename the cache drive
-  ansible.builtin.command: "e2label /dev/{{ main_volume_group }}/{{ vg_cache_drive }} cache"
+  ignore_errors: true
+
+- name: Create the mergerfs storage folder "{{ mergerfs_root }}"
+  ansible.builtin.file:
+    path: "{{ mergerfs_root }}"
+    state: directory
+    mode: '755'
+    owner: "root"
+    group: "root"
+
+- name: Create the mergerfs storage folder "{{ mergerfs_root }}_slow"
+  ansible.builtin.file:
+    path: "{{ mergerfs_root }}_slow"
+    state: directory
+    mode: '755'
+    owner: "root"
+    group: "root"
+
+- name: Create the mergerfs storage folder "{{ cache_root }}"
+  ansible.builtin.file:
+    path: "{{ cache_root }}"
+    state: directory
+    mode: '755'
+    owner: "root"
+    group: "root"
+
+- name: Rename the cache drive label
+  ansible.builtin.script:
+    cmd: "{{ my_project_source }}/roles/filesystems/mount/tamplates/rename-lvmdrive.j2"
+    creates: "/home/{{ ansible_user }}/.script/rename-lvmdrive"
 
 - name: Mount the Parity drives used for Snapraid
   ansible.posix.mount:

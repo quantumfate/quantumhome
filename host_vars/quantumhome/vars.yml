@@ -23,14 +23,14 @@ main_volume_group: ubuntu-vg
 vg_cache_drive: Cache1
 
 # src
-src_parity1: /dev/sda/parity/Parity1
+src_parity1: /dev/sda
 
-src_data1: /dev/sdb/data/Data1
-src_data2: /dev/sdc/data/Data2
-src_data3: /dev/sdd/data/Data3
+src_data1: /dev/sdb
+src_data2: /dev/sdc
+src_data3: /dev/sdd
 
-src_cache1: "/dev/cache/{{ main_volume_group }}/{{ vg_cache_drive }}"
-src_cache2: /dev/sde/cache/Cache2
+src_cache1: "/dev/{{ main_volume_group }}/{{ vg_cache_drive }}"
+src_cache2: /dev/sde
 
 # Mount Points
 mnt_parity1: /mnt/parity1
@@ -48,8 +48,8 @@ parity_disks:
 
 data_disks:
   - { path: "{{ mnt_data1 }}", src: "{{ src_data1 }}", content: true }
-  - { path: "{{ mnt_data1 }}", src: "{{ src_data1 }}", content: true }
-  - { path: "{{ mnt_data1 }}", src: "{{ src_data1 }}", content: true }
+  - { path: "{{ mnt_data2 }}", src: "{{ src_data2 }}", content: true }
+  - { path: "{{ mnt_data3 }}", src: "{{ src_data3 }}", content: true }
 
 cache_disks:
   - { path: "{{ mnt_cache1 }}", src: "{{ src_cache1 }}", content: true }

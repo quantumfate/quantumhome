@@ -54,3 +54,11 @@
   user: 
     name: "{{ ansible_user }}"
     shell: "{{ shell }}"
+
+- name: Create the script folder
+  ansible.builtin.file:
+    path: /home/{{ ansible_user }}/.script
+    state: directory
+    mode: '755'
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"

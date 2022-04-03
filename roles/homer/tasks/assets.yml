@@ -7,11 +7,25 @@
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
 
+
+- name: Empty the variables (In case the task is called twice)
+  set_fact:
+    apps_with_icons: []
+  when: apps_with_icons is defined
+
+- debug:
+    var: web_applications
+    verbosity: 1
+    
+
 - name: List the apps with icons
   set_fact:
-    apps_with_icons: "{{ apps_with_icons | default([]) + [(item.logo | basename).split('.')[0]] }}"
+          apps_with_icons: "{{ apps_with_icons | default([]) + [(item | basename).split('.')[0]] }}"
   with_items: "{{ web_applications }}"
-
+  #   
+- debug:
+    var: apps_with_icons
+    verbosity: 1
 - name: Copy the icons
   copy:
     src: "{{ item }}"
@@ -25,7 +39,7 @@
 
 - name: Copy the logo
   copy:
-    src: "files/icons/logo.jpg"
+    src: "{{ my_project_source }}/files/icons/logo.png"
     dest: "{{ docker_dir }}/{{ container_name }}/tools/homer-icons"
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
@@ -38,6 +52,10 @@
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
     mode: 0644
+
+- debug:
+    var: web_applications
+    verbosity: 1
 
 - name: Generate the Homer config file
   template:
