@@ -1,7 +1,6 @@
 ---
 - hosts: all
   become: yes
-  #become_user: "{{ ansible_user }}"
 
   pre_tasks:
     - import_tasks: tasks/essential.yml
@@ -15,12 +14,40 @@
       tags: 
         - system
 
+    - role: docker
+      tags:
+        - docker
     #
     # Security
     #
     - role: security
       tags: 
         - security
+
+    #
+    # Network
+    #
+
+    - role: network/swag
+      become: no
+      tags:
+        - swag
+        - containers
+      when: enable_swag_public | default(False) or enable_swag_internal | default(False)
+
+    - role: network/cloudflare-ddns
+      become: no
+      tags:
+        - cloudflare-ddns
+        - containers
+      when: enable_cloudflare_ddns | default(False)
+
+    - role: network/bunkerized-nginx
+      become: no
+      tags:
+        - bunkerized-nginx
+        - containers
+      when: enable_bunkerized_nginx | default(False)
 
     #
     # Filesystem
@@ -35,8 +62,19 @@
         - mergerfs
       when: enable_mergerfs | default(False)
     
-    - role: filesystems/snapraid
+    - role: ironicbadger.ansible_role_snapraid
+      become: yes
       tags:
         - snapraid
-      when: enable_snapraid | default(False)
+      when: enable_nas_stuff | default(False)
+
+    #
+    # homer
+    #
+    - role: homer
+      become: no
+      tags:
+        - homer
+        - containers
+      when: enable_homer | default(False)
 

@@ -39,9 +39,11 @@ cache_root: /mnt/storage_cache/
 # Snapraid
 #
 
+snapraid_runner_email_address: leonconnorholm@gmail.com
+
 enable_snapraid: yes
 
-snapraid_data_disks: "{{ disks }}"
+snapraid_data_disks: "{{ data_disks }}"
 
 snapraid_parity_disks: "{{ parity_disks }}"
 
@@ -57,6 +59,11 @@ snapraid_config_excludes:
 
 snapraid_runner_cron_jobs:
 - { job: 'docker stop $(docker ps -q); rsync -avz --delete --exclude cache {{ docker_dir }} {{ mergerfs_root }}/docker_data; docker start $(docker ps -a -q) && {{ snapraid_runner_command }} ', name: 'snapraid_runner', weekday: '0', hour: '3' }
+
+snapraid_scrub_schedule:
+  minute: 0
+  hour: 02
+  weekday: 1
 
 #
 # Docker
@@ -87,6 +94,10 @@ docker_packages:
 #
 
 #
+# homer
+enable_homer: yes
+
+#
 # services
 
 # nextcloud
@@ -95,6 +106,12 @@ enable_nextcloud: yes
 #
 # Network
 #
+
+# bunkerized-nginx
+enable_bunkerized_nginx: no
+
+# cloudflare
+enable_cloudflare_ddns: yes
 
 # vpn
 vpn_network: "10.1.1.0/24"
