@@ -2,6 +2,6 @@
 collections:
   - name: community.general
   - name: ansible.posix
-  - name: ironicbadger.ansible_role_snapraid
-  - name: geerlingguy.pip
-  - name: geerlingguy.docker
+  # - name: ironicbadger.snapraid
+  # - name: geerlingguy.pip
+  # - name: geerlingguy.docker

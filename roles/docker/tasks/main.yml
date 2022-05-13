@@ -85,7 +85,7 @@
     when: "enable_nas_stuff | default(False)"
 
   - name: Create the persistent data folder on the remote machine
-    become: yes
+    become: true
     file:
       dest: "{{ docker_dir }}"
       state: directory

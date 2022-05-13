@@ -4,12 +4,10 @@
 
   pre_tasks:
     - import_tasks: tasks/essential.yml
+    - import_tasks: tasks/list_services.yml
 
   roles:
-
-    #
-    # Basics
-    #
+    # Install basics on all hosts (quality of life changes + docker)
     - role: system
       tags: 
         - system
@@ -27,12 +25,36 @@
     - role: docker
       tags:
         - docker
+
+          
+- hosts: raspberrypi
+    
+  roles:
+    - role: network/cloudflare-ddns
+      become: no
+      tags:
+        - cloudflare-ddns
+        - containers
+      when: enable_cloudflare_ddns | default(False)
+    
+    - role: network/pihole
+      become: no
+        - pihole
+        - containers
+      when: enable_raspberry_pihole | default(False)
+
+- hosts: quantumhome
+  become: yes
+    
+  roles:
+
     #
     # Security
     #
     - role: security
       tags: 
         - security
+      when: enable_security | default(False)
 
     - role: security/iptables
       tags:
@@ -48,13 +70,6 @@
         - swag
         - containers
       when: enable_swag_public | default(False) or enable_swag_internal | default(False)
-
-    - role: network/cloudflare-ddns
-      become: no
-      tags:
-        - cloudflare-ddns
-        - containers
-      when: enable_cloudflare_ddns | default(False)
 
     - role: network/bunkerized-nginx
       become: no

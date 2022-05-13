@@ -12,12 +12,13 @@ packages:
   - git
   - curl
   - wget
+  - iptables
 
 ########
 # MISC #
 ########
 
-my_project_source: /home/quantum/quantumhome
+my_project_source: /home/leonch/Documents/quantumhome
 
 colorscheme: nord
 
@@ -127,10 +128,10 @@ docker_packages:
 # homer
 enable_homer: yes
 
-enable_media: false
-enable_services: true
-enable_systen: false
-enable_homeautomation: false
+enable_media: no
+enable_services: yes
+enable_system: no
+enable_homeautomation: no
 
 #
 # services
@@ -188,5 +189,15 @@ subdomains: {
 #
 # Security
 #
-enable_security: false
+enable_security: yes
 security_ssh_port: 22
+
+enable_crowdsec: no
+enable_endlessh: no
+enable_ikev2: no
+enable_wireguard: no
+
+
+#
+# Pihole
+#
