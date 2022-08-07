@@ -2,12 +2,16 @@
 #
 # Connection
 #
-ansible_host: 192.168.178.35
+ansible_host: 192.168.178.26
 ansible_user: pi
 ansible_connection: ssh
 ansible_ssh_private_key_file: /home/leonch/.ssh/raspberrypi
 ansible_ssh_public_key_file: "{{ lookup('file', '~/.ssh/raspberrypi.pub') }}"
 ansible_become_password: "{{ raspberrypi_sudo_password }}"
+
+# Packages to be installed for specific host
+specific_packages:
+  - test
 
 #
 # System specific variables

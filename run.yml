@@ -22,7 +22,7 @@
       tags: 
         - docker
 
-    - role: docker
+    - role: docker # This is used to populate the dictionary of processed docker containers
       tags:
         - docker
 

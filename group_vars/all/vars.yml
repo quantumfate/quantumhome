@@ -1,7 +1,7 @@
 gitmail: leon-holm@outlook.de
 gituser: Leon Holm
 shell: /bin/zsh
-packages:
+common_packages:
   - neovim
   - htop
   - neofetch
@@ -13,6 +13,9 @@ packages:
   - curl
   - wget
   - iptables
+
+# Merges common packages with packages on specific hosts
+total_packages: "{{ lookup('vars', specific_packages) | combine(common_packages)}}"
 
 ########
 # MISC #
