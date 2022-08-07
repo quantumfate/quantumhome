@@ -39,6 +39,7 @@ host_local: ""
 cloudflare_dns_token: ""
 quantumhome_sudo_password: ""
 raspberrypi_sudo_password: ""
+pihole_password: ""
 ```
 
 ## Run the playbook

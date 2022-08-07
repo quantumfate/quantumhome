@@ -11,7 +11,7 @@ ansible_become_password: "{{ raspberrypi_sudo_password }}"
 
 # Packages to be installed for specific host
 specific_packages:
-  - test
+  - unbound
 
 #
 # System specific variables

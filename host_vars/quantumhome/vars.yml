@@ -11,7 +11,7 @@ ansible_become_password: "{{ quantumhome_sudo_password }}"
 
 # Packages to be installed for specific host
 specific_packages:
-  - ubound
+  - hddtemp
 
 #
 # System specific variables

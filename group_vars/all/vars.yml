@@ -6,7 +6,6 @@ common_packages:
   - htop
   - neofetch
   - lm-sensors
-  - hddtemp
   - glances
   - zsh
   - git
