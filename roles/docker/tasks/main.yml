@@ -69,15 +69,20 @@
       recurse: yes
     when: not persistent_data.stat.exists
 
-  - name: Restore the "{{ docker_dir }}" folder from the MergerFS array
-    synchronize:
-      src: "{{ mergerfs_root }}/docker_data/data"
-      dest: "{{ docker_dir }}/"
-      delete: true
-      recurse: yes
-    delegate_to: "{{ inventory_hostname }}"
-    when: persistent_data_find.matched < 20 or not persistent_data.stat.exists
-    ignore_errors: true
+- name: Execute specific docker tasks on main Host
+  block:
+  
+    - name: Restore the "{{ docker_dir }}" folder from the MergerFS array
+      synchronize:
+        src: "{{ mergerfs_root }}/docker_data/data"
+        dest: "{{ docker_dir }}/"
+        delete: true
+        recurse: yes
+      delegate_to: "{{ inventory_hostname }}"
+      when: persistent_data_find.matched < 20 or not persistent_data.stat.exists
+      ignore_errors: true
+
+  when:  "{{ansible_hostname }} == quantumhome"
 
 - name: Chmod the data folder
   become: true

@@ -46,9 +46,5 @@ pihole_password: ""
 
 - for the first time run the command with the `-K` flag to pass the "become" password for `sudo`
 ```
-ansible-playbook run.yml -K
-```
-- every other time
-```
-ansible-playbook run.yml
+ansible-playbook run.yml --ask-vault-pass
 ```

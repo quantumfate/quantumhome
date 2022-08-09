@@ -17,18 +17,33 @@
         - pip
         - python
         - docker
+          
+- hosts: raspberrypi
+  become: yes
+    
+  roles:
+    - role: geerlingguy.docker_arm
+      tags: 
+        - docker
 
+- hosts: quantumhome
+  become: yes
+    
+  roles:
     - role: geerlingguy.docker
       tags: 
         - docker
 
+- hosts: all
+  become: yes
+
+  roles:
     - role: docker # This is used to populate the dictionary of processed docker containers
       tags:
         - docker
-
-          
 - hosts: raspberrypi
-    
+  become: yes
+
   roles:
     - role: network/cloudflare-ddns
       become: no
@@ -39,72 +54,76 @@
     
     - role: network/pihole
       become: no
+      tags:
         - pihole
         - containers
       when: enable_raspberry_pihole | default(False)
-
-- hosts: quantumhome
+        
+- hosts: all
   become: yes
-    
-  roles:
 
-    #
+  roles:
+    ### Run this at the end, when the environment is set
+    - role: viasite-ansible.zsh
+      tags:
+        - system
+        - zsh
     # Security
     #
-    - role: security
-      tags: 
-        - security
-      when: enable_security | default(False)
+    # - role: security
+    #   tags: 
+    #     - security
+    #   when: enable_security | default(False)
 
-    - role: security/iptables
-      tags:
-        - security
+    # - role: security/iptables
+    #   tags:
+    #     - security
 
     #
     # Network
     #
 
-    - role: network/swag
-      become: no
-      tags:
-        - swag
-        - containers
-      when: enable_swag_public | default(False) or enable_swag_internal | default(False)
-
-    - role: network/bunkerized-nginx
-      become: no
-      tags:
-        - bunkerized-nginx
-        - containers
-      when: enable_bunkerized_nginx | default(False)
-
-    #
-    # Filesystem
-    #
-
-    - role: filesystems/mergerfs
-      tags: 
-        - mergerfs
-      when: enable_mergerfs | default(False)
-    
-    - role: filesystems/mount
-      tags: 
-        - mount
-      when: enable_mounting | default(False)
-    
-    # - role: ironicbadger.ansible_role_snapraid
-    #   become: yes
+    # - role: network/swag
+    #   become: no
     #   tags:
-    #     - snapraid
-    #   when: enable_nas_stuff | default(False)
+    #     - swag
+    #     - containers
+    #   when: enable_swag_public | default(False) or enable_swag_internal | default(False)
 
-    #
-    # homer
-    #
-    - role: homer
-      become: no
-      tags:
-        - homer
-        - containers
-      when: enable_homer | default(False)
+    # - role: network/bunkerized-nginx
+    #   become: no
+    #   tags:
+    #     - bunkerized-nginx
+    #     - containers
+    #   when: enable_bunkerized_nginx | default(False)
+
+    # #
+    # # Filesystem
+    # #
+
+    # - role: filesystems/mergerfs
+    #   tags: 
+    #     - mergerfs
+    #   when: enable_mergerfs | default(False)
+    
+    # - role: filesystems/mount
+    #   tags: 
+    #     - mount
+    #   when: enable_mounting | default(False)
+    
+    # # - role: ironicbadger.ansible_role_snapraid
+    # #   become: yes
+    # #   tags:
+    # #     - snapraid
+    # #   when: enable_nas_stuff | default(False)
+
+    # #
+    # # homer
+    # #
+    # - role: homer
+    #   become: no
+    #   tags:
+    #     - homer
+    #     - containers
+    #   when: enable_homer | default(False)
 

@@ -25,36 +25,6 @@
     group: "{{ ansible_user }}"
     mode: 0644
 
-- name: Create directory for oh-my-zsh
-  file: 
-    path: /home/{{ ansible_user }}/oh-my-zsh
-    state: directory
-    mode: '755'
-    owner: "{{ ansible_user }}"
-    group: "{{ ansible_user }}"
-
-- name: Download the script for oh-my-zsh
-  ansible.builtin.get_url: 
-    url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
-    dest: /home/{{ ansible_user }}/oh-my-zsh
-    owner: "{{ ansible_user }}"
-    group: "{{ ansible_user }}"
-    mode: '0700'
-
-- name: Check if oh-my-zsh is installed
-  stat:
-    path: /home/{{ ansible_user }}/.oh-my-zsh
-  register: ohmyzsh_innstalled
-
-- name: install oh-my-zsh
-  ansible.builtin.command: yes | /home/{{ ansible_user }}/oh-my-zsh/install.sh
-  when: not ohmyzsh_innstalled.stat.exists
-
-- name: Set the default shell
-  user: 
-    name: "{{ ansible_user }}"
-    shell: "{{ shell }}"
-
 - name: Create the script folder
   ansible.builtin.file:
     path: /home/{{ ansible_user }}/.script

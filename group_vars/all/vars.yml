@@ -14,7 +14,7 @@ common_packages:
   - iptables
 
 # Merges common packages with packages on specific hosts
-total_packages: "{{ lookup('vars', specific_packages) | combine(common_packages)}}"
+total_packages: "{{ common_packages + specific_packages }}"
 
 ########
 # MISC #
@@ -122,6 +122,11 @@ docker_packages:
   - 'docker-compose'
   - 'cgroupfs-mount'
 
+### ZSH
+
+zsh_antigen_bundles_extras:
+  - nvm
+
 #
 # container
 #
@@ -148,16 +153,13 @@ enable_nextcloud: yes
 # bunkerized-nginx
 enable_bunkerized_nginx: no
 
-# cloudflare
-enable_cloudflare_ddns: yes
-
 # vpn
 vpn_network: "10.1.1.0/24"
 
 # lan
 lan_network: "192.168.178.0/24"
 
-lan_address: "{{ '.'.join(lan_network.split('.')[0:3]) }}.230"
+lan_address: "{{ '.'.join(lan_network.split('.')[0:3]) }}.26"
 
 lan_gateway: "{{ '.'.join(lan_network.split('.')[0:3]) }}.1"
 
