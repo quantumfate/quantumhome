@@ -16,10 +16,10 @@
     recurse: no
   register: containers
 
-- name: Include all default.yml files
+- name: Include all main.yml files
   include_vars:
     dir: "{{ playbook_dir }}/{{ item.path }}/defaults"
-    files_matching: default.yml
+    files_matching: main.yml
     name: "{{ item.path.split('/')[-1] }}"
   with_items: "{{ containers.files }}"
    
