@@ -3,6 +3,7 @@
   become: yes
 
   pre_tasks:
+    - import_tasks: tasks/juggle_port.yml
     - import_tasks: tasks/essential.yml
     - import_tasks: tasks/list_services.yml
 

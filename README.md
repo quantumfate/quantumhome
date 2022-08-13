@@ -34,14 +34,14 @@ ansible-vault edit secret.yml
 ```
 
 ```yml
-host: ""
-host_local: ""
+host: "" # Your cloudflare zone
+host_local: "" # local hostname for example .local
 cf_email: ""
 cloudflare_dns_token: ""
 quantumhome_sudo_password: ""
 raspberrypi_sudo_password: ""
 pihole_password: ""
-security_ssh_port: ""
+security_ssh_port: "" # Port used on remote machine for ssh connection
 ```
 
 ## Run the playbook

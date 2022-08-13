@@ -1,0 +1,4 @@
+- name: Restart SSH daemon
+  service: 
+    name: sshd
+    state: restarted
