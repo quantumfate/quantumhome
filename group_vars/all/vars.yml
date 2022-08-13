@@ -16,12 +16,8 @@ common_packages:
 # Merges common packages with packages on specific hosts
 total_packages: "{{ common_packages + specific_packages }}"
 
-########
-# MISC #
-########
-
+# MISC
 my_project_source: /home/leonch/Documents/quantumhome
-
 colorscheme: nord
 
 # All enable variables
@@ -39,14 +35,15 @@ enable_homeautomation: no
 ### Services in detail
 enable_bunkerized_nginx: no
 enable_nextcloud: yes
+enable_swag: yes
 ## Networking
 enable_swag_internal: yes
 enable_swag_public: yes
 ## Security
-enable_endlessh: no
+enable_security: yes # the whole group
 enable_ikev2: no
 enable_wireguard: no
-enable_security: yes
+enable_crowdsec: no
 
 # MergerFS
 mergerfs_root: /mnt/storage
@@ -109,4 +106,4 @@ subdomains: {
 }
 
 # Security
-security_ssh_port: 22
+default_ssh_port: "22"

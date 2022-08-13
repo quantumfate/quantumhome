@@ -50,16 +50,6 @@
     jump: ACCEPT
     comment: Ansible managed
 
-- name: Allow endlessh
-  iptables:
-    chain: INPUT
-    protocol: tcp
-    destination_port: 22
-    ctstate: NEW,ESTABLISHED
-    jump: ACCEPT
-    comment: Ansible managed
-  when: enable_endlessh | default(False)
-
 - name: Allow HTTP and HTTPS
   ansible.builtin.iptables:
     chain: INPUT
