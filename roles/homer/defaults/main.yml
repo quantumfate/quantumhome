@@ -1,7 +1,7 @@
 ---
 container_name: homer
 
-url: "{{ host_local }}"
+url: "{{container_name}}.{{ host_local }}"
 
 homer_title: "Do not misunderstand it. This is not power of your creation."
 
