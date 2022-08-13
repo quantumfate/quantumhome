@@ -36,6 +36,7 @@ ansible-vault edit secret.yml
 ```yml
 host: ""
 host_local: ""
+cf_email: ""
 cloudflare_dns_token: ""
 quantumhome_sudo_password: ""
 raspberrypi_sudo_password: ""
