@@ -24,36 +24,38 @@ my_project_source: /home/leonch/Documents/quantumhome
 
 colorscheme: nord
 
-# Functionality for drives, directories, redundancy etc
-enable_nas_stuff: yes
-#
-# Mount
-#
-
+# All enable variables
+enable_nas_stuff: yes # Functionality for drives, directories, redundancy etc
+## Filesystem
 enable_mounting: yes
-
-#
-# MergerFS
-#
-
 enable_mergerfs: yes
+enable_snapraid: yes
+## Webservices
+enable_homer: yes
+enable_media: no
+enable_services: yes
+enable_system: no
+enable_homeautomation: no
+### Services in detail
+enable_bunkerized_nginx: no
+enable_nextcloud: yes
+## Networking
+enable_swag_internal: yes
+enable_swag_public: yes
+## Security
+enable_endlessh: no
+enable_ikev2: no
+enable_wireguard: no
+enable_security: yes
 
+# MergerFS
 mergerfs_root: /mnt/storage
-
 cache_root: /mnt/storage_cache
 
-#
 # Snapraid
-#
-
 snapraid_runner_email_address: "{{ email }}"
-
-enable_snapraid: yes
-
 snapraid_data_disks: "{{ data_disks }}"
-
 snapraid_parity_disks: "{{ parity_disks }}"
-
 snapraid_content_files:
   - /var/snapraid.content
 
@@ -72,136 +74,39 @@ snapraid_scrub_schedule:
   hour: 02
   weekday: 1
 
-#
-# Pip packages
-#
-
+# Docker
+## Pip packages
 pip_install_packages: 
   - name: docker
   - name: awscli
-#
-# Docker
-#
-
-docker_service_state: started
-
-docker_service_enabled: true
-
-docker_restart_handler_state: restarted
-
-docker_install_compose: true
-
-docker_compose_arch: x86_64
-
-docker_apt_release_channel: stable
-docker_apt_arch: amd64
-docker_apt_repository: "deb [arch={{ docker_apt_arch }}] {{ docker_repo_url }}/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} {{ docker_apt_release_channel }}"
-docker_apt_ignore_key_error: True
-docker_apt_gpg_key: "{{ docker_repo_url }}/{{ ansible_distribution | lower }}/gpg"
-
-docker_users:
- - "{{ ansible_user }}"
 
 docker_dir: /opt/docker/data 
 
-docker_deps:
-  - 'apt-transport-https'
-  - 'ca-certificates'
-  - 'gnupg'
-  - 'software-properties-common'
-  - 'python3-pip'
-  - 'virtualenv'
-  - 'python3-setuptools'
-  - 'docker-compose'
-  - 'lsb-release'
-
-docker_packages:
-  - 'docker-ce'
-  - 'docker-ce-cli'
-  - 'container.io'
-  - 'docker-compose'
-  - 'cgroupfs-mount'
-
-### ZSH
-
+# ZSH
 zsh_antigen_bundles_extras:
   - nvm
 
-#
-# container
-#
-
-#
-# homer
-enable_homer: yes
-
-enable_media: no
-enable_services: yes
-enable_system: no
-enable_homeautomation: no
-
-#
-# services
-
-# nextcloud
-enable_nextcloud: yes
-
-#
 # Network
-#
-
-IPv6_lan_network: "fd00::/8"
-
-# bunkerized-nginx
-enable_bunkerized_nginx: no
-
-# vpn
+## vpn
 vpn_network: "10.1.1.0/24"
-
-# lan
+## lan
 IPv4_lan_network: "192.168.178.0/24"
-
+IPv6_lan_network: "fd00::/8"
 lan_gateway: "{{ '.'.join(IPv4_lan_network.split('.')[0:3]) }}.1"
-
 dmz_network: "{{ '.'.join(lan_gateway.split('.')[0:2]) }}.44.0/24"
-
 dmz_gateway: "{{ '.'.join(dmz_network.split('.')[0:3]) }}.1"
-
-# swag
-enable_swag_internal: yes
-
-enable_swag_public: yes
-
+## swag
 swag_network: "10.0.0.0/27"
-
 swag_base: "{{ '.'.join(swag_network.split('.')[0:3]) }}"
-
 swag_gateway: "{{ '.'.join(swag_network.split('.')[0:3]) }}.1"
-
 swag_interface: vlan.4
 
-#
 # Domains
-#
-
 subdomains: {
       'www': www,
       'home': 'home',
       'nextcloud': 'nextcloud',
 }
 
-#
 # Security
-#
-enable_security: yes
 security_ssh_port: 22
-
-enable_crowdsec: no
-enable_endlessh: no
-enable_ikev2: no
-enable_wireguard: no
-
-
-#
-# Pihole
-#
