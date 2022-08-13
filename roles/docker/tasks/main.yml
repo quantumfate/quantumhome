@@ -82,7 +82,7 @@
       when: persistent_data_find.matched < 20 or not persistent_data.stat.exists
       ignore_errors: true
 
-  when:  "{{ansible_hostname }} == quantumhome"
+  when: inventory_hostname in groups['main']
 
 - name: Chmod the data folder
   become: true
