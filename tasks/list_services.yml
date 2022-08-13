@@ -32,7 +32,6 @@
 - name: Populate the dictionary of all containers
   set_fact:
     web_applications: "{{ web_applications | default({}) | combine({ item.path.split('/')[-1]: {'logo': '/assets/tools/homer-icons/' + item.path.split('/')[-1] + '.png', 'ip_address': lookup('vars', item.path.split('/')[-1])['ip_address'] | default(''), 'name': lookup('vars', item.path.split('/')[-1])['dashboard_name'] | default(item.path.split('/')[-1] | title), 'url' : lookup('vars', item.path.split('/')[-1])['url'] | default(''), 'category': lookup('vars', item.path.split('/')[-1])['homer_category'] | default ('') }}) }}"
-    swag_urls: 
   with_items: "{{ containers.files }}"
 
 - debug:

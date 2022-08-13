@@ -4,3 +4,11 @@
     path: "{{ docker_dir }}/{{ container_name }}/unbound.conf.d/"
     state: directory
     recurse: yes
+
+- name: Copy the template file for custom domain names for local network
+  template:
+    src: custom.list.j2
+    dest:  "{{ docker_dir }}/{{ container_name }}/pihole/pihole"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: 0644
