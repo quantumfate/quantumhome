@@ -1,0 +1,31 @@
+---
+- name: Make sure the {{ container_name }} container is created and running
+  docker_container:
+    name: 'pihole'
+    image: "cbcrowe/pihole-unbound"
+    privileged: yes
+    hostname: "{{ inventory_hostname }}"
+    domainname: "{{ host_local }}"
+    pull: false
+    state: 'started'
+    env:
+      "ServerIP": "{{ lan_address }}"
+      "TZ": "{{ timezone }}"
+      "WEBPASSWORD": "{{ pihole_password }}"
+      "REV_SERVER": "true"
+      "REV_SERVER_DOMAIN": "{{ host_local }}"
+      "REV_SERVER_TARGET": "{{ lan_gateway }}"
+      "REV_SERVER_CIDR": "{{ IPv4_lan_network }}"
+      "DNS1": "127.0.0.1#5335" # Hardcoded to our Unbound server
+      "DNS2": "127.0.0.1#5335" # Hardcoded to our Unbound server
+      "DNSSEC": "true" # Enable DNSSEC
+      "DOMAIN_NAME": "pihole.box"
+    volumes:
+      - "{{ docker_dir }}/{{ container_name }}/pihole:/etc/pihole"
+      - "{{ docker_dir }}/{{ container_name }}/dnmasq-unbound:/etc/dnsmasq.d"
+      - "{{ docker_dir }}/{{ container_name }}/unbound.conf.d/pi-hole.conf:/etc/unbound/unbound.conf.d/pi-hole.conf"
+    ports:
+      - "80:80/tcp"
+      - "{{ lan_address }}:53:53/tcp"
+      - "{{ lan_address }}:53:53/udp"
+    restart_policy: unless-stopped

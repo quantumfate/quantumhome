@@ -150,6 +150,8 @@ enable_nextcloud: yes
 # Network
 #
 
+IPv6_lan_network: "fd00::/8"
+
 # bunkerized-nginx
 enable_bunkerized_nginx: no
 
@@ -157,11 +159,11 @@ enable_bunkerized_nginx: no
 vpn_network: "10.1.1.0/24"
 
 # lan
-lan_network: "192.168.178.0/24"
+IPv4_lan_network: "192.168.178.0/24"
 
-lan_address: "{{ '.'.join(lan_network.split('.')[0:3]) }}.26"
+lan_address: "{{ '.'.join(IPv4_lan_network.split('.')[0:3]) }}.26"
 
-lan_gateway: "{{ '.'.join(lan_network.split('.')[0:3]) }}.1"
+lan_gateway: "{{ '.'.join(IPv4_lan_network.split('.')[0:3]) }}.1"
 
 dmz_network: "{{ '.'.join(lan_gateway.split('.')[0:2]) }}.44.0/24"
 

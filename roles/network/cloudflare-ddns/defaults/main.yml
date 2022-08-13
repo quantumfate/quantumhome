@@ -1,2 +1,4 @@
 ---
 container_name: cloudflare-ddns
+
+local_domain: pihole
