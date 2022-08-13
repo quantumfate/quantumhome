@@ -161,8 +161,6 @@ vpn_network: "10.1.1.0/24"
 # lan
 IPv4_lan_network: "192.168.178.0/24"
 
-lan_address: "{{ '.'.join(IPv4_lan_network.split('.')[0:3]) }}.26"
-
 lan_gateway: "{{ '.'.join(IPv4_lan_network.split('.')[0:3]) }}.1"
 
 dmz_network: "{{ '.'.join(lan_gateway.split('.')[0:2]) }}.44.0/24"
