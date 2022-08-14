@@ -42,18 +42,15 @@
         - securiy
       when: enable_security | default(False)
 
-    - name: Iterate docker container
+    - name: Currently deploying {{ container_to_build.container_name }}
       include_role:
-        name: "container/{{ this_current_container_with_path }}"
+        name: "container/{{ container_to_build.path }}"
         tags:
-          - "{{ this_current_container }}"
+          - "{{ container_to_build.container_name }}"
           - container
-        when: "(enable_container_{{ this_current_container }} | default(False))"
-      vars:
-        this_current_var: "{{ lookup('vars', item.path.split('/')[-1]) }}"
-        this_current_container_with_path: "item.path.split('/')[-2]"
-        this_current_container: "item.path.split('/')[-1]"
-      with_items: "{{ containers.files }}"
+        when: "(enable_container_{{ container_to_build.container_name }} | default(False))"
+      with_items: "{{ container_to_build }}"
+
     ### Run this at the end, when the environment is set
     - role: viasite-ansible.zsh
       tags:

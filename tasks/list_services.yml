@@ -12,7 +12,7 @@
       - "roles/containers/system"
       - "roles/containers/network"
     file_type: directory
-    excludes: "homer"
+    # excludes: "homer"
     recurse: no
   register: containers
 
@@ -30,7 +30,8 @@
 
 - name: Populate the dictionary of all containers  
   block:
-
+    # The values in the variables are only if they are not defaulting to ''
+    # if they default to '' they wont be used later
     - name: Build the key, value pairs that the dictionay consits of
       set_fact:
         this_logo: "'/assets/tools/homer-icons/' + {{ this_current_container }} + '.png'"
@@ -41,13 +42,19 @@
 
     - name: Build the actual dictionary
       set_fact:
-        web_applications: "{{ web_applications | default({}) | combine({ this_current_container: {'logo': {{ this_logo }}, 'ip_address': {{ this_ip_adress }}, 'name': {{ this_name }}, 'url' : {{ url }}, 'category': {{ this_category }} } }) }}"
+        web_applications: "{{ web_applications | default({}) | combine({ {{ this_current_container }}: {'logo': {{ this_logo }}, 'ip_address': {{ this_ip_adress }}, 'name': {{ this_name }}, 'url' : {{ url }}, 'category': {{ this_category }} } }) }}"
+        container_to_build: "{{ web_applications | default({}) | combine({ {{ this_current_container }}: {'path': {{ this_current_container_with_path }}, 'container_name:' {{ this_current_container }} } }) }}"
   
   vars:
     this_current_var: "{{ lookup('vars', item.path.split('/')[-1]) }}"
+    this_current_container_with_path: "item.path.split('/')[-2]"
     this_current_container: "item.path.split('/')[-1]"
   with_items: "{{ containers.files }}"
 
 - debug:
     var: web_applications
+    verbosity: 1
+
+- debug:
+    var: container_to_build
     verbosity: 1
