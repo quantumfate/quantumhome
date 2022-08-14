@@ -2,7 +2,7 @@
 #
 # Connection
 #
-ansible_host: 192.168.178.30
+ansible_host: 192.168.178.25
 ansible_user: sao
 ansible_connection: ssh
 ansible_ssh_port: "{{ security_ssh_port }}"

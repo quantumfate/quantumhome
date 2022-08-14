@@ -1,13 +1,26 @@
 ---
 - hosts: all
   become: yes
+  gather_facts: no
 
   pre_tasks:
     - import_tasks: tasks/ssh_juggle_port.yml
+
+  tasks:
     - import_tasks: tasks/ssh.yml
     - import_tasks: tasks/essential.yml
     - import_tasks: tasks/list_services.yml
     - import_tasks: tasks/repo_arch.yml
+    
+  handlers:
+    - name: Restart SSH daemon
+      service: 
+        name: sshd
+        state: restarted
+
+- hosts: all
+  become: yes
+  gather_facts: yes
 
   roles:
     # Install basics on all hosts (quality of life changes + docker)
@@ -43,7 +56,7 @@
       when: enable_security | default(False)
     
   tasks:
-    - import_tasks: container_run.yaml
+    - import_tasks: tasks/container_run.yml
       when: container_to_build is defined
 
   # roles:
