@@ -4,8 +4,10 @@
 
   pre_tasks:
     - import_tasks: tasks/juggle_port.yml
+    - import_taksk: tasks/ssh.yml
     - import_tasks: tasks/essential.yml
     - import_tasks: tasks/list_services.yml
+    - import_tasks: tasks/repo_arch.yml
 
   roles:
     # Install basics on all hosts (quality of life changes + docker)
@@ -13,35 +15,31 @@
       tags: 
         - system
 
+    # Setup docker and everything neccessary 
     - role: geerlingguy.pip
       tags:
         - pip
         - python
         - docker
-          
-- hosts: raspberrypi
-  become: yes
-    
-  roles:
+
     - role: geerlingguy.docker_arm
       tags: 
         - docker
+      when: inventory_hostname in groups['pi']
 
-- hosts: quantumhome
-  become: yes
-    
-  roles:
     - role: geerlingguy.docker
       tags: 
         - docker
-
-- hosts: all
-  become: yes
-
-  roles:
-    - role: docker # This is used to populate the dictionary of processed docker containers
+      when: inventory_hostname in groups['main']
+    
+    - role: docker
       tags:
         - docker
+
+#####################################################
+
+
+    
 - hosts: raspberrypi
   become: yes
 
