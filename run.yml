@@ -36,65 +36,43 @@
       tags:
         - docker
 
-#####################################################
-
-
-    
-- hosts: raspberrypi
-  become: yes
-
-  roles:
-    - role: network/cloudflare-ddns
-      become: no
+    # Security
+    - role: security
       tags:
-        - cloudflare-ddns
-        - containers
-      when: enable_cloudflare_ddns | default(False)
-    
-    - role: network/pihole
-      become: no
-      tags:
-        - pihole
-        - containers
-      when: enable_raspberry_pihole | default(False)
-        
-- hosts: all
-  become: yes
+        - securiy
+      when: enable_security | default(False)
 
-  roles:
+    - name: Iterate docker container
+      include_role:
+        name: "container/{{ this_current_container_with_path }}"
+        tags:
+          - "{{ this_current_container }}"
+          - container
+        when: "(enable_container_{{ this_current_container }} | default(False))"
+      vars:
+        this_current_var: "{{ lookup('vars', item.path.split('/')[-1]) }}"
+        this_current_container_with_path: "item.path.split('/')[-2]"
+        this_current_container: "item.path.split('/')[-1]"
+      with_items: "{{ containers.files }}"
     ### Run this at the end, when the environment is set
     - role: viasite-ansible.zsh
       tags:
-        - system
         - zsh
-    # Security
-    #
-    # - role: security
-    #   tags: 
-    #     - security
-    #   when: enable_security | default(False)
 
-    # - role: security/iptables
-    #   tags:
-    #     - security
-
-    #
     # Network
-    #
 
     # - role: network/swag
-    #   become: no
     #   tags:
     #     - swag
     #     - containers
-    #   when: enable_swag_public | default(False) or enable_swag_internal | default(False)
+    #   when: enable_container_swagpublic | default(False) or enable_container_swaginternal | default(False)
 
     # - role: network/bunkerized-nginx
     #   become: no
     #   tags:
     #     - bunkerized-nginx
     #     - containers
-    #   when: enable_bunkerized_nginx | default(False)
+    #   when: enable_container_bunkerizednginx | default(False)
 
     # #
     # # Filesystem
@@ -124,5 +102,5 @@
     #   tags:
     #     - homer
     #     - containers
-    #   when: enable_homer | default(False)
+    #   when: enable_container_homer | default(False)
 

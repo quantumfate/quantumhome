@@ -20,30 +20,14 @@ total_packages: "{{ common_packages + specific_packages }}"
 my_project_source: /home/leonch/Documents/quantumhome
 colorscheme: nord
 
-# All enable variables
+# All enable variables for groups
 enable_nas_stuff: yes # Functionality for drives, directories, redundancy etc
 ## Filesystem
 enable_mounting: yes
 enable_mergerfs: yes
 enable_snapraid: yes
-## Webservices
-enable_homer: yes
-enable_media: no
-enable_services: yes
-enable_system: no
-enable_homeautomation: no
-### Services in detail
-enable_bunkerized_nginx: no
-enable_nextcloud: yes
-enable_swag: yes
-## Networking
-enable_swag_internal: yes
-enable_swag_public: yes
 ## Security
 enable_security: yes # the whole group
-enable_ikev2: no
-enable_wireguard: no
-enable_crowdsec: no
 
 # MergerFS
 mergerfs_root: /mnt/storage

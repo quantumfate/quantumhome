@@ -7,9 +7,9 @@
 - include_tasks: docker.yml
 
 - include_tasks: cloudflare_real_ips.yml
-  when: enable_swag_public | default(False)
+  when: enable_container_swagpublic | default(False)
 
 - include_tasks: cloudflare_internal_dns.yml
-  when: enable_swag_internal | default(False)
+  when: enable_container_swaginternal | default(False)
 
 - include_tasks: install_configs.yml

@@ -20,10 +20,6 @@ specific_packages:
 timezone: Europe/Amsterdam
 guid: "1000"
 
-
-# eanbel vars
-
-#pihole
-enable_raspberry_pihole: yes
-# cloudflare
-enable_cloudflare_ddns: yes
+# enable variables
+enable_container_pihole: yes
+enable_container_cloudflareddns: yes

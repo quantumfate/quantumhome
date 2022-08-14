@@ -14,6 +14,20 @@ ansible_become_password: "{{ quantumhome_sudo_password }}"
 specific_packages:
   - hddtemp
 
+# Enable variables
+## Networking
+enable_container_swag: yes
+enable_container_swaginternal: yes
+enable_container_swagpublic: yes
+enable_container_bunkerizednginx: no
+## Services
+enable_container_homer: yes
+enable_container_nextcloud: yes
+## Security
+enable_container_ikev2: no
+enable_container_wireguard: no
+enable_container_crowdsec: no
+
 #
 # System specific variables
 #
