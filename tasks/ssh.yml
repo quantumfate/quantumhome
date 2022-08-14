@@ -1,0 +1,31 @@
+---
+- name: Configure SSH
+  block:
+  - name: Disable SSH password auth
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: "^#PasswordAuthentication yes"
+      line: "PasswordAuthentication no" 
+    notify:
+      - Restart SSH daemon
+
+  - name: Change the default SSH Port and set the new port and run SSH Juggle Port subsequently
+    block:
+    - name: Configure the new accessible Port
+      lineinfile:
+        dest: /etc/ssh/sshd_config
+        regexp: "^#Port 22"
+        line: "Port {{ security_ssh_port }}"
+      notify:
+      - Restart SSH daemon
+    - name: Set the new Port used for connection
+      set_fact:
+        ansible_ssh_port: "{{ security_ssh_port }}"
+    - name: Juggle the Port again with newly configured Port
+      import_tasks: "{{ playbook_dir }}/tasks/ssh_juggle_port.yml"
+  
+- handlers:
+  - name: Restart SSH daemon
+    service: 
+      name: sshd
+      state: restarted

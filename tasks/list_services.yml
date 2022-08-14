@@ -51,25 +51,3 @@
 - debug:
     var: web_applications
     verbosity: 1
-
-- name: Get a list of everything else
-  delegate_to: localhost
-  become: false
-  find:
-    paths: 
-      - "roles/containers/services"
-      - "roles/containers/media"
-      - "roles/containers/homeautomation"
-      - "roles/containers/system"
-      - "roles/containers/network"
-    file_type: directory
-    excludes: "homer"
-    recurse: no
-  register: containers
-
-- name: Include all default.yml files
-  include_vars:
-    dir: "{{ playbook_dir }}/{{ item.path }}/defaults"
-    files_matching: main.yml
-    name: "{{ item.path.split('/')[-1] }}"
-  with_items: "{{ containers.files }}"

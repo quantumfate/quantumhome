@@ -32,7 +32,7 @@
 
 - name: Rename the cache drive label
   ansible.builtin.script:
-    cmd: "{{ my_project_source }}/roles/filesystems/mount/tamplates/rename-lvmdrive.j2"
+    cmd: "{{ playbook_dir }}/roles/filesystems/mount/tamplates/rename-lvmdrive.j2"
     creates: "/home/{{ ansible_user }}/.script/rename-lvmdrive"
 
 - name: Mount the Parity drives used for Snapraid
