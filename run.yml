@@ -35,6 +35,11 @@
     - role: docker
       tags:
         - docker
+
+#####################################################
+
+
+    
 - hosts: raspberrypi
   become: yes
 
