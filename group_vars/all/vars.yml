@@ -20,6 +20,9 @@ total_packages: "{{ common_packages + specific_packages }}"
 my_project_source: /home/leonch/Documents/quantumhome
 colorscheme: nord
 
+#
+container_to_build: []
+
 # All enable variables for groups
 enable_nas_stuff: yes # Functionality for drives, directories, redundancy etc
 ## Filesystem

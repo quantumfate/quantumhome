@@ -23,9 +23,4 @@
         ansible_ssh_port: "{{ security_ssh_port }}"
     - name: Juggle the Port again with newly configured Port
       import_tasks: "{{ playbook_dir }}/tasks/ssh_juggle_port.yml"
-  
-- handlers:
-  - name: Restart SSH daemon
-    service: 
-      name: sshd
-      state: restarted
+    

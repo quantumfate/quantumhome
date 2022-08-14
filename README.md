@@ -50,3 +50,8 @@ security_ssh_port: "" # Port used on remote machine for ssh connection
 ```
 ansible-playbook run.yml --ask-vault-pass
 ```
+
+- you can run the playbook in check-mode without actually making changes
+```
+ansible-playbook run.yml --check --ask-vault-pass
+```

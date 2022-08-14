@@ -1,0 +1,9 @@
+---
+- name: Currently deploying {{ container_to_build.container_name }}
+  include_role:
+    name: "container/{{ container_to_build.path }}"
+    tags:
+      - "{{ container_to_build.container_name }}"
+      - container
+    when: "(enable_container_{{ container_to_build.container_name }} | default(False))"
+  with_items: "{{ container_to_build }}"

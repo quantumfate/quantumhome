@@ -3,8 +3,8 @@
   become: yes
 
   pre_tasks:
-    - import_tasks: tasks/juggle_port.yml
-    - import_taksk: tasks/ssh.yml
+    - import_tasks: tasks/ssh_juggle_port.yml
+    - import_tasks: tasks/ssh.yml
     - import_tasks: tasks/essential.yml
     - import_tasks: tasks/list_services.yml
     - import_tasks: tasks/repo_arch.yml
@@ -41,20 +41,17 @@
       tags:
         - securiy
       when: enable_security | default(False)
+    
+  tasks:
+    - import_tasks: container_run.yaml
+      when: container_to_build is defined
 
-    - name: Currently deploying {{ container_to_build.container_name }}
-      include_role:
-        name: "container/{{ container_to_build.path }}"
-        tags:
-          - "{{ container_to_build.container_name }}"
-          - container
-        when: "(enable_container_{{ container_to_build.container_name }} | default(False))"
-      with_items: "{{ container_to_build }}"
+  # roles:
 
-    ### Run this at the end, when the environment is set
-    - role: viasite-ansible.zsh
-      tags:
-        - zsh
+  #   ### Run this at the end, when the environment is set
+  #   - role: viasite-ansible.zsh
+  #     tags:
+  #       - zsh
 
     # Network
 
