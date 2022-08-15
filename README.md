@@ -71,7 +71,7 @@ web_containers_roles_paths:
   - "roles/web_containers/services"
 ```
 
-Defining paths here will automatically include your roles into your playbook in [https://github.com/quantumfate/quantumhome/blob/main/run.yml](run.yml).
+Defining paths here will automatically include your roles into your playbook in [run.yml](run.yml).
 
 ```bash
 ├── roles
@@ -134,7 +134,7 @@ security_ssh_port: "" # Port used on remote machine for ssh connection
 
 ## The actual playbook
 
-The [https://github.com/quantumfate/quantumhome/blob/main/run.yml](run.yml) file will ran a bunch of automated tasks including the sytem role. This will setup the basic system with all neccessary dependencies for docker container.
+The [run.yml](run.yml) file will ran a bunch of automated tasks including the sytem role. This will setup the basic system with all neccessary dependencies for docker container.
 
 Once that is done the playbook will import a task, that includes all roles based on the paths in the "webservices_path" variable.
 
