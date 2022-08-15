@@ -20,8 +20,23 @@ total_packages: "{{ common_packages + specific_packages }}"
 my_project_source: /home/leonch/Documents/quantumhome
 colorscheme: nord
 
-#
-container_to_build: []
+# Path with simple roles to be executed
+# the order of directories within these paths matters.
+# Roles will be executed in path order and then alphabetical order.
+simple_roles_paths:
+  - "roles/simple_roles/system"
+  - "roles/simple_roles/security"
+  - "roles/simple_roles/filesystems"
+
+# Includes a list of paths for all roles that run in a container
+# Order is not so important since everything is running in a container
+system_containers_roles_paths:
+  - "roles/system_containers/network"
+
+# Includes all paths for webservices to be build
+web_containers_roles_paths:
+  - "roles/web_containers/network"
+  - "roles/web_containers/services"
 
 # All enable variables for groups
 enable_nas_stuff: yes # Functionality for drives, directories, redundancy etc

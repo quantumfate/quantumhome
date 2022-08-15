@@ -11,10 +11,10 @@
     - import_tasks: tasks/essential.yml
     - import_tasks: tasks/list_services.yml
     - import_tasks: tasks/repo_arch.yml
-    
+
   handlers:
     - name: Restart SSH daemon
-      service: 
+      service:
         name: sshd
         state: restarted
 
@@ -22,92 +22,60 @@
   become: yes
   gather_facts: yes
 
-  roles:
-    # Install basics on all hosts (quality of life changes + docker)
-    - role: system
-      tags: 
-        - system
-
-    # Setup docker and everything neccessary 
-    - role: geerlingguy.pip
-      tags:
-        - pip
-        - python
-        - docker
-
-    - role: geerlingguy.docker_arm
-      tags: 
-        - docker
-      when: inventory_hostname in groups['pi']
-
-    - role: geerlingguy.docker
-      tags: 
-        - docker
-      when: inventory_hostname in groups['main']
-    
-    - role: docker
-      tags:
-        - docker
-
-    # Security
-    - role: security
-      tags:
-        - securiy
-      when: enable_security | default(False)
-    
+  
   tasks:
-    - import_tasks: tasks/container_run.yml
-      when: container_to_build is defined
+  - import_tasks: tasks/include_role/system_roles.yml
 
-  # roles:
+  roles:
+  # Setup docker and everything neccessary
+  - role: geerlingguy.pip
+    tags:
+      - pip
+      - python
+      - docker
 
+  - role: geerlingguy.docker_arm
+    tags:
+      - docker
+    when: inventory_hostname in groups['pi']
+
+  - role: geerlingguy.docker
+    tags:
+      - docker
+    when: inventory_hostname in groups['main']
+
+- hosts: all
+  become: yes
+  gather_facts: yes
+
+  tasks:
+  - import_tasks: tasks/include_role/system_container.yml
+  - import_tasks: tasks/include_role/web_container.yml
+  
+  roles:
+
+    - role: homer
+      tags:
+        - homer
+        - docker
+      when: enable_container_homer | default(False)
   #   ### Run this at the end, when the environment is set
   #   - role: viasite-ansible.zsh
   #     tags:
   #       - zsh
 
-    # Network
+  # # - role: ironicbadger.ansible_role_snapraid
+  # #   become: yes
+  # #   tags:
+  # #     - snapraid
+  # #   when: enable_nas_stuff | default(False)
 
-    # - role: network/swag
-    #   tags:
-    #     - swag
-    #     - containers
-    #   when: enable_container_swagpublic | default(False) or enable_container_swaginternal | default(False)
-
-    # - role: network/bunkerized-nginx
-    #   become: no
-    #   tags:
-    #     - bunkerized-nginx
-    #     - containers
-    #   when: enable_container_bunkerizednginx | default(False)
-
-    # #
-    # # Filesystem
-    # #
-
-    # - role: filesystems/mergerfs
-    #   tags: 
-    #     - mergerfs
-    #   when: enable_mergerfs | default(False)
-    
-    # - role: filesystems/mount
-    #   tags: 
-    #     - mount
-    #   when: enable_mounting | default(False)
-    
-    # # - role: ironicbadger.ansible_role_snapraid
-    # #   become: yes
-    # #   tags:
-    # #     - snapraid
-    # #   when: enable_nas_stuff | default(False)
-
-    # #
-    # # homer
-    # #
-    # - role: homer
-    #   become: no
-    #   tags:
-    #     - homer
-    #     - containers
-    #   when: enable_container_homer | default(False)
-
+  # #
+  # # homer
+  # #
+  # - role: homer
+  #   become: no
+  #   tags:
+  #     - homer
+  #     - containers
+  #   when: enable_container_homer | default(False)

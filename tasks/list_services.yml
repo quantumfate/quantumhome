@@ -3,69 +3,79 @@
 ---
 - name: Empty the variables (In case the task is called twice)
   set_fact:
-    web_applications: []
-    container_to_build: []
-  when: (web_applications is defined) or (container_to_build is defined)
+    web_container_to_build: []
+    system_container_to_build: []
+    simple_roles_to_build: []
+  when: (web_container_to_build is defined) or (system_container_to_build is defined) or (simple_roles_paths_to_build is defined)
 
-- name: Prepare the data for all the containers hosted as a webservice
+- name: "Simple Roles: Prepare a list of all simple roles to be included"
   block:
-    - name: Get a list of containers to be hosted as a web service
+    - name: Get a list of all roles that are not in a container
       delegate_to: localhost
       become: false
       find:
         paths: 
-          - "roles/containers/network"
-          - "roles/containers/services"
-          # - "roles/container/*" add more
+          - "{{ simple_roles_paths }}"
         file_type: directory
-        excludes: "homer"
         recurse: no
-      register: containers
+      register: simple_roles
+
+    - name: Build the simple_roles_to_build dict with neccessary information
+      set_fact:
+        simple_roles_to_build: "{{ simple_roles_to_build | default({}) | combine({ item.path.split('/')[-1]: { 'role_name': item.path.split('/')[-1], 'path': item.path, tags: { item.path.split('/')[-1], [item.path.split('/')[1] }  } }) }}"
+      with_items: "{{ simple_roles.files }}"
+
+- name: "System Container Roles: Prepare a list of all roles that run in a container - except webservices"
+  block:
+    - name: Get a list of all roles
+      delegate_to: localhost
+      become: false
+      find:
+        paths: 
+          - "{{ system_containers_roles_paths }}"
+        file_type: directory
+        recurse: no
+      register: system_containers_roles
+
+    - name: Build the system_container_to_build dict with neccessary information
+      set_fact:
+        system_container_to_build: "{{ system_container_to_build | default({}) | combine({ item.path.split('/')[-1]: { 'role_name': item.path.split('/')[-1], 'path': item.path,  tags: { item.path.split('/')[-1], [item.path.split('/')[1] } } }) }}"
+      with_items: "{{ system_containers_roles.files }}"
+
+- name: "Web Container Roles: Prepare the data for all the web_containers_roles hosted as a webservice"
+  block:
+    - name: Get a list of web containers to be hosted as a web service and displayed by homer
+      delegate_to: localhost
+      become: false
+      find:
+        paths: 
+          - "{{ web_containers_roles_paths }}"
+        file_type: directory
+        recurse: no
+      register: web_containers_roles
 
     - name: Include all main.yml files for webservices
       include_vars:
         dir: "{{ playbook_dir }}/{{ item.path }}/defaults"
         files_matching: main.yml
         name: "{{ item.path.split('/')[-1] }}"
-      with_items: "{{ containers.files }}"
+      with_items: "{{ web_containers_roles.files }}"
 
     - name: Build the key, value pairs that the webservices dictionary consits of
       set_fact:
-        web_applications: "{{ web_applications | default({}) | combine({ item.path.split('/')[-1]: { 'logo': '/assets/tools/homer-icons/' + item.path.split('/')[-1] + '.png', 'ip_address': this_current_var.ip_address | default(''), 'name': this_current_var.dashboard_name | default(item.path.split('/')[-1] | title), 'url': this_current_var.url | default(''), 'category': this_current_var.homer_category | default ('') } }) }}"
+        web_container_to_build: "{{ web_container_to_build | default({}) | combine({ item.path.split('/')[-1]: { 'role_name': item.path.split('/')[-1], 'path': item.path,  tags: { item.path.split('/')[-1], [item.path.split('/')[1] }, 'logo': '/assets/tools/homer-icons/' + item.path.split('/')[-1] + '.png', 'ip_address': this_current_var.ip_address | default(''), 'name': this_current_var.dashboard_name | default(item.path.split('/')[-1] | title), 'url': this_current_var.url | default(''), 'category': this_current_var.homer_category | default ('') } }) }}"
       vars:
         this_current_var: "{{ lookup('vars', item.path.split('/')[-1]) }}"
-      with_items: "{{ containers.files }}"
-
-- name: Prepare a list of all roles in /roles to be dynamically included
-  block:
-    - name: Get a list of all roles - order matters
-      delegate_to: localhost
-      become: false
-      find:
-        paths: 
-          - "roles/security"
-          - "roles/system"
-          - "roles/network"
-          - "roles/filesystems"
-          - "roles/containers/network"
-          - "roles/containers/services"
-          # - "roles/container/*" add more
-        file_type: directory
-        recurse: no
-      register: myroles
-
-    - name: Build the container_to_build dict with neccessary information
-      set_fact:
-        container_to_build: "{{ container_to_build | default({}) | combine({ item.path.split('/')[-1]: { 'path': item.path, 'container_name': this_current_var } }) }}"
-      vars:
-        this_current_var: "{{ lookup('vars', item.path.split('/')[-1]) }}"
-      with_items: "{{ myroles.files }}"
-
+      with_items: "{{ web_containers_roles.files }}"
 
 - debug:
-    var: web_applications
+    var: simple_roles_to_build
     verbosity: 1
-# Build separate lists to iterate. 
+
 - debug:
-    var: container_to_build
+    var: system_container_to_build
+    verbosity: 1
+
+- debug:
+    var: web_container_to_build
     verbosity: 1

@@ -1,0 +1,10 @@
+---
+- name: "System Container Roles: Currently deploying the container {{ item.role_name }}"
+  include_role:
+    name: "container/{{ item.path }}"
+    apply:
+      tags:
+        - "{{ item.tags }}"
+        - container
+      when: "(enable_container_{{ item.role_name }} | default(False))"
+  with_items: "{{ web_container_to_build }}"

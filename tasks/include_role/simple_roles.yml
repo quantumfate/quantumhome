@@ -1,0 +1,10 @@
+---
+- name: "Simple Roles: Currently executing {{ item.role_name }}"
+  include_role:
+    name: "container/{{ item.path }}"
+    apply:
+      tags:
+        - "{{ item.tags }}"
+        - simple
+      when: "(enable_role_{{ item.role_name }} | default(False))"
+  with_items: "{{ simple_roles_to_build }}"
