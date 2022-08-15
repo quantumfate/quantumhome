@@ -1,4 +1,10 @@
 ---
 container_name: cloudflare-ddns
 
-local_domain: pihole
+url: "cloudflare-ddns.{{host_local}}"
+
+homer_category: "Network"
+
+dashboard_name: "PiHole"
+
+ip_adress: "{{ '.'.join(IPv4_lan_network.split('.')[0:3]) }}.26"

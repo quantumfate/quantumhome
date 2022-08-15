@@ -1,54 +1,71 @@
 # Gets variables from all web applications recursively (for Homer and SWAG)
 #
 ---
-- name: Get a list of containers
-  delegate_to: localhost
-  become: false
-  find:
-    paths: 
-      - "roles/containers/services"
-      - "roles/containers/media"
-      - "roles/containers/homeautomation"
-      - "roles/containers/system"
-      - "roles/containers/network"
-    file_type: directory
-    # excludes: "homer"
-    recurse: no
-  register: containers
-
-- name: Include all main.yml files
-  include_vars:
-    dir: "{{ playbook_dir }}/{{ item.path }}/defaults"
-    files_matching: main.yml
-    name: "{{ item.path.split('/')[-1] }}"
-  with_items: "{{ containers.files }}"
-   
 - name: Empty the variables (In case the task is called twice)
   set_fact:
     web_applications: []
+    container_to_build: []
   when: (web_applications is defined) or (container_to_build is defined)
-  
-# The values in the variables are only if they are not defaulting to ''
-# if they default to '' they wont be used later
-- name: Build the key, value pairs that the dictionay consits of
-  set_fact:
-    this_logo: "'/assets/tools/homer-icons/' + {{ this_current_container }} + '.png'"
-    this_ip_adress: "{{ this_current_var }}.ip_address | default('')"
-    this_name: "{{ this_current_var }}.dashboard_name | default(item.path.split('/')[-1] | title)"
-    this_url: "{{ this_current_var }}.url | default('')"
-    this_category: "{{ this_current_var }}.homer_category | default ('')"
-    web_applications: "{{ web_applications | default({}) | combine({ {{ this_current_container }}: {'logo': {{ this_logo }}, 'ip_address': {{ this_ip_adress }}, 'name': {{ this_name }}, 'url' : {{ url }}, 'category': {{ this_category }} } }) }}"
-    container_to_build: "{{ container_to_build | default({}) | combine({ {{ this_current_container }}: {'path': {{ this_current_container_with_path }}, 'container_name:' {{ this_current_container }} } }) }}"
-  vars:
-    this_current_var: "{{ lookup('vars', item.path.split('/')[-1]) }}"
-    this_current_container_with_path: "item.path.split('/')[-2]"
-    this_current_container: "item.path.split('/')[-1]"
-  with_items: "{{ containers.files }}"
+
+- name: Prepare the data for all the containers hosted as a webservice
+  block:
+    - name: Get a list of containers to be hosted as a web service
+      delegate_to: localhost
+      become: false
+      find:
+        paths: 
+          - "roles/containers/network"
+          - "roles/containers/services"
+          # - "roles/container/*" add more
+        file_type: directory
+        excludes: "homer"
+        recurse: no
+      register: containers
+
+    - name: Include all main.yml files for webservices
+      include_vars:
+        dir: "{{ playbook_dir }}/{{ item.path }}/defaults"
+        files_matching: main.yml
+        name: "{{ item.path.split('/')[-1] }}"
+      with_items: "{{ containers.files }}"
+
+    - name: Build the key, value pairs that the webservices dictionary consits of
+      set_fact:
+        web_applications: "{{ web_applications | default({}) | combine({ item.path.split('/')[-1]: { 'logo': '/assets/tools/homer-icons/' + item.path.split('/')[-1] + '.png', 'ip_address': this_current_var.ip_address | default(''), 'name': this_current_var.dashboard_name | default(item.path.split('/')[-1] | title), 'url': this_current_var.url | default(''), 'category': this_current_var.homer_category | default ('') } }) }}"
+      vars:
+        this_current_var: "{{ lookup('vars', item.path.split('/')[-1]) }}"
+      with_items: "{{ containers.files }}"
+
+- name: Prepare a list of all roles in /roles to be dynamically included
+  block:
+    - name: Get a list of all roles - order matters
+      delegate_to: localhost
+      become: false
+      find:
+        paths: 
+          - "roles/security"
+          - "roles/system"
+          - "roles/network"
+          - "roles/filesystems"
+          - "roles/containers/network"
+          - "roles/containers/services"
+          # - "roles/container/*" add more
+        file_type: directory
+        recurse: no
+      register: myroles
+
+    - name: Build the container_to_build dict with neccessary information
+      set_fact:
+        container_to_build: "{{ container_to_build | default({}) | combine({ item.path.split('/')[-1]: { 'path': item.path, 'container_name': this_current_var } }) }}"
+      vars:
+        this_current_var: "{{ lookup('vars', item.path.split('/')[-1]) }}"
+      with_items: "{{ myroles.files }}"
+
 
 - debug:
     var: web_applications
     verbosity: 1
-
+# Build separate lists to iterate. 
 - debug:
     var: container_to_build
     verbosity: 1

@@ -1,7 +1,7 @@
 ---
 container_name: pihole
 
-url: "{{container_name}}.{{host_local}}"
+url: "pihole.{{host_local}}"
 
 homer_category: "Network"
 

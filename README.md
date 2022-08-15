@@ -23,9 +23,29 @@ Host *
         ControlPath ~/.ssh/controlmasters/%r@%h:%p
         ControlPersist yes
 ```
-## Set secret variables
+
+## Folderlayout
+
+Currently all container roles need to have a default/main.yml file. 
+
+Here is an example for pihole under /roles/container/network/pihole.
+
+```yaml
+---
+container_name: pihole
+
+url: "pihole.{{host_local}}"
+
+homer_category: "Network"
+
+dashboard_name: "PiHole"
+
+ip_adress: "{{ '.'.join(IPv4_lan_network.split('.')[0:3]) }}.26"
 
 Create an encrypted file with ansible.
+```
+
+## Set secret variables
 
 ```
 cd group_cars/all # or host_vars/<your hostname>/
