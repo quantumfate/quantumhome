@@ -24,7 +24,7 @@
 
   
   tasks:
-  - import_tasks: tasks/include_role/system_roles.yml
+  - import_tasks: tasks/include_role/simple_roles.yml
 
   roles:
   # Setup docker and everything neccessary

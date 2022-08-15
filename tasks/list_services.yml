@@ -15,14 +15,14 @@
       become: false
       find:
         paths: 
-          - "{{ simple_roles_paths }}"
+          "{{ simple_roles_paths }}"
         file_type: directory
         recurse: no
       register: simple_roles
 
     - name: Build the simple_roles_to_build dict with neccessary information
       set_fact:
-        simple_roles_to_build: "{{ simple_roles_to_build | default({}) | combine({ item.path.split('/')[-1]: { 'role_name': item.path.split('/')[-1], 'path': item.path, tags: { item.path.split('/')[-1], [item.path.split('/')[1] }  } }) }}"
+        simple_roles_to_build: "{{ simple_roles_to_build | default({}) | combine({ item.path.split('/')[-1]: { 'role_name': item.path.split('/')[-1], 'path': item.path, 'tags': [ item.path.split('/')[-1], item.path.split('/')[1] ]  } }) }}"
       with_items: "{{ simple_roles.files }}"
 
 - name: "System Container Roles: Prepare a list of all roles that run in a container - except webservices"
@@ -32,14 +32,14 @@
       become: false
       find:
         paths: 
-          - "{{ system_containers_roles_paths }}"
+          "{{ system_containers_roles_paths }}"
         file_type: directory
         recurse: no
       register: system_containers_roles
 
     - name: Build the system_container_to_build dict with neccessary information
       set_fact:
-        system_container_to_build: "{{ system_container_to_build | default({}) | combine({ item.path.split('/')[-1]: { 'role_name': item.path.split('/')[-1], 'path': item.path,  tags: { item.path.split('/')[-1], [item.path.split('/')[1] } } }) }}"
+        system_container_to_build: "{{ system_container_to_build | default({}) | combine({ item.path.split('/')[-1]: { 'role_name': item.path.split('/')[-1], 'path': item.path, 'tags': [ item.path.split('/')[-1], item.path.split('/')[1] ]  } }) }}"
       with_items: "{{ system_containers_roles.files }}"
 
 - name: "Web Container Roles: Prepare the data for all the web_containers_roles hosted as a webservice"
@@ -49,7 +49,7 @@
       become: false
       find:
         paths: 
-          - "{{ web_containers_roles_paths }}"
+          "{{ web_containers_roles_paths }}"
         file_type: directory
         recurse: no
       register: web_containers_roles
@@ -63,19 +63,16 @@
 
     - name: Build the key, value pairs that the webservices dictionary consits of
       set_fact:
-        web_container_to_build: "{{ web_container_to_build | default({}) | combine({ item.path.split('/')[-1]: { 'role_name': item.path.split('/')[-1], 'path': item.path,  tags: { item.path.split('/')[-1], [item.path.split('/')[1] }, 'logo': '/assets/tools/homer-icons/' + item.path.split('/')[-1] + '.png', 'ip_address': this_current_var.ip_address | default(''), 'name': this_current_var.dashboard_name | default(item.path.split('/')[-1] | title), 'url': this_current_var.url | default(''), 'category': this_current_var.homer_category | default ('') } }) }}"
+        web_container_to_build: "{{ web_container_to_build | default({}) | combine({ item.path.split('/')[-1]: { 'role_name': item.path.split('/')[-1], 'path': item.path,  'tags': [ item.path.split('/')[-1], item.path.split('/')[1] ], 'logo': '/assets/tools/homer-icons/' + item.path.split('/')[-1] + '.png', 'ip_adress': this_current_var.ip_adress | default(''), 'name': this_current_var.dashboard_name | default(item.path.split('/')[-1] | title), 'url': this_current_var.url | default(''), 'category': this_current_var.homer_category | default ('') } }) }}"
       vars:
         this_current_var: "{{ lookup('vars', item.path.split('/')[-1]) }}"
       with_items: "{{ web_containers_roles.files }}"
 
 - debug:
     var: simple_roles_to_build
-    verbosity: 1
 
 - debug:
     var: system_container_to_build
-    verbosity: 1
 
 - debug:
     var: web_container_to_build
-    verbosity: 1
