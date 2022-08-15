@@ -83,7 +83,8 @@ Defining paths here will automatically include your roles into your playbook in 
 
 ### Granular control
 
-Roles will be run on a host when a certain variable with the prefix "enable_role_" or "enable_container_" is defined and set to "yes".
+Roles run on a host when a certain variable with the prefix "enable_role_" or "enable_container_" + the role name is set to yes on their respective host.
+
 If the variable is not defined it will default to false and therefor the role/container wont run on the target host.
 
 Therefor `enable_role_security: yes` in group_vars/all/vars.yml will run the role on all hosts since variables declared in group_vars/all/vars.yml are valid almost everywhere in the playbook.
@@ -124,12 +125,17 @@ ansible-vault edit secret.yml
 ```yml
 host: "" # Your cloudflare zone
 host_local: "" # local hostname for example .local
+security_ssh_port: "" # Port used on remote machine for ssh connection
 cf_email: ""
 cloudflare_dns_token: ""
 quantumhome_sudo_password: ""
 raspberrypi_sudo_password: ""
+# Nextcloud
+nc_mysql_root_password: ""
+nc_mysql_password: ""
+# Pihole
 pihole_password: ""
-security_ssh_port: "" # Port used on remote machine for ssh connection
+pihole_api_token: ""
 ```
 
 ## The actual playbook
@@ -139,12 +145,10 @@ The [run.yml](run.yml) file will ran a bunch of automated tasks including the sy
 Once that is done the playbook will import a task, that includes all roles based on the paths in the "webservices_path" variable.
 
 ## Run the playbook
-
-- for the first time run the command with the `-K` flag to pass the "become" password for `sudo`
+- to run the playboot execute: 
 ```
 ansible-playbook run.yml --ask-vault-pass
 ```
-
 - you can run the playbook in check-mode without actually making changes
 ```
 ansible-playbook run.yml --check --ask-vault-pass
