@@ -39,13 +39,11 @@ web_containers_roles_paths:
   - "roles/web_containers/services"
 
 # All enable variables for groups
+# crucial variable for docker directory... should be reworked soon ...
 enable_nas_stuff: yes # Functionality for drives, directories, redundancy etc
-## Filesystem
-enable_mounting: yes
-enable_mergerfs: yes
-enable_snapraid: yes
+
 ## Security
-enable_security: yes # the whole group
+enable_simple_security: yes # the whole group
 
 # MergerFS
 mergerfs_root: /mnt/storage

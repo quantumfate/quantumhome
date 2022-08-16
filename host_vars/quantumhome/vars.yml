@@ -12,13 +12,16 @@ ansible_become_password: "{{ quantumhome_sudo_password }}"
 
 # Packages to be installed for specific host
 specific_packages:
-  - hddtemp
+  - tree
 
 # Enable variables
+## Filesystem
+enable_simple_mounting: yes
+enable_simple_mergerfs: yes
+enable_snapraid: yes
 ## Services
 enable_container_homer: yes
 enable_container_nextcloud: yes
-
 ## Networking
 enable_container_swag: yes
 enable_container_swaginternal: yes
