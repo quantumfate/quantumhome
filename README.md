@@ -44,7 +44,10 @@ There are 3 main places to declare variables:
 ### container and homer specific variables
 
 Default role varibales are defined in roles/role/defaults/main.yml
-Currently they should not be overwritten, because they have the same name in every role.
+These variables can not be overwritten but are only valid in their respective role.
+
+Take a look specifically at the footnotes in [Ansible's "understanding variable precedence" guide.](https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html#understanding-variable-precedence)
+
 ```bash
 ├── roles
 │   ├── homer
