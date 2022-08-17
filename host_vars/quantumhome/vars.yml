@@ -14,6 +14,10 @@ ansible_become_password: "{{ quantumhome_sudo_password }}"
 specific_packages:
   - tree
 
+# MergerFS
+mergerfs_root: /mnt/storage
+cache_root: /mnt/storage_cache
+
 # Enable variables
 ## Filesystem
 enable_simple_mounting: yes
@@ -67,5 +71,7 @@ cache_disks:
   - { path: "{{ mnt_cache1 }}", src: "{{ src_cache1 }}", content: true }
   - { path: "{{ mnt_cache2 }}", src: "{{ src_cache2 }}", content: true }
 
-# Backup
-essential_docker_backup_src: "{{ mergerfs_root }}/docker_data/data"
+# Activate backing up and restoring of backups 
+host_has_backup_data: yes
+essential_docker_backup_src: "{{ mergerfs_root }}/docker_data/data" # The path where your backups are stored
+

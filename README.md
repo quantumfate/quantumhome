@@ -44,7 +44,7 @@ There are 3 main places to declare variables:
 ### container and homer specific variables
 
 Default role varibales are defined in roles/role/defaults/main.yml
-These variables can not be overwritten but are only valid in their respective role.
+These variables can be overwritten by anything else in the playbook.
 
 Take a look specifically at the footnotes in [Ansible's "understanding variable precedence" guide.](https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html#understanding-variable-precedence)
 
@@ -95,6 +95,11 @@ These variables in [group_vars/all/vars.yml](https://github.com/quantumfate/quan
 enable_simple_roles: yes
 enable_systemcontainer_roles: yes
 enable_webcontainer_roles: yes
+```
+
+It is absolutely mandatory to set the variable:
+```yaml
+docker_dir: /opt/docker/data
 ```
 
 ### Granular control

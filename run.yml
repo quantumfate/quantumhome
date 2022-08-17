@@ -8,9 +8,9 @@
 
   tasks:
     - import_tasks: tasks/ssh.yml
-    - import_tasks: tasks/essential.yml
+    # - import_tasks: tasks/essential.yml
     - import_tasks: tasks/list_services.yml
-    
+  
   handlers:
     - name: Restart SSH daemon
       service:
