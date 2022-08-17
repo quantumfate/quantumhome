@@ -1,10 +1,6 @@
 ---
 container_name: pihole
-
-url: "pihole.{{host_local}}"
-
+url: "{{ container_name }}.{{host_local}}"
 homer_category: "Network"
-
 dashboard_name: "PiHole"
-
 ip_adress: "{{ '.'.join(IPv4_lan_network.split('.')[0:3]) }}.26"

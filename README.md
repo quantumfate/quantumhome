@@ -10,7 +10,7 @@
 
 - It is recommended to use [multiplexing](https://en.wikibooks.org/wiki/OpenSSH/Cookbook/Multiplexing) to speed up the processing of requests
 
-### brief tutorial:
+### quick tutorial:
 - create the directory for controlscockets
 ```bash
 mkdir -pv ~/.ssh/controlmasters/
@@ -28,6 +28,7 @@ Host *
 ## variables
 
 This projects makes use of lots of variable methods and concepts from ansible.
+Take a look at [Ansible's "understanding variable precedence" guide.](https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html#understanding-variable-precedence)
 
 ### group_vars and host_vars
 There are 3 main places to declare variables: 
@@ -42,8 +43,8 @@ There are 3 main places to declare variables:
 ```
 ### container and homer specific variables
 
-main.yml is another place where only specific variables go.
-They overwrite variables declared above their level because they have precedence.
+Default role varibales are defined in roles/role/defaults/main.yml
+Currently they should not be overwritten, because they have the same name in every role.
 ```bash
 ├── roles
 │   ├── homer
@@ -55,6 +56,8 @@ They overwrite variables declared above their level because they have precedence
 There are three variables that allow you to define paths where your roles are located.
 
 ```yaml
+# Path with simple roles to be executed
+# Roles will be executed in path order. Roles in paths will be executed in alphabetical order.
 simple_roles_paths:
   - "roles/simple_roles/system"
   - "roles/simple_roles/security"
@@ -65,13 +68,13 @@ simple_roles_paths:
 system_containers_roles_paths:
   - "roles/system_containers/network"
 
-# Includes all paths for webservices to be build
+# Includes all paths for webservices to be built
 web_containers_roles_paths:
   - "roles/web_containers/network"
   - "roles/web_containers/services"
 ```
 
-Defining paths here will automatically include your roles into your playbook in [run.yml](run.yml).
+Defining paths here will automatically include your roles into your playbook in [run.yml](run.yml). Roles in the first level of /roles directory require manual import.
 
 ```bash
 ├── roles
@@ -81,15 +84,27 @@ Defining paths here will automatically include your roles into your playbook in 
 │   └── web_containers
 ```
 
+These variables in [group_vars/all/vars.yml](https://github.com/quantumfate/quantumhome/blob/main/group_vars/all/vars.yml) allow you to disable the role import for a whole group.
+
+```yaml
+# Enable variables
+## Role import Groups
+enable_simple_roles: yes
+enable_systemcontainer_roles: yes
+enable_webcontainer_roles: yes
+```
+
 ### Granular control
 
-Roles run on a host when a certain variable with the prefix "enable_role_" or "enable_container_" + the role name is set to yes on their respective host.
+Roles run on a host when a certain variable with the prefix "enable_simple_" or "enable_container_" + the role name is set to yes on their respective host.
 
 If the variable is not defined it will default to false and therefor the role/container wont run on the target host.
 
 Therefor `enable_role_security: yes` in group_vars/all/vars.yml will run the role on all hosts since variables declared in group_vars/all/vars.yml are valid almost everywhere in the playbook.
 
 Declaring `enable_role_security: yes` in host_vars/raspberrypi/vars.yml will install the security role obly on the targeted host "raspberrypi".
+
+If a container role (e.g. System Container, Web Container) is explicitly set to "no" and that container exist on the target machine, the container will then be removed by the [role](https://github.com/quantumfate/quantumhome/blob/main/roles/simple_roles/system/essential_docker/tasks/main.yml).
 
 ## Folderlayout
 
@@ -100,13 +115,9 @@ Here is an example for pihole under /roles/container/network/pihole.
 ```yaml
 ---
 container_name: pihole
-
-url: "pihole.{{host_local}}"
-
+url: "{{ container_name }}.{{host_local}}"
 homer_category: "Network"
-
 dashboard_name: "PiHole"
-
 ip_adress: "{{ '.'.join(IPv4_lan_network.split('.')[0:3]) }}.26"
 ```
 
