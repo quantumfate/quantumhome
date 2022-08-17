@@ -42,8 +42,6 @@ web_containers_roles_paths:
 enable_simple_roles: yes
 enable_systemcontainer_roles: yes
 enable_webcontainer_roles: yes
-# crucial variable for docker directory... should be reworked soon ...
-enable_nas_stuff: yes # Functionality for drives, directories, redundancy etc
 
 ## Security
 enable_simple_security: yes # the whole group

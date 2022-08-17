@@ -5,7 +5,6 @@
 - a user configured on the target machine 
 - access via ssh
 
-
 ## Optional
 
 - It is recommended to use [multiplexing](https://en.wikibooks.org/wiki/OpenSSH/Cookbook/Multiplexing) to speed up the processing of requests
@@ -17,13 +16,14 @@ mkdir -pv ~/.ssh/controlmasters/
 ```
 
 - add the following to your `.ssh/config` file
-```ssh
+```bash
 Host *
         ControlMaster auto
         ControlPath ~/.ssh/controlmasters/%r@%h:%p
         ControlPersist yes
 ```
 # The actual project
+This playbook sets up a homeserver following the [IaC phylosophy](https://en.wikipedia.org/wiki/Infrastructure_as_code). The individual roles in this playbook are not solely meant to be run on their own but some can be. One example are [Web Container](https://github.com/quantumfate/quantumhome/tree/main/roles/web_containers) roles.
 
 ## variables
 
@@ -104,13 +104,13 @@ Therefor `enable_role_security: yes` in group_vars/all/vars.yml will run the rol
 
 Declaring `enable_role_security: yes` in host_vars/raspberrypi/vars.yml will install the security role obly on the targeted host "raspberrypi".
 
-If a container role (e.g. System Container, Web Container) is explicitly set to "no" and that container exist on the target machine, the container will then be removed by the [role](https://github.com/quantumfate/quantumhome/blob/main/roles/simple_roles/system/essential_docker/tasks/main.yml).
+If a container role (e.g. System Container, Web Container) is explicitly set to "no" and that container exist on the target machine, the container will then be removed by the role[essential_docker](https://github.com/quantumfate/quantumhome/blob/main/roles/simple_roles/system/essential_docker/tasks/main.yml).
 
 ## Folderlayout
 
 Currently all container roles in `/roles/web_container/<category>/<service>` need to have a default/main.yml file. 
 
-Here is an example for pihole under /roles/container/network/pihole.
+Here is an example for [pihole](https://github.com/quantumfate/quantumhome/tree/main/roles/web_containers/network/pihole).
 
 ```yaml
 ---

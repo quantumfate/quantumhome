@@ -14,12 +14,14 @@ ansible_become_password: "{{ raspberrypi_sudo_password }}"
 specific_packages:
   - unbound
 
-#
+
 # System specific variables
-#
 timezone: Europe/Amsterdam
 guid: "1000"
 
 # enable variables
 enable_container_pihole: yes
 enable_container_cloudflareddns: yes
+
+# Backup?
+host_has_backup_data: no

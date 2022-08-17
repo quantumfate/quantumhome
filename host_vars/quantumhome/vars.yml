@@ -66,3 +66,6 @@ data_disks:
 cache_disks:
   - { path: "{{ mnt_cache1 }}", src: "{{ src_cache1 }}", content: true }
   - { path: "{{ mnt_cache2 }}", src: "{{ src_cache2 }}", content: true }
+
+# Backup
+essential_docker_backup_src: "{{ mergerfs_root }}/docker_data/data"

@@ -82,7 +82,7 @@
   # #   become: yes
   # #   tags:
   # #     - snapraid
-  # #   when: enable_nas_stuff | default(False)
+  # #   when: host_has_persistent_data | default(False)
 
   # #
   # # homer

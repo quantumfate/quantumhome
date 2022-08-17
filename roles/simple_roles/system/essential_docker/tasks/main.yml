@@ -36,16 +36,27 @@
     - "{{ web_container_to_build }}"
   loop_control:
     loop_var: main_key
+  
+  #check if params are invalid then abort below all tasks.  
+- name: Check if required variables are set 
+  fail: 
+    msg: "Host has backup data but no valid source has been specified"
+  when: host_has_backup_data and essential_docker_backup_src == ''
+
+- name: Raise alert when conditionals are conflicting
+  fail: 
+    msg: [WARNING]: Host has no persistent data but source for backup data has been set or host was declared to have backup data"
+  when: not host_has_persistent_data and (host_has_backup_data or not essential_docker_backup_src == '')
+  ignore_errors: True
 
 - name: Handle persistent data
   become: false
-  when: "enable_nas_stuff | default(False)"
+  when: "host_has_persistent_data | default(False)"
   block:
   - name: Check if the persistent data folder exists on the remote machine
     stat:
       path: "{{ docker_dir }}"
     register: persistent_data
-    when: "enable_nas_stuff | default(False)"
 
   - name: Check if the persistent data folder is empty
     find:
@@ -53,7 +64,6 @@
         - "{{ docker_dir }}/"
       recurse: yes
     register: persistent_data_find
-    when: "enable_nas_stuff | default(False)"
 
   - name: Create the persistent data folder on the remote machine
     become: true
@@ -66,26 +76,22 @@
       recurse: yes
     when: not persistent_data.stat.exists
 
-- name: Execute specific docker tasks on main Host
-  block:
-  
-    - name: Restore the "{{ docker_dir }}" folder from the MergerFS array
-      synchronize:
-        src: "{{ mergerfs_root }}/docker_data/data"
-        dest: "{{ docker_dir }}/"
-        delete: true
-        recursive: yes
-      delegate_to: "{{ inventory_hostname }}"
-      when: persistent_data_find.matched < 20 or not persistent_data.stat.exists
-      ignore_errors: true
+  - name: Restore the "{{ docker_dir }}" folder from the MergerFS array
+    synchronize:
+      src: "{{ essential_docker_backup_src }}"
+      dest: "{{ docker_dir }}/"
+      delete: true
+      recursive: yes
+    delegate_to: "{{ inventory_hostname }}"
+    when: (persistent_data_find.matched < 20 or not persistent_data.stat.exists) and host_has_backup_data
+    ignore_errors: true
 
-  when: inventory_hostname in groups['main']
 
-- name: Chmod the data folder
-  become: true
-  file:
-    dest: "{{ docker_dir }}"
-    state: directory
-    owner: "{{ ansible_user }}"
-    group: "{{ ansible_user }}"
-    recurse: yes
+  - name: Chmod the data folder
+    become: true
+    file:
+      dest: "{{ docker_dir }}"
+      state: directory
+      owner: "{{ ansible_user }}"
+      group: "{{ ansible_user }}"
+      recurse: yes

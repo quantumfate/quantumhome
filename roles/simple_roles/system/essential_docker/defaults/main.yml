@@ -1,0 +1,4 @@
+---
+host_has_persistent_data: yes
+host_has_backup_data: yes
+essential_docker_backup_src: ''
