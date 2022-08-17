@@ -115,7 +115,7 @@ Here is an example for [pihole](https://github.com/quantumfate/quantumhome/tree/
 ```yaml
 ---
 container_name: pihole
-url: "{{ container_name }}.{{host_local}}"
+url: "pihole.{{host_local}}"
 homer_category: "Network"
 dashboard_name: "PiHole"
 ip_adress: "{{ '.'.join(IPv4_lan_network.split('.')[0:3]) }}.26"
