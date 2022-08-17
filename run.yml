@@ -21,10 +21,15 @@
   become: yes
   gather_facts: yes
 
-  tasks:
-  - import_tasks: tasks/repo_arch.yml
-  - import_tasks: tasks/include_role/simple_roles.yml
 
+  tasks:
+  - name: Gathering information about proccessor architecture
+    import_tasks: tasks/repo_arch.yml
+
+  - name: Icluding roles for simple tasks on machine without container
+    import_tasks: tasks/include_role/simple_roles.yml
+    when: enable_simple_roles | default(False)
+  
 
   - name: Run geerlingguy pip role
     include_role:
@@ -53,9 +58,11 @@
 
   - name: Icluding container roles for system
     import_tasks: tasks/include_role/system_container.yml
+    when: enable_systemcontainer_roles | default(False)
 
   - name: Icluding container roles for web
     import_tasks: tasks/include_role/web_container.yml
+    when: enable_webcontainer_roles | default(False)
 
   - name: Run the role for homer
     include_role:

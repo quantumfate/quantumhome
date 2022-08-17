@@ -1,5 +1,5 @@
 - name: Create an internal macvlan network
-  when: enable_container_swaginternal | default(False)
+  when: enable_swag_swaginternal | default(False)
   docker_network:
     name: swag_internal_macvlan
     driver: macvlan
@@ -10,7 +10,7 @@
         gateway: "{{ swag_gateway }}"
 
 - name: Create a public macvlan network
-  when: enable_container_swagpublic | default(False)
+  when: enable_swag_swagpublic | default(False)
   docker_network:
     name: swag_public_macvlan
     driver: macvlan

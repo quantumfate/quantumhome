@@ -37,7 +37,7 @@
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
     mode: 0755
-  when: enable_container_swagpublic | default(False)
+  when: enable_swag_swagpublic | default(False)
 
 - name: Install the DNS config file
   template:

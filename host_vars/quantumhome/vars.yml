@@ -24,45 +24,33 @@ enable_container_homer: yes
 enable_container_nextcloud: yes
 ## Networking
 enable_container_swag: yes
-enable_container_swaginternal: yes
-enable_container_swagpublic: yes
 enable_container_bunkerizednginx: no
 ## Security
-enable_container_ikev2: no
-enable_container_wireguard: no
-enable_container_crowdsec: no
 
-#
 # System specific variables
-#
 timezone: Europe/Amsterdam
 guid: "1000"
 
-#
 # Drives
-#
-
-# lvm 
+## lvm 
 main_volume_group: ubuntu-vg
 vg_cache_drive: Cache1
-
-# src
+## src
 src_parity1: /dev/sda
-
 src_data1: /dev/sdb
 src_data2: /dev/sdc
 src_data3: /dev/sdd
-
 src_cache1: "/dev/{{ main_volume_group }}/{{ vg_cache_drive }}"
 src_cache2: /dev/sde
 
 # Mount Points
+## Parity
 mnt_parity1: /mnt/parity1
-
+## Data
 mnt_data1: /mnt/data1
 mnt_data2: /mnt/data2
 mnt_data3: /mnt/data3
-
+## Cache
 mnt_cache1: /mnt/cache1
 mnt_cache2: /mnt/cache2
 
@@ -78,5 +66,3 @@ data_disks:
 cache_disks:
   - { path: "{{ mnt_cache1 }}", src: "{{ src_cache1 }}", content: true }
   - { path: "{{ mnt_cache2 }}", src: "{{ src_cache2 }}", content: true }
-
-

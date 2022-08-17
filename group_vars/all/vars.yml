@@ -38,7 +38,11 @@ web_containers_roles_paths:
   - "roles/web_containers/network"
   - "roles/web_containers/services"
 
-# All enable variables for groups
+# Enable variables
+## Role import Groups
+enable_simple_roles: yes
+enable_systemcontainer_roles: yes
+enable_webcontainer_roles: yes
 # crucial variable for docker directory... should be reworked soon ...
 enable_nas_stuff: yes # Functionality for drives, directories, redundancy etc
 
