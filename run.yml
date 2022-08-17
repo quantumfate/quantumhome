@@ -10,8 +10,7 @@
     - import_tasks: tasks/ssh.yml
     - import_tasks: tasks/essential.yml
     - import_tasks: tasks/list_services.yml
-    - import_tasks: tasks/repo_arch.yml
-
+    
   handlers:
     - name: Restart SSH daemon
       service:
@@ -22,43 +21,51 @@
   become: yes
   gather_facts: yes
 
-  
   tasks:
+  - import_tasks: tasks/repo_arch.yml
   - import_tasks: tasks/include_role/simple_roles.yml
 
-  roles:
-  # Setup docker and everything neccessary
-  - role: geerlingguy.pip
-    tags:
-      - pip
-      - python
-      - docker
 
-  - role: geerlingguy.docker_arm
-    tags:
-      - docker
+  - name: Run geerlingguy pip role
+    include_role:
+      name: geerlingguy.pip
+      apply:
+        tags:
+          - pip
+          - python
+          - docker
+  
+  - name: Run geerlingguy Docker arm role
+    include_role:
+      name: geerlingguy.docker_arm
+      apply:
+        tags:
+          - docker
     when: inventory_hostname in groups['pi']
 
-  - role: geerlingguy.docker
-    tags:
-      - docker
+  - name: Run geerlingguy Docker arm role
+    include_role:
+      name: geerlingguy.docker
+      apply:
+        tags:
+          - docker
     when: inventory_hostname in groups['main']
 
-- hosts: all
-  become: yes
-  gather_facts: yes
+  - name: Icluding container roles for system
+    import_tasks: tasks/include_role/system_container.yml
 
-  tasks:
-  - import_tasks: tasks/include_role/system_container.yml
-  - import_tasks: tasks/include_role/web_container.yml
-  
-  roles:
+  - name: Icluding container roles for web
+    import_tasks: tasks/include_role/web_container.yml
 
-    - role: homer
-      tags:
+  - name: Run the role for homer
+    include_role:
+      name: homer
+      apply:
+        tags:
         - homer
         - docker
-      when: enable_container_homer | default(False)
+    when: enable_container_homer | default(False)
+
   #   ### Run this at the end, when the environment is set
   #   - role: viasite-ansible.zsh
   #     tags:
