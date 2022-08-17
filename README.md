@@ -97,7 +97,7 @@ enable_systemcontainer_roles: yes
 enable_webcontainer_roles: yes
 ```
 
-It is absolutely mandatory to set the variable:
+The default value for persistent docker storage is in the following directory. It can be changed [here](https://github.com/quantumfate/quantumhome/blob/main/roles/simple_roles/system/essential_docker/defaults/main.yml)
 ```yaml
 docker_dir: /opt/docker/data
 ```
