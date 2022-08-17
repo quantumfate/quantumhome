@@ -1,0 +1,5 @@
+---
+host_has_persistent_data: yes
+host_has_backup_data: no
+essential_docker_backup_src: ''
+docker_dir: /opt/docker/data
