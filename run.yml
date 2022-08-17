@@ -6,26 +6,38 @@
   pre_tasks:
     - import_tasks: tasks/ssh_juggle_port.yml
 
-  tasks:
-    - import_tasks: tasks/ssh.yml
-    # - import_tasks: tasks/essential.yml
-    - import_tasks: tasks/list_services.yml
-  
-  handlers:
-    - name: Restart SSH daemon
-      service:
-        name: sshd
-        state: restarted
-
 - hosts: all
   become: yes
   gather_facts: yes
 
-
   tasks:
+  - name: Requiring the list of services
+    import_tasks: tasks/list_services.yml
+
   - name: Gathering information about proccessor architecture
     import_tasks: tasks/repo_arch.yml
 
+  - name: Running the essential role
+    include_role: 
+      name: essential
+      apply:
+        tags:
+          - essential
+          
+  - name: Setup geerlingguy security role
+    include_role: 
+      name: geerlingguy.security
+      apply:  
+        tags:
+          - security
+
+  - name: Setup geerlingguy security role
+    include_role: 
+      name: oefenweb.dns
+      apply:  
+        tags:
+          - dns
+  
   - name: Icluding roles for simple tasks on machine without container
     import_tasks: tasks/include_role/simple_roles.yml
     when: enable_simple_roles | default(False)

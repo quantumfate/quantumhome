@@ -1,0 +1,7 @@
+---
+- include: essential.yml
+- include: user.yml
+- include: remove_snap.yml
+
+- include_tasks: powersaving.yml
+  when: enable_powersaving | default(False)

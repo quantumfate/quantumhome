@@ -1,5 +1,4 @@
 # Gets variables from all web applications recursively (for Homer and SWAG)
-#
 ---
 - name: Empty the variables (In case the task is called twice)
   set_fact:
@@ -68,11 +67,11 @@
         this_current_var: "{{ lookup('vars', item.path.split('/')[-1]) }}"
       with_items: "{{ web_containers_roles.files }}"
 
-- debug:
-    var: simple_roles_to_build
+# - debug:
+#     var: simple_roles_to_build
 
-- debug:
-    var: system_container_to_build
+# - debug:
+#     var: system_container_to_build
 
-- debug:
-    var: web_container_to_build
+# - debug:
+#     var: web_container_to_build

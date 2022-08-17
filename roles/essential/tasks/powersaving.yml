@@ -1,5 +1,3 @@
-
-
 ---
 - name: Install the powersaving packages
   package:

@@ -13,13 +13,16 @@ common_packages:
   - curl
   - wget
   - iptables
-
 # Merges common packages with packages on specific hosts
 total_packages: "{{ common_packages + specific_packages }}"
 
 # MISC
 my_project_source: /home/leonch/Documents/quantumhome
 colorscheme: nord
+
+# Apt mirrors
+version: jammy
+apt_mirror: http://de.ports.ubuntu.com
 
 # Path with simple roles to be executed
 # Roles will be executed in path order. Roles in paths will be executed in alphabetical order.
@@ -95,6 +98,9 @@ swag_network: "10.0.0.0/27"
 swag_base: "{{ '.'.join(swag_network.split('.')[0:3]) }}"
 swag_gateway: "{{ '.'.join(swag_network.split('.')[0:3]) }}.1"
 swag_interface: vlan.4
+ntp_timezone: '{{ timezone }}'
+locale: en_US.UTF-8
+dns_nameservers: ['1.1.1.1', '1.0.0.1']
 
 # Domains
 subdomains: {
@@ -105,5 +111,13 @@ subdomains: {
 
 # Security
 default_ssh_port: "22"
-
+security_ssh_allowed_users:
+  - "{{ ansible_user }}"
+# SSH (geerlingguy.security)
+security_sudoers_passwordless: ['{{ ansible_user }}']
+security_autoupdate_reboot: true
+security_autoupdate_mail_to: '{{ email }}'
+security_autoupdate_reboot_time: '23:00'
+security_autoupdate_mail_on_error: false
+security_fail2ban_enabled: false
 # host_has_persistent_data: true
