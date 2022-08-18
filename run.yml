@@ -31,18 +31,13 @@
         tags:
           - security
 
-  - name: Setup geerlingguy security role
+  - name: Run the DNS role
     include_role: 
       name: oefenweb.dns
       apply:  
         tags:
           - dns
   
-  - name: Icluding roles for simple tasks on machine without container
-    import_tasks: tasks/include_role/simple_roles.yml
-    when: enable_simple_roles | default(False)
-  
-
   - name: Run geerlingguy pip role
     include_role:
       name: geerlingguy.pip
@@ -51,14 +46,37 @@
           - pip
           - python
           - docker
-  
+
+- hosts: raspberrypi
+  become: yes
+  gather_facts: yes
+
+  tasks:
+
   - name: Run geerlingguy Docker arm role
     include_role:
       name: geerlingguy.docker_arm
       apply:
         tags:
           - docker
-    when: inventory_hostname in groups['pi']
+
+  - name: Icluding roles for simple tasks on machine without container
+    import_tasks: tasks/include_role/simple_roles.yml
+    when: enable_simple_roles | default(False)
+
+  - name: Icluding container roles for system
+    import_tasks: tasks/include_role/system_container.yml
+    when: enable_systemcontainer_roles | default(False)
+
+  - name: Icluding container roles for web
+    import_tasks: tasks/include_role/web_container.yml
+    when: enable_webcontainer_roles | default(False)
+
+- hosts: quantumhome
+  become: yes
+  gather_facts: yes
+
+  tasks:
 
   - name: Run geerlingguy Docker arm role
     include_role:
@@ -66,7 +84,10 @@
       apply:
         tags:
           - docker
-    when: inventory_hostname in groups['main']
+
+  - name: Icluding roles for simple tasks on machine without container
+    import_tasks: tasks/include_role/simple_roles.yml
+    when: enable_simple_roles | default(False)
 
   - name: Icluding container roles for system
     import_tasks: tasks/include_role/system_container.yml

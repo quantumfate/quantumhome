@@ -22,7 +22,7 @@ colorscheme: nord
 
 # Apt mirrors
 version: jammy
-apt_mirror: http://de.ports.ubuntu.com
+apt_mirror: http://mirror.wtnet.de/ubuntu/
 
 # Path with simple roles to be executed
 # Roles will be executed in path order. Roles in paths will be executed in alphabetical order.
@@ -48,7 +48,10 @@ enable_systemcontainer_roles: yes
 enable_webcontainer_roles: yes
 
 ## Security
-enable_simple_security: yes # the whole group
+enable_simple_iptables: yes
+## System
+enable_simple_essential_docker: yes
+
 
 # Snapraid
 snapraid_runner_email_address: "{{ email }}"
