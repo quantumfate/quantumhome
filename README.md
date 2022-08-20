@@ -136,7 +136,7 @@ container_name: pihole
 url: "pihole.{{host_local}}"
 homer_category: "Network"
 dashboard_name: "PiHole"
-ip_adress: "{{ '.'.join(IPv4_lan_network.split('.')[0:3]) }}.26"
+ip_address: "{{ '.'.join(IPv4_lan_network.split('.')[0:3]) }}.26"
 ```
 
 This data will later be used in the homer role for the homer dashboard.

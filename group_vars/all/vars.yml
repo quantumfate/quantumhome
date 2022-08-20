@@ -36,7 +36,6 @@ enable_dns: yes
 enable_iptables: yes
 ## System
 enable_essential: yes
-enable_essential_docker: yes
 enable_docker: yes
 
 

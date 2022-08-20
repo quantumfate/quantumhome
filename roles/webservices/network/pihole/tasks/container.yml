@@ -9,7 +9,7 @@
     pull: false
     state: 'started'
     env:
-      "ServerIP": "{{ ip_adress }}"
+      "ServerIP": "{{ ip_address }}"
       "TZ": "{{ timezone }}"
       "WEBPASSWORD": "{{ pihole_password }}"
       "REV_SERVER": "true"
@@ -26,6 +26,6 @@
       - "{{ docker_dir }}/{{ container_name }}/unbound.conf.d/pi-hole.conf:/etc/unbound/unbound.conf.d/pi-hole.conf"
     ports:
       - "80:80/tcp"
-      - "{{ ip_adress }}:53:53/tcp"
-      - "{{ ip_adress }}:53:53/udp"
+      - "{{ ip_address }}:53:53/tcp"
+      - "{{ ip_address }}:53:53/udp"
     restart_policy: unless-stopped

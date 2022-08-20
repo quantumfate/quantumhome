@@ -18,16 +18,31 @@
         recurse: no
       register: webservices
 
-    - name: Include all main.yml files for webservices
-      include_vars:
-        dir: "{{ playbook_dir }}/{{ item.path }}/defaults"
-        files_matching: main.yml
-        name: "{{ item.path.split('/')[-1] }}"
-      with_items: "{{ webservices.files }}"
+    - name: Include all main.yml files for webservices and homer
+      block:
+      - name: Including webservice main.yml
+        include_vars:
+          dir: "{{ playbook_dir }}/{{ item.path }}/defaults"
+          files_matching: main.yml
+          name: "{{ item.path.split('/')[-1] }}"
+        with_items: "{{ webservices.files }}"
+      - name: Including homer main.yml
+        include_vars:
+          dir: "{{ playbook_dir }}/roles/homer/defaults"
+          files_matching: main.yml
+          name: "homer"
 
     - name: Build the key, value pairs that the webservices dictionary consits of
       set_fact:
-        web_services_to_build: "{{ web_services_to_build | default({}) | combine({ item.path.split('/')[-1]: { 'role_name': item.path.split('/')[-1], 'path': item.path,  'tag_primary': item.path.split('/')[-1], 'tag_secondary': item.path.split('/')[1], 'logo': '/assets/tools/homer-icons/' + item.path.split('/')[-1] + '.png', 'ip_adress': this_current_var.ip_adress | default(''), 'name': this_current_var.dashboard_name | default(item.path.split('/')[-1] | title), 'url': this_current_var.url | default(''), 'category': this_current_var.homer_category | default ('') } }) }}"
+        web_services_to_build: "{{ web_services_to_build | default({}) | combine({ item.path.split('/')[-1]: { 'role_name': item.path.split('/')[-1], 'path': item.path,  'tag_primary': item.path.split('/')[-1], 'tag_secondary': item.path.split('/')[1], 'logo': '/assets/tools/homer-icons/' + item.path.split('/')[-1] + '.png', 'ip_address': this_current_var.ip_address | default(''), 'name': this_current_var.dashboard_name | default(item.path.split('/')[-1] | title), 'url': this_current_var.url | default(''), 'category': this_current_var.homer_category | default ('') } }) }}"
       vars:
         this_current_var: "{{ lookup('vars', item.path.split('/')[-1]) }}"
       with_items: "{{ webservices.files }}"
+
+    - name: Build the key, value pairs for homer
+      set_fact:
+        homer_dict: "{{ homer_dict | default({}) | combine({ item: {'role_name': item, 'ip_address': item.ip_address, 'url': item.url } }) }}"
+      vars:
+        this_current_var: "{{ lookup('vars', item }}"
+      with_items: 
+        - homer

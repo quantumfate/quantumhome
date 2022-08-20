@@ -20,8 +20,8 @@ cache_root: /mnt/storage_cache
 
 # Enable variables
 ## Filesystem
-enable_mount: yes
 enable_mergerfs: yes
+enable_mount: yes
 enable_snapraid: yes
 ## Services
 enable_homer: yes

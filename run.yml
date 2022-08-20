@@ -37,8 +37,8 @@
   
   - role: system/docker
     tags: 
-      - system
-    when: enable_docker| default(False)
+      - docker
+    when: enable_docker | default(False)
 
 - hosts: raspberrypi
   become: yes
@@ -46,6 +46,7 @@
 
   roles:
 
+  ## Network
   - role: webservices/network/pihole
     tags: 
       - pihole
@@ -64,11 +65,25 @@
 
   roles:
 
-  - name: Run the role for homer
-    include_role:
-      name: homer
-      apply:
-        tags:
+  ## Network
+  - role: network/swag
+    tags:
+        - swag
+    when: enable_swag | default(False)
+
+  ## Filesystem
+  - role: filesystems/mergerfs
+    tags:
+        - mergerfs
+    when: enable_mergerfs | default(False)
+
+  - role: filesystems/mount
+    tags:
+        - mount
+    when: enable_mount | default(False)
+
+  - role: homer
+    tags:
         - homer
         - docker
     when: enable_homer | default(False)
