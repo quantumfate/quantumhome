@@ -111,4 +111,3 @@ security_autoupdate_mail_on_error: false
 security_fail2ban_enabled: false
 security_ssh_restart_handler_state: restarted
 security_sshd_state: started
-# host_has_persistent_data: true

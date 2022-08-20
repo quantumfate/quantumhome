@@ -72,6 +72,6 @@ cache_disks:
   - { path: "{{ mnt_cache2 }}", src: "{{ src_cache2 }}", content: true }
 
 # Activate backing up and restoring of backups 
-host_has_backup_data: yes
-essential_docker_backup_src: "{{ mergerfs_root }}/docker_data/data" # The path where your backups are stored
+docker_backup_data: yes
+docker_backup_src: "{{ mergerfs_root }}/docker_data/data" # The path where your backups are stored
 

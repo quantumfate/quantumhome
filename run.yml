@@ -115,7 +115,7 @@
   # #   become: yes
   # #   tags:
   # #     - snapraid
-  # #   when: host_has_persistent_data | default(False)
+  # #   when: docker_persistent_data | default(False)
 
   # #
   # # homer

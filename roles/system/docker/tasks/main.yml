@@ -36,35 +36,35 @@
     loop_var: main_key
    
 - name: Check if required variables are set
-  when: host_has_backup_data
+  when: docker_backup_data
   block:
     - name: Check if src directory is valid
       fail: 
         msg: "Host has backup data but no valid source has been specified"
-      when: essential_docker_backup_src == ''
+      when: docker_backup_src == ''
     - name: Check if there is persistent data that can be backed up
       fail: 
         msg: "Host is supposed to have backup data but host is not supposed to have persistant storage"
-      when: not host_has_persistent_data
+      when: not docker_persistent_data
 
 - name: Raise alert when persistent data exists but backup is disabled
-  when: not host_has_backup_data
+  when: not docker_backup_data
   block:
     - name: Check if src directory is set
       fail: 
         msg: "Host has no backup data but a valid backup src has been specified"
-      when: essential_docker_backup_src != ''
+      when: docker_backup_src != ''
       ignore_errors: true
 
     - name: Check if there is persistent data that can be backed up
       fail: 
         msg: "Host has no backup data but host has data that might be backed up"
-      when: host_has_persistent_data
+      when: docker_persistent_data
       ignore_errors: true
 
 - name: Handle persistent data
   become: false
-  when: host_has_persistent_data
+  when: docker_persistent_data
   block:
   - name: Set the mandatory docker_dir variable
     set_fact:
@@ -93,11 +93,11 @@
     when: not persistent_data.stat.exists
 
   - name: Restoring data
-    when: host_has_backup_data
+    when: docker_backup_data
     block:
     - name: Restore the "{{ docker_dir }}" folder from the MergerFS array
       synchronize:
-        src: "{{ essential_docker_backup_src }}"
+        src: "{{ docker_backup_src }}"
         dest: "{{ docker_dir }}/"
         delete: true
         recursive: yes
