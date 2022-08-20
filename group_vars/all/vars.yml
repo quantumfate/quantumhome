@@ -24,33 +24,20 @@ colorscheme: nord
 version: jammy
 apt_mirror: http://mirror.wtnet.de/ubuntu/
 
-# Path with simple roles to be executed
-# Roles will be executed in path order. Roles in paths will be executed in alphabetical order.
-simple_roles_paths:
-  - "roles/simple_roles/system"
-  - "roles/simple_roles/security"
-  - "roles/simple_roles/filesystems"
-
-# Includes a list of paths for all roles that run in a container
-# Order is not so important since everything is running in a container
-system_containers_roles_paths:
-  - "roles/system_containers/network"
-
 # Includes all paths for webservices to be built
-web_containers_roles_paths:
-  - "roles/web_containers/network"
-  - "roles/web_containers/services"
+webservices_paths:
+  - "roles/webservices/network"
+  - "roles/webservices/services"
 
 # Enable variables
-## Role import Groups
-enable_simple_roles: yes
-enable_systemcontainer_roles: yes
-enable_webcontainer_roles: yes
-
 ## Security
-enable_simple_iptables: yes
+enable_security: yes
+enable_dns: yes
+enable_iptables: yes
 ## System
-enable_simple_essential_docker: yes
+enable_essential: yes
+enable_essential_docker: yes
+enable_docker: yes
 
 
 # Snapraid
@@ -123,4 +110,6 @@ security_autoupdate_mail_to: '{{ email }}'
 security_autoupdate_reboot_time: '23:00'
 security_autoupdate_mail_on_error: false
 security_fail2ban_enabled: false
+security_ssh_restart_handler_state: restarted
+security_sshd_state: started
 # host_has_persistent_data: true

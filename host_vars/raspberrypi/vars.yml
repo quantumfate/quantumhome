@@ -20,5 +20,5 @@ timezone: Europe/Amsterdam
 guid: "1000"
 
 # enable variables
-enable_container_pihole: yes
-enable_container_cloudflareddns: yes
+enable_pihole: yes
+enable_cloudflareddns: yes

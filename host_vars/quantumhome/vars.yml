@@ -20,15 +20,15 @@ cache_root: /mnt/storage_cache
 
 # Enable variables
 ## Filesystem
-enable_simple_mount: yes
-enable_simple_mergerfs: yes
+enable_mount: yes
+enable_mergerfs: yes
 enable_snapraid: yes
 ## Services
-enable_container_homer: yes
-enable_container_nextcloud: yes
+enable_homer: yes
+enable_nextcloud: yes
 ## Networking
-enable_container_swag: yes
-enable_container_bunkerizednginx: no
+enable_swag: yes
+enable_bunkerizednginx: no
 ## Security
 
 # System specific variables

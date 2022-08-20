@@ -39,7 +39,7 @@
     ctstate: NEW
     comment: Ansible managed
     jump: LOG
-  when: enable_container_crowdsec | default(False)
+  when: enable_crowdsec | default(False)
 
 - name: Allow SSH
   iptables:
@@ -59,7 +59,7 @@
       - "443"
     jump: ACCEPT
     comment: Ansible managed
-  when: ((enable_container_bunkerizednginx | default(False)) or (enable_container_swag | default(False))) and (inventory_hostname in groups['main'])
+  when: ((enable_bunkerizednginx | default(False)) or (enable_swag | default(False))) and (inventory_hostname in groups['main'])
 
 - name: Allow IKEv2
   ansible.builtin.iptables:
@@ -70,7 +70,7 @@
       - "500"
     jump: ACCEPT
     comment: Ansible managed
-  when: (enable_container_ikev2 | default(False)) and (inventory_hostname in groups['main'])
+  when: (enable_ikev2 | default(False)) and (inventory_hostname in groups['main'])
 
 - name: Allow Wireguard
   iptables:
@@ -79,7 +79,7 @@
     destination_port: 51820
     jump: ACCEPT
     comment: Ansible managed
-  when: (enable_container_wireguard | default(False)) and (inventory_hostname in groups['main'])
+  when: (enable_wireguard | default(False)) and (inventory_hostname in groups['main'])
 
 - name: Set the policy for the INPUT chain to DROP
   ansible.builtin.iptables:

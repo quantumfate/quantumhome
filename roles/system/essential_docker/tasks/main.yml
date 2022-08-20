@@ -21,7 +21,7 @@
     state: started
     enabled: yes
 
-- name: Stop and remove all the disabled containers if they are explicitely set to no
+- name: Stop and remove all the disabled containers if they are explicitly set to no
   become: false
   docker_container:
     name: "{{ main_key.path.split('/')[-1] }}"
@@ -29,10 +29,9 @@
   # You really want to make sure here the variable is actually defined...
   # If you check for the variable without lookup() you might delete container
   # that you didn't want to remove
-  when: "{{ 'enable_container_' + main_key.value.role_name }} is defined and not {{ 'enable_container_' + main_key.value.role_name }}"
+  when: "{{ 'enable_' + main_key.value.role_name }} is defined and not {{ 'enable_' + main_key.value.role_name }}"
   with_dict: 
-    - "{{ system_container_to_build }}"
-    - "{{ web_container_to_build }}"
+    - "{{ web_services_to_build }}"
   loop_control:
     loop_var: main_key
    

@@ -2,27 +2,32 @@
 
 ## Requirements
 
-- a user configured on the target machine 
+- a user configured on the target machine
 - access via ssh
 
 ## Optional
 
 - It is recommended to use [multiplexing](https://en.wikibooks.org/wiki/OpenSSH/Cookbook/Multiplexing) to speed up the processing of requests
 
-### quick tutorial:
+### quick tutorial
+
 - create the directory for controlscockets
+
 ```bash
 mkdir -pv ~/.ssh/controlmasters/
 ```
 
 - add the following to your `.ssh/config` file
+
 ```bash
 Host *
         ControlMaster auto
         ControlPath ~/.ssh/controlmasters/%r@%h:%p
         ControlPersist yes
 ```
-# The actual project
+
+## The actual project
+
 This playbook sets up a homeserver following the [IaC phylosophy](https://en.wikipedia.org/wiki/Infrastructure_as_code). The individual roles in this playbook are not solely meant to be run on their own but some can be. One example are [Web Container](https://github.com/quantumfate/quantumhome/tree/main/roles/web_containers) roles.
 
 ## variables
@@ -31,9 +36,12 @@ This projects makes use of lots of variable methods and concepts from ansible.
 Take a look at [Ansible's "understanding variable precedence" guide.](https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html#understanding-variable-precedence)
 
 ### group_vars and host_vars
-There are 3 main places to declare variables: 
+
+There are 3 main places to declare variables:
+
 - groupvars/all: secret.yml (with ansible-vault) and vars.yml
 - host_vars/host: vars.yml but host specific
+
 ```bash
 ├── group_vars
 │   └── all
@@ -41,6 +49,7 @@ There are 3 main places to declare variables:
 │   ├── quantumhome
 │   └── raspberrypi
 ```
+
 ### container and homer specific variables
 
 Default role varibales are defined in roles/role/defaults/main.yml
@@ -72,7 +81,7 @@ system_containers_roles_paths:
   - "roles/system_containers/network"
 
 # Includes all paths for webservices to be built
-web_containers_roles_paths:
+webservices_paths:
   - "roles/web_containers/network"
   - "roles/web_containers/services"
 ```
@@ -92,19 +101,20 @@ These variables in [group_vars/all/vars.yml](https://github.com/quantumfate/quan
 ```yaml
 # Enable variables
 ## Role import Groups
-enable_simple_roles: yes
+enable_roles: yes
 enable_systemcontainer_roles: yes
 enable_webcontainer_roles: yes
 ```
 
 The default value for persistent docker storage is in the following directory. It can be changed [here](https://github.com/quantumfate/quantumhome/blob/main/roles/simple_roles/system/essential_docker/defaults/main.yml)
+
 ```yaml
 docker_dir: /opt/docker/data
 ```
 
 ### Granular control
 
-Roles run on a host when a certain variable with the prefix "enable_simple_" or "enable_container_" + the role name is set to yes on their respective host.
+Roles run on a host when a certain variable with the prefix "enable_" or "enable_" + the role name is set to yes on their respective host.
 
 If the variable is not defined it will default to false and therefor the role/container wont run on the target host.
 
@@ -116,7 +126,7 @@ If a container role (e.g. System Container, Web Container) is explicitly set to 
 
 ## Folderlayout
 
-Currently all container roles in `/roles/web_container/<category>/<service>` need to have a default/main.yml file. 
+Currently all container roles in `/roles/web_container/<category>/<service>` need to have a default/main.yml file.
 
 Here is an example for [pihole](https://github.com/quantumfate/quantumhome/tree/main/roles/web_containers/network/pihole).
 
@@ -135,7 +145,7 @@ This data will later be used in the homer role for the homer dashboard.
 
 Create an encrypted file with ansible-vault.
 
-```
+```bash
 cd group_cars/all # or host_vars/<your hostname>/
 ansible-vault create secret.yml
 ansible-vault edit secret.yml
@@ -164,11 +174,15 @@ The [run.yml](run.yml) file will ran a bunch of automated tasks including the sy
 Once that is done the playbook will import a task, that includes all roles based on the paths in the "webservices_path" variable.
 
 ## Run the playbook
-- to run the playboot execute: 
-```
+
+- to run the playboot execute:
+
+```bash
 ansible-playbook run.yml --ask-vault-pass
 ```
+
 - you can run the playbook in check-mode without actually making changes
-```
+
+```bash
 ansible-playbook run.yml --check --ask-vault-pass
 ```

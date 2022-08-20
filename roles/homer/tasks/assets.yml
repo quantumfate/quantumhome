@@ -14,14 +14,14 @@
   when: apps_with_icons is defined
 
 - debug:
-    var: web_container_to_build
+    var: web_services_to_build
     verbosity: 1
     
 
 - name: List the apps with icons
   set_fact:
           apps_with_icons: "{{ apps_with_icons | default([]) + [(item | basename).split('.')[0]] }}"
-  with_items: "{{ web_container_to_build }}"
+  with_items: "{{ web_services_to_build }}"
   #   
 - debug:
     var: apps_with_icons
@@ -54,7 +54,7 @@
     mode: 0644
 
 - debug:
-    var: web_container_to_build
+    var: web_services_to_build
     verbosity: 1
 
 - name: Generate the Homer config file

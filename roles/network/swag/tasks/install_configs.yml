@@ -18,7 +18,7 @@
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
     mode: 0644
-  when: (item | basename).split('.')[0] in web_container_to_build
+  when: (item | basename).split('.')[0] in web_services_to_build
   with_fileglob:
     - templates/internal/*.j2
     - templates/public/*.j2
