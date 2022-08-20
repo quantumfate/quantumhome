@@ -34,46 +34,35 @@
     tags:
       - dns
     when: enable_dns | default(False)
-
-  - role: geerlingguy.pip
-    tags:
-      - pip
-      - python
-      - docker
-    when: enable_docker | default(False)
+  
+  - role: system/docker
+    tags: 
+      - system
+    when: enable_docker| default(False)
 
 - hosts: raspberrypi
   become: yes
   gather_facts: yes
 
-  pre_tasks:
-    - import_tasks: tasks/ensure_ssh_port.yml
-
   roles:
 
-  - name: Run geerlingguy Docker arm role
-    include_role:
-      name: geerlingguy.docker_arm
-      apply:
-        tags:
-          - docker
+  - role: webservices/network/pihole
+    tags: 
+      - pihole
+      - containers
+    when: enable_pihole | default(False)
+
+  - role: network/cloudflareddns
+    tags: 
+      - pihole
+      - containers
+    when: enable_cloudflareddns | default(False)
 
 - hosts: quantumhome
   become: yes
   gather_facts: yes
 
-  pre_tasks:
-    - import_tasks: tasks/ensure_ssh_port.yml
-
-  tasks:
-
-  - name: Run geerlingguy Docker role
-    include_role:
-      name: geerlingguy.docker
-      apply:
-        tags:
-          - docker
-
+  roles:
 
   - name: Run the role for homer
     include_role:

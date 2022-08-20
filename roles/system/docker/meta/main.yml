@@ -1,0 +1,21 @@
+---
+dependencies:
+  - role: geerlingguy.pip
+    tags:
+      - pip
+      - python
+      - docker
+    when: enable_docker | default(False)
+  - role: geerlingguy.docker_arm
+    tags:
+      - docker
+    when: 
+      - enable_docker | default(False)
+      - ansible_architecture == "arm64"
+  - role: geerlingguy.docker
+    tags:
+      - docker
+    when: 
+      - enable_docker | default(False)
+      - not ansible_architecture == "arm64"
+    
