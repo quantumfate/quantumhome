@@ -1,7 +1,10 @@
 ---
 collections:
-  - name: community.general
-  - name: ansible.posix
-  # - name: ironicbadger.snapraid
-  # - name: geerlingguy.pip
-  # - name: geerlingguy.docker
+  - name: geerlingguy.docker
+  - name: viasite-ansible.zsh
+  - name: ironicbadger.snapraid
+  - name: geerlingguy.ntp
+  - name: geerlingguy.pip
+  - name: geerlingguy.security
+  - name: geerlingguy.docker_arm
+  - name: oefenweb.dns

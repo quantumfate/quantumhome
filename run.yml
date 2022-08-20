@@ -30,6 +30,24 @@
       - security
     when: enable_security | default(False)
 
+- hosts: all
+  become: yes
+  gather_facts: yes
+  
+  pre_tasks:
+  - import_tasks: tasks/ssh_juggle_port.yml
+    tags:
+      - port
+  - import_tasks: tasks/ensure_ssh_port.yml
+  
+  roles:
+
+  - role: security/iptables
+    tags:
+      - security
+      - iptables
+    when: enable_iptables | default(False)
+
   - role: oefenweb.dns
     tags:
       - dns

@@ -11,3 +11,11 @@ This role assumes that you want to use persistant storage by default. If you don
 This role does not assume, that you want to use backups on your machine. Enable it specifically for your host, or for all hosts.
 
 It is essential to set the value of the variable `essential_docker_backup_src` if you enable backups. This role expects a destination where the backupdata is pulled from.
+
+## Dependencies
+
+This role runs dependencies against your host to completely install docker based on you architecture.
+
+ - https://github.com/geerlingguy/ansible-role-pip
+ - https://github.com/geerlingguy/ansible-role-docker
+ - https://github.com/geerlingguy/ansible-role-docker_arm (on arm)

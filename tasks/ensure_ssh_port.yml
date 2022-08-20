@@ -1,0 +1,5 @@
+---
+- name: Make sure the security ssh port is set to desired port in case DEFAULT port ssh connection succeeded
+  set_fact:
+    ansible_ssh_port: "{{ security_ssh_port }}"
+  when: ansible_ssh_port != security_ssh_port
