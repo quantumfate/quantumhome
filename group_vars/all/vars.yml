@@ -70,8 +70,7 @@ pip_install_packages:
 docker_dir: /opt/docker/data 
 
 # ZSH
-zsh_antigen_bundles_extras:
-  - nvm
+zsh_antigen_bundles_extras: [ nvm, git ]
 
 # Network
 ## vpn

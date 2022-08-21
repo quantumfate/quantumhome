@@ -15,9 +15,15 @@
   pre_tasks:
   - name: Requiring the list of services
     import_tasks: tasks/list_services.yml
+  
+  # Simply printing the value of fact which is Ansible UnSafe Text type
+  - debug:
+      msg: "{{ ansible_architecture }}"
 
-  - name: Gathering information about proccessor architecture
-    import_tasks: tasks/repo_arch.yml
+    
+
+  # - name: Gathering information about proccessor architecture
+  #   import_tasks: tasks/repo_arch.yml
 
   roles:
   - role: system/essential
@@ -57,6 +63,13 @@
     tags: 
       - docker
     when: enable_docker | default(False)
+  
+  - role: viasite-ansible.zsh
+    bocome: no
+    vars:
+      zsh_user: "{{ ansible_user }}"
+    tags:
+      - zsh
 
 - hosts: raspberrypi
   become: yes
@@ -106,10 +119,7 @@
         - docker
     when: enable_homer | default(False)
 
-  #   ### Run this at the end, when the environment is set
-  #   - role: viasite-ansible.zsh
-  #     tags:
-  #       - zsh
+
 
   # # - role: ironicbadger.ansible_role_snapraid
   # #   become: yes

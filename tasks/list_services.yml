@@ -17,6 +17,18 @@
         excludes: homer
         recurse: no
       register: webservices
+    
+    - name: Get a List of roles with other common variables to include
+      delegate_to: localhost
+      become: false
+      find:
+        paths: 
+          "roles"
+        file_type: directory
+        patterns:
+          - '^homer$'
+        recurse: no
+      register: roleswithvariables
 
     - name: Include all main.yml files for webservices and homer
       block:
@@ -39,10 +51,11 @@
         this_current_var: "{{ lookup('vars', item.path.split('/')[-1]) }}"
       with_items: "{{ webservices.files }}"
 
-    - name: Build the key, value pairs for homer
+    - name: Build the key, value pairs for roleswithvariables
       set_fact:
-        homer_dict: "{{ homer_dict | default({}) | combine({ item: {'role_name': item, 'ip_address': item.ip_address, 'url': item.url } }) }}"
+        roleswithvariables_to_build: "{{ roleswithvariables_to_build | default({}) | combine({ otherroles.path.split('/')[-1]: { 'role_name': otherroles.path.split('/')[-1], 'ip_address': this_current.ip_address, 'url': this_current.url } }) }}"
       vars:
-        this_current_var: "{{ lookup('vars', item }}"
-      with_items: 
-        - homer
+        this_current: "{{ lookup('vars', otherroles.path.split('/')[-1]) }}"
+      with_items: "{{ roleswithvariables.files }}"
+      loop_control:
+        loop_var: otherroles
