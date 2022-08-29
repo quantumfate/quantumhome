@@ -26,6 +26,12 @@
   #   import_tasks: tasks/repo_arch.yml
 
   roles:
+  - role: quantumfate.zsh
+    bocome: no
+    vars:
+      zsh_user: "{{ ansible_user }}"
+    tags:
+      - zsh
   - role: system/essential
     tags: 
       - system
@@ -64,12 +70,7 @@
       - docker
     when: enable_docker | default(False)
   
-  - role: viasite-ansible.zsh
-    bocome: no
-    vars:
-      zsh_user: "{{ ansible_user }}"
-    tags:
-      - zsh
+
 
 - hosts: raspberrypi
   become: yes

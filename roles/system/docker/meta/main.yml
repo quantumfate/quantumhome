@@ -11,11 +11,11 @@ dependencies:
       - docker
     when: 
       - enable_docker | default(False)
-      - ansible_architecture == "arm64"
+      - "{{ 'arm' in ansible_architecture }}"
   - role: geerlingguy.docker
     tags:
       - docker
     when: 
       - enable_docker | default(False)
-      - not ansible_architecture == "arm64"
+      - "{{ '64' in ansible_architecture }}"
     

@@ -1,7 +1,7 @@
 ---
 collections:
   - name: geerlingguy.docker
-  - name: viasite-ansible.zsh
+  - name: quantumfate.zsh
   - name: ironicbadger.snapraid
   - name: geerlingguy.ntp
   - name: geerlingguy.pip
