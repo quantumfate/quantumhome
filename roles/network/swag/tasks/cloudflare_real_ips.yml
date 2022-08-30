@@ -10,6 +10,7 @@
   get_url:
     url: "{{ item }}"
     dest: "{{ docker_dir }}/swag/public/cloudflare/cf_{{ item.split('/')[-1] }}"
+    mode: 0644
   with_items:
     - https://www.cloudflare.com/ips-v4
     - https://www.cloudflare.com/ips-v6

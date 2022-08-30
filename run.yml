@@ -15,15 +15,9 @@
   pre_tasks:
   - name: Requiring the list of services
     import_tasks: tasks/list_services.yml
-  
-  # Simply printing the value of fact which is Ansible UnSafe Text type
-  - debug:
-      msg: "{{ ansible_architecture }}"
 
-    
-
-  # - name: Gathering information about proccessor architecture
-  #   import_tasks: tasks/repo_arch.yml
+  - name: Gathering information about proccessor architecture
+    import_tasks: tasks/repo_arch.yml
 
   roles:
   - role: quantumfate.zsh

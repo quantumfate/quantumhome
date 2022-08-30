@@ -1,5 +1,5 @@
-# Gets variables from all web applications recursively (for Homer and SWAG)
 ---
+# Gets variables from all web applications recursively (for Homer and SWAG)
 - name: Empty the variables (In case the task is called twice)
   set_fact:
     web_services_to_build: []

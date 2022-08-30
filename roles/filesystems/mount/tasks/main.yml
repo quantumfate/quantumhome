@@ -4,7 +4,8 @@
     vg: "{{ main_volume_group }}"
     lv: "{{ vg_cache_drive }}"
     size: 100%FREE
-  ignore_errors: true
+  failed_when: false
+  changed_when: false
 
 - name: Create the mergerfs storage folder "{{ mergerfs_root }}"
   ansible.builtin.file:

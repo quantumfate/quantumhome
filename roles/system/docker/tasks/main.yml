@@ -29,7 +29,7 @@
   # You really want to make sure here the variable is actually defined...
   # If you check for the variable without lookup() you might delete container
   # that you didn't want to remove
-  when: "{{ 'enable_' + main_key.value.role_name }} is defined and not {{ 'enable_' + main_key.value.role_name }}"
+  when: "'enable_' + main_key.value.role_name|string  is defined and not 'enable_' + main_key.value.role_name|string"
   with_dict: 
     - "{{ web_services_to_build }}"
   loop_control:
@@ -54,13 +54,15 @@
       fail: 
         msg: "Host has no backup data but a valid backup src has been specified"
       when: docker_backup_src != ''
-      ignore_errors: true
+      failed_when: false
+      changed_when: false
 
     - name: Check if there is persistent data that can be backed up
       fail: 
         msg: "Host has no backup data but host has data that might be backed up"
       when: docker_persistent_data
-      ignore_errors: true
+      failed_when: false
+      changed_when: false
 
 - name: Handle persistent data
   become: false
@@ -103,7 +105,8 @@
         recursive: yes
       delegate_to: "{{ inventory_hostname }}"
       when: (persistent_data_find.matched < 20 or not persistent_data.stat.exists)
-      ignore_errors: true
+      failed_when: false
+      changed_when: false
 
   - name: Chmod the data folder
     become: true

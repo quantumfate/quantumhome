@@ -6,6 +6,8 @@
         "**/host_vars/**/*.yaml": "ansible",
         "**/roles/**/*.yml": "ansible",
         "**/roles/**/*.yaml": "ansible",
+        "**/tasks/**/*.yml": "ansible",
+        "**/tasks/**/*.yaml": "ansible",
         "run.yml": "ansible",
         "run.yaml": "ansible",
         "**/templates/**/*.yml": "ansible-jinja",

@@ -14,4 +14,6 @@
     ttl: 3600
     priority: 10
     proxied: false
-  ignore_errors: true
+  failed_when: false
+  changed_when: false
+
