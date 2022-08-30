@@ -1,0 +1,5 @@
+---
+loop_var_prefix: '{role}_'
+skip_list:
+  - 'fqcn-builtins'
+  - 'yaml'

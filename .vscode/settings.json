@@ -1,0 +1,15 @@
+{
+    "files.associations": {
+        "**/group_vars/**/*.yml": "ansible",
+        "**/group_vars/**/*.yaml": "ansible",
+        "**/host_vars/**/*.yml": "ansible",
+        "**/host_vars/**/*.yaml": "ansible",
+        "**/roles/**/*.yml": "ansible",
+        "**/roles/**/*.yaml": "ansible",
+        "run.yml": "ansible",
+        "run.yaml": "ansible",
+        "**/templates/**/*.yml": "ansible-jinja",
+        "**/templates/**/*.yaml": "ansible-jinja",
+    },
+    "ansible.ansible.useFullyQualifiedCollectionNames": false
+}

@@ -1,0 +1,12 @@
+{
+    "recommendations": [
+        "redhat.ansible",
+        "mhutchie.git-graph",
+        "waderyan.gitblame",
+        "codezombiech.gitignore",
+        "wholroyd.jinja",
+        "ms-python.python",
+        "coolbear.systemd-unit-file",
+        "redhat.vscode-yaml"
+    ]
+}
