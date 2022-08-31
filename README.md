@@ -121,7 +121,7 @@ pihole_api_token: ""
 
 This [role](https://github.com/quantumfate/quantumhome/tree/main/roles/homer) will set up a web interface for all the hosted webservices across your infrastructure by the help of [pihole's](https://github.com/quantumfate/quantumhome/tree/main/roles/webservices/network/pihole) configured DNS records.
 
-A quick summary of what has been set up with critical information will be dumped in a `webservices.json` file in [resources](https://github.com/quantumfate/quantumhome/tree/resources).
+A quick summary of what has been set up with critical information will be dumped in a `webservices.json` file in [resources](https://github.com/quantumfate/quantumhome/tree/main/resources).
 
 ## The actual playbook
 

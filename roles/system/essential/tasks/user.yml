@@ -3,12 +3,17 @@
   set_fact:
     sudo_group: sudo
 
-- name: Enable passwordless sudo for "{{ ansible_user }}"
+- name: Enable passwordless sudo for ansible user
   lineinfile:
     dest: /etc/sudoers
     regexp: "^%wheel"
     line: "{{ ansible_user }} ALL=(ALL) NOPASSWD: ALL"
     validate: "/usr/sbin/visudo -cf %s"
+  register: "{{ wait_result }}"
+  
+- name: Debug ansible_user 
+  debug:
+    msg: "{{ 'Failed with message: ' ~ wait_result.msg if wait_result.failed else 'Success enabling passwordless sudo for ' ~ ansible_user }}" 
 
 - name: Copy the public SSH key 
   authorized_key:

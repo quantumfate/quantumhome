@@ -4,12 +4,17 @@
     name: docker
     state: present
 
-- name: Add user "{{ ansible_user }}" to group docker
+- name: Add user user to group docker
   user:
     name: "{{ ansible_user }}"
     groups:
       - docker
     append: yes
+  register: "{{ wait_result }}"
+
+- name: Debug ansible_user 
+  debug:
+    msg: "{{ 'Failed with message: ' ~ wait_result.msg if wait_result.failed else 'Success adding ' ~ ansible_user ~ ' to group docker' }}" 
 
 - name: Install Docker Module for Python
   pip:
@@ -97,7 +102,7 @@
   - name: Restoring data
     when: docker_backup_data
     block:
-    - name: Restore the "{{ docker_dir }}" folder from the MergerFS array
+    - name: Restore the docker directory folder from the MergerFS array
       synchronize:
         src: "{{ docker_backup_src }}"
         dest: "{{ docker_dir }}/"

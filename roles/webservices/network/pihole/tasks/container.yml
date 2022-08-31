@@ -1,5 +1,5 @@
 ---
-- name: Make sure the {{ container_name }} container is created and running
+- name: Make sure the pihole container is created and running
   docker_container:
     name: 'pihole'
     image: "cbcrowe/pihole-unbound"
@@ -29,3 +29,8 @@
       - "{{ ip_address }}:53:53/tcp"
       - "{{ ip_address }}:53:53/udp"
     restart_policy: unless-stopped
+  register: "{{ wait_result }}"
+  
+- name: Debug pihole container
+  debug:
+    msg: "{{ 'Failed with message: ' ~ wait_result.msg if wait_result.failed else 'Success enabling and running the container ' ~ container_name }}" 
