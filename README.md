@@ -117,6 +117,12 @@ pihole_password: ""
 pihole_api_token: ""
 ```
 
+## Homer
+
+This [role](https://github.com/quantumfate/quantumhome/tree/main/roles/homer) will set up a web interface for all the hosted webservices across your infrastructure by the help of [pihole's](https://github.com/quantumfate/quantumhome/tree/main/roles/webservices/network/pihole) configured DNS records.
+
+A quick summary of what has been set up with critical information will be dumped in a `webservices.json` file in [resources](https://github.com/quantumfate/quantumhome/tree/resources).
+
 ## The actual playbook
 
 The [run.yml](run.yml) will run the task `ssh_juggle_port` in case the security ssh port is not yet cofigured on the target hosts - that means the target hosts will only allow request from the `security_ssh_port` and deny all other requests. When the `security_ssh_port` is not configured, the playbook connects with `default_ssh_port` but sets sshd to expect incoming connections on the `security_ssh_port` in the subsequent run. Once that is done the playbook will connect to all hosts again by executing the `ssh_port_juggle`. This will make sure that the correct `security_ssh_port` is set BEFORE the iptable role will block all requests on not defined ports. This will prevent you from having to set the port manually. Allowing request from port 44 in sshd config and allowing requests from port 22 and denying requests from all other ports in iptables will lock you out of your server for ever without manually mounting the drives. As a protective measure the iptable role wont be executed if the right conditions aren't met.
