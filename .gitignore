@@ -1,4 +1,4 @@
 group_vars/all/secret.yml
 host_vars/quantumhome/secrethostvars.yml
 **/secret.yml
-hosts
+**/webservices.json

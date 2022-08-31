@@ -20,12 +20,6 @@
     import_tasks: tasks/repo_arch.yml
 
   roles:
-  - role: quantumfate.zsh
-    bocome: no
-    vars:
-      zsh_user: "{{ ansible_user }}"
-    tags:
-      - zsh
   - role: system/essential
     tags: 
       - system
@@ -52,7 +46,7 @@
     tags:
       - security
       - iptables
-    when: enable_iptables | default(False)
+    when: (enable_iptables | default(False)) and (security_ssh_port == ansible_ssh_port | default(False))
 
   - role: oefenweb.dns
     tags:
@@ -64,9 +58,7 @@
       - docker
     when: enable_docker | default(False)
   
-
-
-- hosts: raspberrypi
+- hosts: pi
   become: yes
   gather_facts: yes
 
@@ -85,7 +77,7 @@
       - containers
     when: enable_cloudflareddns | default(False)
 
-- hosts: quantumhome
+- hosts: main
   become: yes
   gather_facts: yes
 
@@ -113,21 +105,22 @@
         - homer
         - docker
     when: enable_homer | default(False)
-
-
-
+  
   # # - role: ironicbadger.ansible_role_snapraid
   # #   become: yes
   # #   tags:
   # #     - snapraid
   # #   when: docker_persistent_data | default(False)
 
-  # #
-  # # homer
-  # #
-  # - role: homer
-  #   become: no
-  #   tags:
-  #     - homer
-  #     - containers
-  #   when: enable_homer | default(False)
+- hosts: all
+  become: yes
+  gather_facts: yes
+
+  roles:
+
+  - role: quantumfate.zsh
+    bocome: no
+    vars:
+      zsh_user: "{{ ansible_user }}"
+    tags:
+      - zsh

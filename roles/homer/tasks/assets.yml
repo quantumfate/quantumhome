@@ -52,3 +52,10 @@
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
     mode: 0644
+
+- name: Print the current state of webservices to json
+  delegate_to: localhost
+  template:
+    src: webservices.json.j2
+    dest: "{{ playbood_dir }}/resources/webservices.json"
+    mode: 0644

@@ -29,7 +29,7 @@
   # You really want to make sure here the variable is actually defined...
   # If you check for the variable without lookup() you might delete container
   # that you didn't want to remove
-  when: "'enable_' + main_key.value.role_name|string  is defined and not 'enable_' + main_key.value.role_name|string"
+  when: not 'enable_' ~ main_key.value.role_name is undefined and not 'enable_' ~ main_key.value.role_name
   with_dict: 
     - "{{ web_services_to_build }}"
   loop_control:
