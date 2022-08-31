@@ -2,3 +2,4 @@
 - include: config.yml
 - include: unbound.yml
 - include: container.yml
+- include: hosts.yml
