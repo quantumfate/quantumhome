@@ -4,7 +4,6 @@
 
 - a user configured on the target machine
 - access via ssh
-- formatted drives
 
 ## Optional
 
@@ -123,10 +122,6 @@ pihole_api_token: ""
 This [role](https://github.com/quantumfate/quantumhome/tree/main/roles/homer) will set up a web interface for all the hosted webservices across your infrastructure by the help of [pihole's](https://github.com/quantumfate/quantumhome/tree/main/roles/webservices/network/pihole) configured DNS records.
 
 A quick summary of what has been set up with critical information will be dumped in a `webservices.json` file in [resources](https://github.com/quantumfate/quantumhome/tree/main/resources).
-
-## Filesystems
-
-The Playbook does NOT format drives. Some commands might not work if drives are not formatted. Please make sure to set up drives before executing the playbook.
 
 ## The actual playbook
 
