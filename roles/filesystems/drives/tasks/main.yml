@@ -1,0 +1,59 @@
+- name: Create the volume group for one of the cache drives and assign the label cache
+  lvol:
+    vg: "{{ main_volume_group }}"
+    lv: "{{ vg_cache_drive }}"
+    size: 100%FREE
+  register: lvcreate_output
+  changed_when: lvcreate_output.msg == 'Logical volume "' ~ vg_cache_drive ~ '" created.'
+  failed_when: false
+
+- name: Make sure the parity drives are formatted
+  community.general.filesystem:
+    dev: "{{ item.src }}"
+    fstype: xfs
+    state: present
+  with_items: "{{ parity_disks }}"
+
+- name: Make sure the data drives are formatted
+  community.general.filesystem:
+    dev: "{{ item.src }}"
+    fstype: xfs
+    state: present
+  with_items: "{{ data_disks }}"
+
+- name: Make sure the cache drives are formatted
+  community.general.filesystem:
+    dev: "{{ item.src }}"
+    fstype: ext4
+    state: present
+  with_items: "{{ cache_disks }}"
+
+- name: Get information about mounted drives
+  command:
+    cmd: lsblk -f
+  changed_when: no
+  register: lsblk_output
+
+- name: Rename label of all parity drives
+  command:
+    cmd: xfs_admin -L {{ parity_label }} {{ item.src }} 
+  changed_when: no
+  when: not item.path in lsblk_output.stdout
+  with_items: "{{ parity_disks }}"
+
+- name: Rename label of all data drives
+  command:
+    cmd: e2label {{ item.src }} {{ data_label }}
+  changed_when: no
+  when: not item.path in lsblk_output.stdout
+  with_items: "{{ data_disks }}"
+
+- name: Rename label of all cache drives
+  command:
+    cmd: e2label {{ item.src }} {{ cache_label }}
+  changed_when: no
+  when: not item.path in lsblk_output.stdout
+  with_items: "{{ cache_disks }}"
+
+
+

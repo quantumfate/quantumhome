@@ -1,14 +1,4 @@
 ---
-- name: Create the volume group for one of the cache drives and assign the label cache
-  community.general.lvol:
-    vg: "{{ main_volume_group }}"
-    lv: "{{ vg_cache_drive }}"
-    size: 100%FREE
-  register: lvcreate_output
-  changed_when: lvcreate_output.msg == 'Logical volume "' ~ vg_cache_drive ~ '" created.'
-  failed_when: false
-
-
 - name: Create the mergerfs storage folder "{{ mergerfs_root }}"
   ansible.builtin.file:
     path: "{{ mergerfs_root }}"
@@ -33,17 +23,6 @@
     owner: "root"
     group: "root"
 
-- name: Rename the cache drive label
-  ansible.builtin.script:
-    cmd: "{{ playbook_dir }}/roles/filesystems/mount/templates/rename-lvmdrive.j2"
-    creates: "/home/{{ ansible_user }}/.script/rename-lvmdrive"
-  register: e2lableoutput
-  failed_when: "'Bad magic number in super-block' in e2lableoutput.stdout"
-  # changed_when: 
-
-- name: debug mount
-  debug:
-    var: e2lableoutput
 - name: Mount the Parity drives used for Snapraid
   ansible.posix.mount:
     path: "{{ item.path }}"
@@ -77,7 +56,7 @@
 - name: Mount the MergerFS cached Array
   ansible.posix.mount:
     path: "{{ mergerfs_root }}"
-    src: /mnt/cache*:/mnt/data*
+    src: /mnt/{{ cache_label }}*:/mnt/{{ data_label }}*
     opts: category.create=lfs,direct_io,defaults,allow_other,moveonenospc=1,minfreespace=50G,fsname=mergerfs,uid=1000,gid=1000
     fstype: fuse.mergerfs
     state: mounted
@@ -86,7 +65,7 @@
 - name: Mount the MergerFS data Array
   ansible.posix.mount:
     path: "{{ mergerfs_root }}_slow"
-    src: /mnt/data*
+    src: /mnt/{{ data_label }}*
     opts: direct_io,defaults,allow_other,moveonenospc=1,minfreespace=500G,fsname=mergerfs_slow,uid=1000,gid=1000
     fstype: fuse.mergerfs
     state: mounted
@@ -95,7 +74,7 @@
 - name: Mount the MergerFS cache Array
   ansible.posix.mount:
     path: "{{ cache_root }}"
-    src: /mnt/cache*
+    src: /mnt/{{ cache_label }}*
     opts: direct_io,defaults,allow_other,fsname=mergerfs_cache,category.create=mfs
     fstype: fuse.mergerfs
     state: mounted

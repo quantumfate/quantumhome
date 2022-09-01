@@ -20,6 +20,7 @@ cache_root: /mnt/storage_cache
 
 # Enable variables
 ## Filesystem
+enable_drives: yes
 enable_mergerfs: yes
 enable_mount: yes
 enable_snapraid: yes
@@ -36,6 +37,10 @@ timezone: Europe/Amsterdam
 guid: "1000"
 
 # Drives
+## Label
+parity_label: parity
+data_label: data
+cache_label: cache
 ## lvm 
 main_volume_group: ubuntu-vg
 vg_cache_drive: cache1

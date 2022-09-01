@@ -112,6 +112,12 @@
     when: enable_swag | default(False)
 
   ## Filesystem
+  - role: filesystems/drives
+    tags:
+      - filesystems
+      - drives
+    when: enable_drives | default(False)
+
   - role: filesystems/mergerfs
     tags:
         - filesystems

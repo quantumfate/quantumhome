@@ -38,7 +38,7 @@ You need to edit the `hosts` file in the root directory of this playbook accordi
 ```text
 [main]
 quantumhome
-[pi]
+[picluster]
 raspberrypi
 ```
 
@@ -126,7 +126,7 @@ A quick summary of what has been set up with critical information will be dumped
 
 ## Filesystems
 
-The Playbook does NOT format drives. Some commands might not work if drives are not formatted.
+The Playbook does NOT format drives. Some commands might not work if drives are not formatted. Please make sure to set up drives before executing the playbook.
 
 ## The actual playbook
 
@@ -136,6 +136,7 @@ The playbook will handle security and runs all roles in a specific order against
 
 - [tasks Readme.md](/tasks/)
 - [docker](/roles/system/docker/)
+- [filesystem](/roles/filesystems/)
 
 After the environment of the infrastructure is set up it will run my role [quantumfate.zsh](https://github.com/quantumfate/ansible-role-zsh) against the hosts to apply your desired zsh configuration. It is recommended to run this role at the end because it will install antigen bundles, hotkeys and aliases based on your installed commands.
 
