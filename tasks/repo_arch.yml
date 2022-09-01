@@ -1,4 +1,11 @@
 ---
+- name: Collect only facts returned by ansible_architecture
+  setup:
+    gather_subset:
+      - '!all'
+      - '!<any valid subset>'
+      - architecture
+
 - name: Set amd64 arch
   set_fact:
     repo_arch: amd64

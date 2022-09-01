@@ -50,6 +50,10 @@
       vars:
         this_current_var: "{{ lookup('vars', item.path.split('/')[-1]) }}"
       with_items: "{{ webservices.files }}"
+    
+    - name: Debug web_services_to_build variable
+      debug:
+        var: web_services_to_build 
 
     - name: Build the key, value pairs for roleswithvariables
       set_fact:

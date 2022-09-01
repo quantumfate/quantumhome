@@ -4,8 +4,10 @@
     vg: "{{ main_volume_group }}"
     lv: "{{ vg_cache_drive }}"
     size: 100%FREE
+  register: lvcreate_output
+  changed_when: lvcreate_output.msg == 'Logical volume "' ~ vg_cache_drive ~ '" created.'
   failed_when: false
-  changed_when: false
+
 
 - name: Create the mergerfs storage folder "{{ mergerfs_root }}"
   ansible.builtin.file:
@@ -35,7 +37,13 @@
   ansible.builtin.script:
     cmd: "{{ playbook_dir }}/roles/filesystems/mount/templates/rename-lvmdrive.j2"
     creates: "/home/{{ ansible_user }}/.script/rename-lvmdrive"
+  register: e2lableoutput
+  failed_when: "'Bad magic number in super-block' in e2lableoutput.stdout"
+  # changed_when: 
 
+- name: debug mount
+  debug:
+    var: e2lableoutput
 - name: Mount the Parity drives used for Snapraid
   ansible.posix.mount:
     path: "{{ item.path }}"

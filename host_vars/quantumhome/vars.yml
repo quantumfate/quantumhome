@@ -38,7 +38,7 @@ guid: "1000"
 # Drives
 ## lvm 
 main_volume_group: ubuntu-vg
-vg_cache_drive: Cache1
+vg_cache_drive: cache1
 ## src
 src_parity1: /dev/sda
 src_data1: /dev/sdb
