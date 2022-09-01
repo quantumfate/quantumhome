@@ -22,7 +22,7 @@ Populates the dictionaries `web_services_to_build` and `roleswithvariables_to_bu
 
 A list of containers hosted as a webservice used by homer and other roles
 
-```json
+```javascript
 container: { // container name
     role_name: "", // name of the role
     path: "", // path were role is located
@@ -41,7 +41,7 @@ container: { // container name
 A list of other roles that might have variables that need to be used somewhere else.
 The initial purpose of this variable was to provide the homer variables to other tasks as the `web_services_to_build` variable provices container variables to homer. Homer just couldn't be included because it doesn't manage itself.
 
-```json
+```javascript
 role: { // role name
     role_name: "", // I know it is redundant, but it simplifies things
     ip_adress: "", // Accessible swag ip address
