@@ -129,6 +129,9 @@ The [run.yml](run.yml) will run the task `ssh_juggle_port` in case the security 
 
 The playbook will handle security and runs all roles in a specific order against the target. Consult each role Readme.md for exact explanation what the role is doing.
 
+- [tasks Readme.md](/tasks/)
+- [docker](/roles/system/docker/)
+
 After the environment of the infrastructure is set up it will run my role [quantumfate.zsh](https://github.com/quantumfate/ansible-role-zsh) against the hosts to apply your desired zsh configuration. It is recommended to run this role at the end because it will install antigen bundles, hotkeys and aliases based on your installed commands.
 
 ## Run the playbook

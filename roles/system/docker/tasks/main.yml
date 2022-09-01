@@ -10,7 +10,7 @@
     groups:
       - docker
     append: yes
-  register: "{{ wait_result }}"
+  register: wait_result
 
 - name: Debug ansible_user 
   debug:

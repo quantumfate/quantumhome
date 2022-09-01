@@ -58,7 +58,7 @@
       - docker
     when: enable_docker | default(False)
   
-- hosts: pi
+- hosts: raspberrypi
   become: yes
   gather_facts: yes
 
@@ -73,11 +73,11 @@
 
   - role: network/cloudflareddns
     tags: 
-      - pihole
+      - cloudflareddns
       - containers
     when: enable_cloudflareddns | default(False)
 
-- hosts: main
+- hosts: quantumhome
   become: yes
   gather_facts: yes
 

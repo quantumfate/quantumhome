@@ -14,7 +14,7 @@
       "PROXIED": "true"
       "SUBDOMAIN": "ddns"
     restart_policy: unless-stopped
-  register: "{{ wait_result }}"
+  register: wait_result
   
 - name: Debug pihole container
   debug:
