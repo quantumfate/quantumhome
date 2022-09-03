@@ -5,7 +5,7 @@
   register: swag_nginx_test
   changed_when: false
   failed_when: swag_nginx_test is not search("test is successful")
-  when: enable_swag_swagpublic | default(False) and existing is defined and running is defined
+  when: enable_swag_public | default(False) and existing is defined and running is defined
   with_items:
     - swag_public
 
@@ -15,7 +15,7 @@
   register: swag_nginx_test
   changed_when: false
   failed_when: swag_nginx_test is not search("test is successful")
-  when: enable_swag_swaginternal | default(False) and existing is defined and running is defined
+  when: enable_swag_internal | default(False) and existing is defined and running is defined
   with_items:
     - swag_internal
 
@@ -24,11 +24,11 @@
     name: "swag_internal"
     state: started
     restart: yes
-  when: enable_swag_swaginternal | default(False) and existing is defined and running is defined
+  when: enable_swag_internal | default(False) and existing is defined and running is defined
 
 - name: restart swag public
   docker_container:
     name: "swag_public"
     state: started
     restart: yes
-  when: enable_swag_swagpublic | default(False) and existing is defined and running is defined
+  when: enable_swag_public | default(False) and existing is defined and running is defined
