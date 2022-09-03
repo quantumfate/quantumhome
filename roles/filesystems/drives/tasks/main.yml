@@ -28,31 +28,38 @@
     state: present
   with_items: "{{ cache_disks }}"
 
-- name: Get information about mounted drives
+- name: Get information about all mounted drives
   command:
-    cmd: lsblk -f
-  changed_when: no
-  register: lsblk_output
+    cmd: cat /etc/mtab
+  register: mtap_output
+  changed_when: false
+
 
 - name: Rename label of all parity drives
   command:
     cmd: xfs_admin -L {{ parity_label }} {{ item.src }} 
+  register: relabel_out
   changed_when: no
-  when: not item.path in lsblk_output.stdout
+  # failed_when: relabel_out.stdout != ''
+  when: mtap_output is defined and not item.src in mtap_output.stdout
   with_items: "{{ parity_disks }}"
 
 - name: Rename label of all data drives
   command:
-    cmd: e2label {{ item.src }} {{ data_label }}
+    cmd: xfs_admin -L {{ data_label }} {{ item.src }}
+  register: relabel_out
   changed_when: no
-  when: not item.path in lsblk_output.stdout
+  # failed_when: relabel_out.stdout != ''
+  when: mtap_output is defined and not item.src in mtap_output.stdout
   with_items: "{{ data_disks }}"
 
 - name: Rename label of all cache drives
   command:
     cmd: e2label {{ item.src }} {{ cache_label }}
+  register: relabel_out
   changed_when: no
-  when: not item.path in lsblk_output.stdout
+  failed_when: relabel_out.stdout != ''
+  when: mtap_output is defined and not item.src in mtap_output.stdout
   with_items: "{{ cache_disks }}"
 
 

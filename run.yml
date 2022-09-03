@@ -113,6 +113,7 @@
 
   ## Filesystem
   - role: filesystems/drives
+    become: yes
     tags:
       - filesystems
       - drives
@@ -125,6 +126,7 @@
     when: enable_mergerfs | default(False)
 
   - role: filesystems/mount
+    become: yes
     tags:
         - filesystems
         - mount
@@ -144,6 +146,7 @@
   # #   when: docker_persistent_data | default(False)
   tags:
     - main
+
 - hosts: all
   become: yes
   gather_facts: yes

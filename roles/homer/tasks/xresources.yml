@@ -16,12 +16,10 @@
     group: "{{ ansible_user }}"
     mode: 0644
 
-- name: Parse the Xresources file
-  shell:
-    cmd: "python3 -c 'import xrp; import json; result = xrp.parse_file(\"/home/{{ ansible_user }}/.Xresources\", encoding=\"utf8\"); print(json.dumps(dict(result.resources), indent = 4).replace(\"*.\", \"\").replace(\"*\", \"\"))'"
-  register: xresources
-  changed_when: false
-
-- name: Save variables
+- name: Register a variable from json colors
   set_fact:
-    colors: "{{ xresources.stdout | from_json }}"
+    colors: "{{ lookup('file', 'dracula.json') | from_json }}"
+
+- name: debug x
+  debug:
+    var: colors

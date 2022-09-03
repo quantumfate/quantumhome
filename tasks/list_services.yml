@@ -17,18 +17,24 @@
         excludes: homer
         recurse: no
       register: webservices
+    - name: Debug webservices variable
+      debug:
+        var: webservices 
     
     - name: Get a List of roles with other common variables to include
       delegate_to: localhost
       become: false
       find:
         paths: 
-          "roles"
+          - "{{ playbook_dir }}/roles/"
         file_type: directory
         patterns:
-          - '^homer$'
+          - 'homer'
         recurse: no
       register: roleswithvariables
+    - name: Debug roleswithvariables variable
+      debug:
+        var: roleswithvariables 
 
     - name: Include all main.yml files for webservices and homer
       block:
@@ -46,7 +52,7 @@
 
     - name: Build the key, value pairs that the webservices dictionary consits of
       set_fact:
-        web_services_to_build: "{{ web_services_to_build | default({}) | combine({ item.path.split('/')[-1]: { 'role_name': item.path.split('/')[-1], 'path': item.path,  'tag_primary': item.path.split('/')[-1], 'tag_secondary': item.path.split('/')[1], 'logo': '/assets/tools/homer-icons/' + item.path.split('/')[-1] + '.png', 'ip_address': this_current_var.ip_address | default(''), 'name': this_current_var.dashboard_name | default(item.path.split('/')[-1] | title), 'url': this_current_var.url | default(''), 'category': this_current_var.homer_category | default ('') } }) }}"
+        web_services_to_build: "{{ web_services_to_build | default({}) | combine({ item.path.split('/')[-1]: { 'role_name': item.path.split('/')[-1], 'path': item.path,  'tag_primary': item.path.split('/')[-1], 'tag_secondary': item.path.split('/')[1], 'logo': '/assets/tools/homer-icons/' + item.path.split('/')[-1] + '.png', 'ip_address': this_current_var.ip_address | default(''), 'swag_address': this_current_var.swag_address | default(''), 'name': this_current_var.dashboard_name | default(item.path.split('/')[-1] | title), 'url': this_current_var.url | default(''), 'category': this_current_var.homer_category | default ('') } }) }}"
       vars:
         this_current_var: "{{ lookup('vars', item.path.split('/')[-1]) }}"
       with_items: "{{ webservices.files }}"
@@ -57,9 +63,13 @@
 
     - name: Build the key, value pairs for roleswithvariables
       set_fact:
-        roleswithvariables_to_build: "{{ roleswithvariables_to_build | default({}) | combine({ otherroles.path.split('/')[-1]: { 'role_name': otherroles.path.split('/')[-1], 'ip_address': this_current.ip_address, 'url': this_current.url } }) }}"
+        roleswithvariables_to_build: "{{ roleswithvariables_to_build | default({}) | combine({ otherroles.path.split('/')[-1]: { 'role_name': otherroles.path.split('/')[-1], 'ip_address': this_current.ip_address | default(''), 'swag_address': this_current.swag_address | default(''), 'url': this_current.url | default('') } }) }}"
       vars:
         this_current: "{{ lookup('vars', otherroles.path.split('/')[-1]) }}"
       with_items: "{{ roleswithvariables.files }}"
       loop_control:
         loop_var: otherroles
+
+    - name: Debug roleswithvariables_to_build variable
+      debug:
+        var: roleswithvariables_to_build 
