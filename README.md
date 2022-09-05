@@ -86,7 +86,7 @@ container_name: pihole
 url: "pihole.{{ host_local }}"
 homer_category: "Network"
 dashboard_name: "PiHole"
-ip_address: "{{ '.'.join(IPv4_lan_network.split('.')[0:3]) }}.26"
+ip_address: "{{ '.'.join(ipv4lan_network.split('.')[0:3]) }}.26"
 ```
 
 This data will later be used in the homer role for the homer dashboard. The [list_services.yml](list_services.yml) task will append a dictionary from this.
@@ -103,7 +103,9 @@ ansible-vault edit secret.yml
 
 ```yml
 host: "" # Your cloudflare zone
-host_local: "" # local hostname for example .local
+host_local: "" # local hostname for example .lan
+swag_interface: "" # your macvlan parent interface for local services
+dmz_interface: "" # you macvlan parent interface for public services
 security_ssh_port: "" # Port used on remote machine for ssh connection
 cf_email: ""
 cloudflare_dns_token: ""

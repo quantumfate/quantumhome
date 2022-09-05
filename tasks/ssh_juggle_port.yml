@@ -40,7 +40,6 @@
   fail: msg="Neither the configured ansible_port nor the fallback port 22 were reachable"
   when:
     - _ssh_port_result is failed
-    - _ssh_port_default_result is defined
+    - _ssh_port_default_result is defined or _ssh_port_security_result is defined
     - _ssh_port_default_result is failed
-    - _ssh_port_security_result is defined
     - _ssh_port_security_result is failed

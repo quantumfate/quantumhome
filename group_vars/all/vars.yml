@@ -14,6 +14,10 @@ common_packages:
   - iptables
   - net-tools
   - vlan
+  - dnsutils
+  - network-manager
+  - tmux
+  - ifupdown
 # Merges common packages with packages on specific hosts
 total_packages: "{{ common_packages + specific_packages }}"
 
@@ -38,8 +42,6 @@ enable_iptables: yes
 ## System
 enable_essential: yes
 enable_docker: yes
-
-
 # Snapraid
 snapraid_runner_email_address: "{{ email }}"
 snapraid_data_disks: "{{ data_disks }}"
@@ -74,22 +76,26 @@ docker_dir: /opt/docker/data
 zsh_antigen_bundles_extras: [ nvm, git ]
 
 # Network
+ipv4lan_network: "192.168.1.0/21"
+ipv6lan_network: "fd00::/8"
 ## vpn
 vpn_network: "10.1.1.0/24"
 ## lan
-IPv4_lan_network: "192.168.178.0/24"
-IPv6_lan_network: "fd00::/8"
-lan_gateway: "{{ '.'.join(IPv4_lan_network.split('.')[0:3]) }}.1"
-dmz_interface: eno1
-dmz_network: "{{ '.'.join(lan_gateway.split('.')[0:2]) }}.44.0/24"
+lan_gateway: "{{ '.'.join(ipv4lan_network.split('.')[0:3]) }}.1"
+## dmz
+dmz_network: "{{ '.'.join(lan_gateway.split('.')[0:2]) }}.6.0/24"
 dmz_gateway: "{{ '.'.join(dmz_network.split('.')[0:3]) }}.1"
 ## swag
 swag_network: "10.0.0.0/27"
 swag_base: "{{ '.'.join(swag_network.split('.')[0:3]) }}"
 swag_gateway: "{{ '.'.join(swag_network.split('.')[0:3]) }}.1"
+## dns
+dns_nameservers: ['1.1.1.1', '1.0.0.1']
+
+## time/local
 ntp_timezone: '{{ timezone }}'
 locale: en_US.UTF-8
-dns_nameservers: ['1.1.1.1', '1.0.0.1']
+
 
 # Domains
 subdomains: {

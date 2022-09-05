@@ -49,6 +49,8 @@
     tags:
       - port
   - import_tasks: tasks/ensure_ssh_port.yml
+    tags:
+      - port
   
   roles:
 
@@ -154,7 +156,6 @@
   roles:
 
   - role: quantumfate.zsh
-    bocome: no
     vars:
       zsh_user: "{{ ansible_user }}"
     tags:

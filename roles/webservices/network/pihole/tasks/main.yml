@@ -1,5 +1,6 @@
 ---
 - include: config.yml
+- include: network.yml
 - include: unbound.yml
 - include: container.yml
 - include: hosts.yml

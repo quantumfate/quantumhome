@@ -3,5 +3,7 @@
 - include: user.yml
 - include: remove_snap.yml
 
+- include: netplan.yml
+
 - include_tasks: powersaving.yml
   when: enable_powersaving | default(False)

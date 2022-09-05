@@ -15,8 +15,8 @@
     snap:
       name: '*'
       state: absent
-      failed_when: false
-      changed_when: false
+    failed_when: false
+    changed_when: false
 
   - name: Remove the snap package from apt
     apt:

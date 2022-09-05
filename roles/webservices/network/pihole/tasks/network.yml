@@ -1,0 +1,10 @@
+---
+- name: Create a pi network
+  docker_network:
+      name: "{{ pi_network }}"
+      driver: macvlan
+      driver_options:
+          parent: '{{ pihole_interface }}'
+      ipam_config:
+          - subnet: '{{ pihole_network }}'
+            gateway: '{{ pihole_gateway }}'

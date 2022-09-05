@@ -1,0 +1,19 @@
+network:
+    Version: 2
+    Renderer: NetworkManager
+    ethernets:
+{% if inventory_hostname in groups['main'] %}
+        {{ swag_interface }}:
+            Dhcp4: no
+            Adresses: {{ swag_network }}
+            Gateway: {{ swag_gateway }}
+        {{ dmz_interface }}
+            Dhcp4: no
+            Adresses: {{ dmz_network }}
+            Gateway: {{ dmz_gateway }}
+{% elif inventory_hostname in groups['picluster'] %}
+        {{ pihole_interface }}
+            Dhcp4: no
+            Adresses: {{ pihole_network }}
+            Gateway: {{ pihole_gateway }}
+{% endif %}

@@ -1,5 +1,4 @@
-
-
+---
 - name: Create an internal macvlan network
   when: enable_swag_internal | default(False)
   docker_network:
@@ -19,7 +18,7 @@
       name: swag_public_macvlan
       driver: macvlan
       driver_options:
-          parent: '{{ swag_interface }}'
+          parent: '{{ dmz_interface }}'
       ipam_config:
           - subnet: '{{ dmz_network }}'
             gateway: '{{ dmz_gateway }}'

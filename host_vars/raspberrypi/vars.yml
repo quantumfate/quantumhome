@@ -1,6 +1,6 @@
 ---
 # Connection
-ansible_host: 192.168.178.26
+ansible_host: 192.168.2.12
 ansible_user: pi
 ansible_connection: ssh
 ansible_ssh_port: "{{ security_ssh_port }}"
@@ -10,9 +10,16 @@ ansible_become_password: "{{ raspberrypi_sudo_password }}"
 
 docker_install_compose: false
 
+pihole_hostname: piholeunbound
+pi_network: "pi_network"
+pihole_network: "{{ '.'.join(lan_gateway.split('.')[0:2]) }}.2.0/24"
+pihole_gateway: "{{ '.'.join(pihole_network.split('.')[0:3]) }}.12"
+
 # Packages to be installed for specific host
 specific_packages:
   - unbound
+
+enable_powersaving: no
 
 # System specific variables
 timezone: Europe/Amsterdam
@@ -21,3 +28,5 @@ guid: "1000"
 # enable variables
 enable_pihole: yes
 enable_cloudflareddns: yes
+static_dns: "1.1.1.1"
+pihole_dns: "1.1.1.1;2606:4700:4700::1111"

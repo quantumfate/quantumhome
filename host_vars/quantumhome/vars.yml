@@ -14,6 +14,8 @@ ansible_become_password: "{{ quantumhome_sudo_password }}"
 specific_packages:
   - tree
 
+enable_powersaving: yes
+
 # MergerFS
 mergerfs_root: /mnt/storage
 cache_root: /mnt/storage_cache
