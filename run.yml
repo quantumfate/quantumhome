@@ -37,6 +37,12 @@
       - security
     when: enable_security | default(False)
 
+  tasks:
+    - name: reload the ssh service
+      service:
+        name: ssh
+        state: restarted
+
   tags:
     - all
 
