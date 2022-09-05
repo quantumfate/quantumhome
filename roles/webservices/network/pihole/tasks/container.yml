@@ -13,7 +13,8 @@
     # network_mode: host
     dns_servers:
       - 127.0.0.1
-      - "{{ static_dns }}"
+      - "{{ ipv4static_dns }}"
+      - "{{ ipv6static_dns }}"
     env:
       "ServerIP": "{{ ip_address }}"
       "TZ": "{{ timezone }}"
