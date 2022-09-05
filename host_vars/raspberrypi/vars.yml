@@ -12,12 +12,10 @@ docker_install_compose: false
 
 pihole_hostname: piholeunbound
 pi_network: "pi_network"
-pihole_network: "{{ '.'.join(lan_gateway.split('.')[0:2]) }}.2.0/24"
-pihole_gateway: "{{ '.'.join(pihole_network.split('.')[0:3]) }}.12"
 
 # Packages to be installed for specific host
 specific_packages:
-  - unbound
+  - netplan.io
 
 enable_powersaving: no
 

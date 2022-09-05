@@ -22,6 +22,7 @@
     - powertop.timer
     - cpupower-min
     - cpupower-min.timer
+  when: enable_powersaving | default(False)
 
 - name: monitoring systemd reload
   systemd:
@@ -32,3 +33,4 @@
   with_items:
     - smartmon
     - smartmon.timer
+  when: enable_powersaving | default(False)
