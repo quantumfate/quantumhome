@@ -86,12 +86,9 @@ lan_gateway: "{{ '.'.join(ipv4lan_network.split('.')[0:3]) }}.1"
 dmz_network: "{{ '.'.join(lan_gateway.split('.')[0:2]) }}.6.0/24"
 dmz_gateway: "{{ '.'.join(dmz_network.split('.')[0:3]) }}.1"
 ## swag
-swag_network: "10.0.0.0/27"
+swag_network: "{{ '.'.join(swag_network.split('.')[0:3]) }}.3.0"
 swag_base: "{{ '.'.join(swag_network.split('.')[0:3]) }}"
-swag_gateway: "{{ '.'.join(swag_network.split('.')[0:3]) }}.1"
-## pihole
-pihole_network: "{{ '.'.join(lan_gateway.split('.')[0:2]) }}.2.0/24"
-pihole_gateway: "{{ '.'.join(pihole_network.split('.')[0:3]) }}.12"
+swag_gateway: "{{ '.'.join(lan_gateway.split('.')[0:2]) }}.3.1"
 ## dns
 dns_nameservers: ['1.1.1.1', '1.0.0.1']
 

@@ -7,10 +7,8 @@
     hostname: "{{ pihole_hostname }}"
     domainname: "{{ url }}"
     pull: yes
-    networks:
-      - name: pi_network
     state: 'started'
-    # network_mode: host
+    network_mode: host
     dns_servers:
       - 127.0.0.1
       - "{{ ipv4static_dns }}"
@@ -32,12 +30,12 @@
       - "{{ docker_dir }}/{{ container_name }}/pihole:/etc/pihole"
       - "{{ docker_dir }}/{{ container_name }}/dnmasq-unbound:/etc/dnsmasq.d"
       - "{{ docker_dir }}/{{ container_name }}/unbound.conf.d/pi-hole.conf:/etc/unbound/unbound.conf.d/pi-hole.conf"
-    exposed_ports:
-      - "80/tcp"
-      - "443/tcp"
-      - "67/udp"
-      - "53/tcp"
-      - "53/udp"
+    ports:
+      - "80:80/tcp"
+      - "443:443/tcp"
+      - "67:67/udp"
+      - "53:53/tcp"
+      - "53:53/udp"
     restart_policy: unless-stopped
   register: wait_result
 

@@ -18,7 +18,6 @@ specific_packages:
   - netplan.io
 
 enable_powersaving: no
-
 # System specific variables
 timezone: Europe/Amsterdam
 guid: "1000"

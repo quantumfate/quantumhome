@@ -1,0 +1,13 @@
+[Unit]
+Description=Initialize macvlan network for netplan on startup and set promiscious mode
+
+[Service]
+ExecStart=ip link add {{ swag_interface }} link {{ main_parent_interface }} type macvlan mode bridge
+ExecStart=ip link add {{ dmz_interface }} link {{ main_parent_interface }} type macvlan mode bridge
+ExecStart=ip link set {{ swag_interface }} promisc on
+ExecStart=ip link set {{ dmz_interface }} promisc on
+Type=oneshot
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
