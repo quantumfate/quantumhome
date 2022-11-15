@@ -1,0 +1,13 @@
+---
+- name: Install the macvlan service file
+  template:
+    src: 'macvlan.serice.j2'
+    dest: '/etc/systemd/system/macvlan.service'
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart macvlan service
+
+- name: Rebooting after service installation
+  reboot:
+    msg: Rebooting because macvlan service was installed

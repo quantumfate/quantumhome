@@ -13,5 +13,5 @@
         "**/templates/**/*.yml": "ansible-jinja",
         "**/templates/**/*.yaml": "ansible-jinja",
     },
-    "ansible.ansible.useFullyQualifiedCollectionNames": false
+    "ansible.ansible.useFullyQualifiedCollectionNames": true
 }

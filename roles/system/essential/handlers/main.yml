@@ -34,3 +34,10 @@
     - smartmon
     - smartmon.timer
   when: enable_powersaving | default(False)
+
+- name: restart macvlan service
+  systemd:
+    daemon_reload: true
+    state: restarted
+    enabled: true
+    name: macvlan.serice

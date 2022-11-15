@@ -1,9 +1,20 @@
 ---
-- include: essential.yml
-- include: user.yml
-- include: remove_snap.yml
 
-- include: netplan.yml
+- name: Importing essential tasks
+  include_tasks: essential.yml
 
-- include_tasks: powersaving.yml
+- name: Importing user settings
+  include_tasks: user.yml
+
+- name: Importing remove snap
+  include_tasks: remove_snap.yml
+
+- name: Importing netplan
+  include_tasks: netplan.yml
+
+- name: Importing amcvlan
+  include_tasks: macvlan.yml
+
+- name: Importing powersaving
+  include_tasks: powersaving.yml
   when: enable_powersaving | default(False)
