@@ -103,7 +103,7 @@
     when: docker_backup_data
     block:
     - name: Restore the docker directory folder from the MergerFS array
-      synchronize:
+      ansible.posix.synchronize:
         src: "{{ docker_backup_src }}"
         dest: "{{ docker_dir }}/"
         delete: true

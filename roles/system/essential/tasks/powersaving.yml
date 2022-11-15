@@ -14,7 +14,7 @@
     group: root
     mode: 0755
   notify: 
-    - powersaving systemd reload
+    - Powersaving systemd reload
   with_fileglob:
     - files/powersaving/*.service
     - files/powersaving/*.timer

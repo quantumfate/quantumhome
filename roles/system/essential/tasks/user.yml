@@ -16,7 +16,7 @@
     msg: "{{ 'Failed with message: ' ~ wait_result.msg if wait_result.failed else 'Success enabling passwordless sudo for ' ~ ansible_user }}" 
 
 - name: Copy the public SSH key 
-  authorized_key:
+  ansible.posix.authorized_key:
     user: "{{ ansible_user }}"
     state: present
     key: "{{ ansible_ssh_public_key_file }}"

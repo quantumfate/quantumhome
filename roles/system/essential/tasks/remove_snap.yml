@@ -7,12 +7,12 @@
   when: "'snapd' in ansible_facts.packages"
   block:
   - name: Unmount the core* snaps
-    mount:
+    ansible.posix.mount:
       name: "/snap/core*"
       state: unmounted
 
   - name: Remove the pre-installed snaps
-    snap:
+    community.general.snap:
       name: '*'
       state: absent
     failed_when: false

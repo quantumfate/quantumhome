@@ -23,10 +23,10 @@
     - templates/internal/*.j2
     - templates/public/*.j2
   notify:
-    - restart swag internal
-    - restart swag public
-    - test nginx internal
-    - test nginx public
+    - Restart swag internal
+    - Restart swag public
+    - Test nginx internal
+    - Test nginx public
   register: swag_config
 
 - name: Create the DNS conf folder
@@ -47,5 +47,5 @@
     group: "{{ ansible_user }}"
     mode: 0644
   notify:
-    - restart swag public
-    - restart swag internal
+    - Restart swag public
+    - Restart swag internal

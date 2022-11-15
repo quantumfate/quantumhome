@@ -1,4 +1,9 @@
 ---
-- include_tasks: docker.yml
-- include_tasks: xresources.yml
-- include_tasks: assets.yml
+- name: Importing docker tasks
+  include_tasks: docker.yml
+
+- name: Importing xresources tasks
+  include_tasks: xresources.yml
+  
+- name: Importing assets tasks
+  include_tasks: assets.yml

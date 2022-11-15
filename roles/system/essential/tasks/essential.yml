@@ -28,7 +28,7 @@
 
 - name: Generate the locale (Debian and Ubuntu)
   when: ansible_os_family == 'Debian'
-  locale_gen:
+  community.general.system.locale_gen:
     name: "{{ locale }}"
     state: present
 

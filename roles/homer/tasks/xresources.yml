@@ -20,6 +20,6 @@
   ansible.builtin.set_fact:
     colors: "{{ lookup('file', 'dracula.json') | from_json }}"
 
-- name: debug x
+- name: Debug x
   debug:
     var: colors

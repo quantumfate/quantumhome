@@ -1,15 +1,22 @@
-- include_tasks: check_status.yml
+- name: Import check_status
+  include_tasks: check_status.yml
 
-- include_tasks: tasks/list_services.yml
+- name: Import list_services
+  include_tasks: tasks/list_services.yml
 
-- include_tasks: networks.yml
+- name: Import networks
+  include_tasks: networks.yml
 
-- include_tasks: docker.yml
+- name: Import docker
+  include_tasks: docker.yml
 
-- include_tasks: cloudflare_real_ips.yml
+- name: Import cloudflare_real_ips
+  include_tasks: cloudflare_real_ips.yml
   when: enable_swag_swagpublic | default(False)
 
-- include_tasks: cloudflare_internal_dns.yml
+- name: Import cloudflare_internal_dns
+  include_tasks: cloudflare_internal_dns.yml
   when: enable_swag_swaginternal | default(False)
 
-- include_tasks: install_configs.yml
+- name: Import install_configs
+  include_tasks: install_configs.yml

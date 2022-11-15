@@ -10,7 +10,7 @@
           - subnet: '{{ swag_network }}'
             gateway: '{{ swag_gateway }}'
   notify:
-      - restart swag internal
+      - Restart swag internal
 
 - name: Create a public macvlan network
   when: enable_swag_public | default(False)
@@ -23,4 +23,4 @@
           - subnet: '{{ dmz_network }}'
             gateway: '{{ dmz_gateway }}'
   notify:
-      - restart swag public
+      - Restart swag public
