@@ -1,5 +1,5 @@
 - name: Create the volume group for one of the cache drives and assign the label cache
-  lvol:
+  community.general.lvol:
     vg: "{{ main_volume_group }}"
     lv: "{{ vg_cache_drive }}"
     size: 100%FREE

@@ -1,7 +1,7 @@
 ---
 - name: Create an internal macvlan network
   when: enable_swag_internal | default(False)
-  docker_network:
+  community.docker.docker_network:
       name: swag_internal_macvlan
       driver: macvlan
       driver_options:
@@ -14,7 +14,7 @@
 
 - name: Create a public macvlan network
   when: enable_swag_public | default(False)
-  docker_network:
+  community.docker.docker_network:
       name: swag_public_macvlan
       driver: macvlan
       driver_options:

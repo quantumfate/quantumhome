@@ -1,5 +1,5 @@
 ---
-- name: Create the mergerfs storage folder "{{ mergerfs_root }}"
+- name: Create the mergerfs storage folder {{ mergerfs_root }}
   ansible.builtin.file:
     path: "{{ mergerfs_root }}"
     state: directory
@@ -7,7 +7,7 @@
     owner: "root"
     group: "root"
 
-- name: Create the mergerfs storage folder "{{ mergerfs_root }}_slow"
+- name: Create the mergerfs storage folder slow {{ mergerfs_root }}
   ansible.builtin.file:
     path: "{{ mergerfs_root }}_slow"
     state: directory
@@ -15,7 +15,7 @@
     owner: "root"
     group: "root"
 
-- name: Create the mergerfs storage folder "{{ cache_root }}"
+- name: Create the mergerfs storage folder {{ cache_root }}
   ansible.builtin.file:
     path: "{{ cache_root }}"
     state: directory

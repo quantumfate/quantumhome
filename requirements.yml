@@ -9,4 +9,3 @@ roles:
   - name: geerlingguy.docker_arm
   - name: oefenweb.dns
   - name: notmycloud.ssh_port_fingerprint
-  - name: notmycloud.ssh_keyscan

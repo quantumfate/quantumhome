@@ -1,5 +1,5 @@
 - name: Get infos on SWAG container
-  docker_container_info:
+  community.docker.docker_container_info:
     name: swag_internal
   register: result
 

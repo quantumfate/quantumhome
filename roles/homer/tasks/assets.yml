@@ -9,12 +9,12 @@
 
 
 - name: Empty the variables (In case the task is called twice)
-  set_fact:
+  ansible.builtin.set_fact:
     apps_with_icons: []
   when: apps_with_icons is defined
 
 - name: List the apps with icons
-  set_fact:
+  ansible.builtin.set_fact:
           apps_with_icons: "{{ apps_with_icons | default([]) + [(item | basename).split('.')[0]] }}"
   with_items: "{{ web_services_to_build }}"
 

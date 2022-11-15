@@ -17,7 +17,7 @@
     mode: 0644
 
 - name: Register a variable from json colors
-  set_fact:
+  ansible.builtin.set_fact:
     colors: "{{ lookup('file', 'dracula.json') | from_json }}"
 
 - name: debug x

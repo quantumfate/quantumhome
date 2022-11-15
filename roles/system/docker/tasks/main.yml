@@ -28,7 +28,7 @@
 
 - name: Stop and remove all the disabled containers if they are explicitly set to no
   become: false
-  docker_container:
+  community.docker.docker_container:
     name: "{{ main_key.path.split('/')[-1] }}"
     state: absent
   # You really want to make sure here the variable is actually defined...
@@ -74,8 +74,8 @@
   when: docker_persistent_data
   block:
   - name: Set the mandatory docker_dir variable
-    set_fact:
-      docker_dir: "{{ docker_dir }}" # required. The C(set_fact) module takes key=value pairs as variables to set in the playbook scope. Or alternatively, accepts complex arguments using the C(args:) statement.
+    ansible.builtin.set_fact:
+      docker_dir: "{{ docker_dir }}" # required. The C(ansible.builtin.set_fact) module takes key=value pairs as variables to set in the playbook scope. Or alternatively, accepts complex arguments using the C(args:) statement.
   - name: Check if the persistent data folder exists on the remote machine
     stat:
       path: "{{ docker_dir }}"

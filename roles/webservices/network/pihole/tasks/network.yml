@@ -1,6 +1,6 @@
 ---
 - name: Create a pi network
-  docker_network:
+  community.docker.docker_network:
       name: "{{ pi_network }}"
       driver: macvlan
       driver_options:

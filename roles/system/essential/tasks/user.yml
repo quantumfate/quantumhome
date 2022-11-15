@@ -1,6 +1,6 @@
 ---
 - name: Set the name of a sudo group
-  set_fact:
+  ansible.builtin.set_fact:
     sudo_group: sudo
 
 - name: Enable passwordless sudo for ansible user

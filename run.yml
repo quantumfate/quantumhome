@@ -5,12 +5,12 @@
   gather_facts: no
 
   roles:
-    - role: security/ansible-ssh-port
+    - role: notmycloud.ssh_port_fingerprint
       vars:
-        ssh_port_change: false  # Specify true if you want this role to update the SSH listening port to the specified ansible_port.
-        ansible_port: "{{ security_ssh_port }}" # Specifies which port SSH "should" be listening on.
+        ssh_port_change: false    # Specify true if you want this role to update the SSH listening port to the specified ansible_port.
+        ansible_port: "{{ security_ssh_port }}"          # Specify which port SSH "should" be listening on.
       tags:
-        - port
+        - key
 
   tags:
     - all
@@ -51,15 +51,16 @@
   tags:
     - all
 
-- name: 
+- name: Implement basic security and prepare the system for docker specific tasks
   hosts: all
   become: yes
   gather_facts: yes
   
   pre_tasks:
-  - import_tasks: tasks/ensure_ssh_port.yml
-    tags:
-      - port
+    - name: Making sure the correct port is set
+      import_tasks: tasks/ensure_ssh_port.yml
+      tags:
+        - port
   
   roles:
 
@@ -84,7 +85,8 @@
   tags:
     - all
 
-- hosts: picluster
+- name: Prepare the picluster for network operations
+  hosts: picluster
   become: yes
   gather_facts: yes
 
@@ -108,7 +110,8 @@
   tags:
     - picluster
 
-- hosts: main
+- name: Run NAS specific tasks on the main machine
+  hosts: main
   become: yes
   gather_facts: yes
 
@@ -159,7 +162,8 @@
   tags:
     - main
 
-- hosts: all
+- name: Make sure the environment is setup properly
+  hosts: all
   become: yes
   gather_facts: yes
 

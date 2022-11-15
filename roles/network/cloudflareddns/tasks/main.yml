@@ -1,6 +1,6 @@
 ---
 - name: Make sure the cloudflareddns container is created and running
-  docker_container:
+  community.docker.docker_container:
     name: "{{ container_name }}"
     image: "oznu/cloudflare-ddns:latest"
     pull: yes

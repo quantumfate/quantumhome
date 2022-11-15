@@ -20,14 +20,14 @@
     - swag_internal
 
 - name: restart swag internal
-  docker_container:
+  community.docker.docker_container:
     name: "swag_internal"
     state: started
     restart: yes
   when: enable_swag_internal | default(False) and existing is defined and running is defined
 
 - name: restart swag public
-  docker_container:
+  community.docker.docker_container:
     name: "swag_public"
     state: started
     restart: yes
