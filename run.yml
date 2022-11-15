@@ -1,17 +1,20 @@
 ---
-- hosts: all
+- name: Juggling the port and gather no facts is off
+  hosts: all
   become: yes
   gather_facts: no
 
   pre_tasks:
-    - import_tasks: tasks/ssh_juggle_port.yml
+    - name: Juggling the port
+      import_tasks: tasks/ssh_juggle_port.yml
       tags:
         - port
 
   tags:
     - all
 
-- hosts: all
+- name: Implementing basic Security and running system essential tasks
+  hosts: all
   become: yes
   gather_facts: yes
 
@@ -38,7 +41,7 @@
     when: enable_security | default(False)
 
   tasks:
-    - name: reload the ssh service
+    - name: Reload the ssh service
       service:
         name: ssh
         state: restarted
@@ -46,7 +49,8 @@
   tags:
     - all
 
-- hosts: all
+- name: 
+  hosts: all
   become: yes
   gather_facts: yes
   
@@ -152,6 +156,7 @@
   # #     - filesystems
   # #     - snapraid
   # #   when: docker_persistent_data | default(False)
+
   tags:
     - main
 
