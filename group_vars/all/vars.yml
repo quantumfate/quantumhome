@@ -27,7 +27,7 @@ colorscheme: dracula
 
 # Apt mirrors
 version: jammy
-apt_mirror: http://mirror.wtnet.de/ubuntu/
+apt_mirror: https://mirror.dogado.de/ubuntu/
 
 # Includes all paths for webservices to be built
 webservices_paths:
@@ -86,7 +86,7 @@ lan_gateway: "{{ '.'.join(ipv4lan_network.split('.')[0:3]) }}.1"
 dmz_network: "{{ '.'.join(lan_gateway.split('.')[0:2]) }}.6.0/24"
 dmz_gateway: "{{ '.'.join(dmz_network.split('.')[0:3]) }}.1"
 ## swag
-swag_network: "{{ '.'.join(swag_network.split('.')[0:3]) }}.3.0"
+swag_network: "{{ '.'.join(lan_gateway.split('.')[0:2]) }}.3.0/24"
 swag_base: "{{ '.'.join(swag_network.split('.')[0:3]) }}"
 swag_gateway: "{{ '.'.join(lan_gateway.split('.')[0:2]) }}.3.1"
 ## dns

@@ -1,0 +1,27 @@
+---
+- name: SSH Port Juggle
+  block:
+    - name: SSH Port Juggle | Set the ansible_port to the default port
+      set_fact:
+        ansible_ssh_port: "{{ default_ssh_port }}"
+    - name: Try connecting via SSH using the default Port
+      ansible.builtin.wait_for_connection:
+        timeout: 5
+      register: _ssh_default_port_result
+  rescue:
+    - name: SSH Port Juggle | Set the ansible_port to the security port
+      set_fact:
+        ansible_ssh_port: "{{ security_ssh_port }}"
+    - name: Try connecting using the security port
+      ansible.builtin.wait_for_connection:
+        timeout: 5
+      register: _ssh_security_port_result
+  always:
+    - name: SSH Port Juggle | Make sure the ansible_ssh_port is set to the security port for subsequent runs
+      ansible.builtin.debug:
+        msg: Couldn't connect with any port
+      failed_when: 
+      - _ssh_default_port_result is defined
+      - _ssh_security_port_result is defined
+      - _ssh_default_port_result is failed
+      - _ssh_security_port_result is failed

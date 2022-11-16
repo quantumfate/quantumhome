@@ -5,6 +5,11 @@
     web_services_to_build: []
   when: web_services_to_build is defined
 
+- name: Empty the variables (In case the task is called twice)
+  ansible.builtin.set_fact:
+    roleswithvariables_to_build: []
+  when: roleswithvariables_to_build is defined
+
 # - name: Web Container Roles Prepare the data for all the webservices hosted as a webservice
 #   block:
 - name: Get a list of web containers to be hosted as a web service and displayed by homer
@@ -31,6 +36,7 @@
       - 'homer'
     recurse: no
   register: roleswithvariables
+
 - name: Debug roleswithvariables variable
   debug:
     var: roleswithvariables 
@@ -44,11 +50,12 @@
     name: "{{ item.path.split('/')[-1] }}"
   with_items: "{{ webservices.files }}"
 
-- name: Including homer main.yml
+- name: Including the role to build  main.yml
   include_vars:
     dir: "{{ playbook_dir }}/roles/homer/defaults"
     files_matching: main.yml
-    name: "homer"
+    name: "{{ item.path.split('/')[-1] }}"
+  with_items: "{{ roleswithvariables.files }}"
 
 - name: Build the key, value pairs that the webservices dictionary consits of
   ansible.builtin.set_fact:
@@ -83,9 +90,9 @@
     roleswithvariables_to_build: "{{ roleswithvariables_to_build | default({}) | 
         combine({ 
           
-          otherroles.path.split('/')[-1]: 
+          item.path.split('/')[-1]: 
           { 
-            'role_name': otherroles.path.split('/')[-1], 
+            'role_name': item.path.split('/')[-1], 
             'ip_address': this_current.ip_address | default(''), 
             'swag_address': this_current.swag_address | default(''), 
             'url': this_current.url | default('') 
@@ -93,10 +100,8 @@
         }) 
       }}"
   vars:
-    this_current: "{{ lookup('vars', otherroles.path.split('/')[-1]) }}"
+    this_current: "{{ lookup('vars', item.path.split('/')[-1]) }}"
   with_items: "{{ roleswithvariables.files }}"
-  loop_control:
-    loop_var: otherroles
 
 - name: Debug roleswithvariables_to_build variable
   debug:

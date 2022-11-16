@@ -1,0 +1,47 @@
+---
+- name: SSH Port Juggle | Try connecting via SSH
+  wait_for_connection:
+    timeout: 5
+  ignore_errors: true
+  register: _ssh_port_result
+
+- name: SSH Port Juggle | Set the ansible_port to the fallback default port
+  set_fact:
+    ansible_ssh_port: "{{ default_ssh_port }}"
+  when:
+    - _ssh_port_result is failed
+
+- name: SSH Port Juggle | Try connecting again
+  wait_for_connection:
+    timeout: 5
+  ignore_errors: true
+  register: _ssh_port_default_result
+  when:
+    - _ssh_port_result is failed
+
+# When sshd is not configured to port 22 anymore but the fallback port was set 
+# from port 22 to port 22 anyway after a failed connection
+- name: SSH Port Juggle | Try the security SSH port in case default port connection after fallback was denied
+  when:
+    - _ssh_port_result is failed
+    - _ssh_port_default_result is defined
+    - _ssh_port_default_result is failed
+
+  block:
+  - name: Set the ansible_ssh_port as security_ssh_port
+    set_fact:
+      ansible_ssh_port: "{{ security_ssh_port }}"
+  - name: Try connection with security_ssh_port
+    wait_for_connection:
+      timeout: 5
+    ignore_errors: true
+    register: _ssh_port_security_result
+
+- name: SSH Port Juggle | Fail
+  fail: 
+    msg: "Neither the configured ansible_port nor the fallback port 22 were reachable"
+  when:
+    - _ssh_port_result is failed
+    - _ssh_port_default_result is defined or _ssh_port_security_result is defined
+    - _ssh_port_default_result is failed
+    - _ssh_port_security_result is failed

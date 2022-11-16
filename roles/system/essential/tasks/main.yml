@@ -11,10 +11,12 @@
 
 - name: Importing netplan
   include_tasks: netplan.yml
+  when: enable_netplan_config | default(False)
 
-- name: Importing amcvlan
+- name: Importing macvlan
   include_tasks: macvlan.yml
-
+  when: enable_netplan_config | default(False)
+  
 - name: Importing powersaving
   include_tasks: powersaving.yml
   when: enable_powersaving | default(False)

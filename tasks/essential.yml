@@ -1,0 +1,31 @@
+---
+- name: Set the name of a sudo group
+  set_fact:
+    sudo_group: sudo
+
+- name: Allow 'sudo' group to have passwordless sudo
+  become: yes
+  lineinfile:
+    path: /etc/sudoers
+    state: present
+    regexp: '^%{{ sudo_group }}'
+    line: '%{{ sudo_group }} ALL=(ALL) NOPASSWD: ALL'
+    validate: '/usr/sbin/visudo -cf %s'
+
+- name: Copy the public SSH key 
+  become: yes
+  ansible.posix.authorized_key:
+    user: "{{ ansible_user }}"
+    state: present
+    key: "{{ ansible_ssh_public_key_file }}"
+
+- name: Change the default SSH Port
+  ansible.builtin.lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "^Port"
+    line: "Port {{ security_ssh_port }}"
+
+- name: Restart ssh
+  ansible.builtin.service:
+    name: sshd
+    state: restarted

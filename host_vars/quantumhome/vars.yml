@@ -9,6 +9,12 @@ ansible_ssh_port: "{{ security_ssh_port }}"
 ansible_ssh_private_key_file: /home/leonch/.ssh/quantumhome
 ansible_ssh_public_key_file: "{{ lookup('file', '~/.ssh/quantumhome.pub') }}"
 ansible_become_password: "{{ quantumhome_sudo_password }}"
+host_become_password: "{{ quantumhome_sudo_password }}"
+
+ssh_keys:
+  - name: default user ssh key
+    user: "{{ ansible_user }}"
+    key: "{{ lookup('file', '~/.ssh/quantumhome.pub') | default('') }}"
 
 # Packages to be installed for specific host
 specific_packages:
@@ -30,6 +36,7 @@ enable_snapraid: yes
 enable_homer: yes
 enable_nextcloud: yes
 ## Networking
+enable_netplan_config: yes
 enable_swag: yes
 enable_bunkerizednginx: no
 ## Security

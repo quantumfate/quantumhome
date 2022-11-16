@@ -4,14 +4,18 @@
   become: yes
   gather_facts: no
 
-  roles:
-    - role: notmycloud.ssh_port_fingerprint
-      vars:
-        ssh_port_change: false    # Specify true if you want this role to update the SSH listening port to the specified ansible_port.
-        ansible_port: "{{ security_ssh_port }}"          # Specify which port SSH "should" be listening on.
-      tags:
-        - key
-
+  pre_tasks:
+  - name: Importing the task to juggle ports
+    import_tasks: tasks/ssh_juggle_port.yml
+    tags:
+      - always
+      - port
+      - ssh
+      
+  - name: Run very essential tasks against server to ensure success of subsequent runs
+    ansible.builtin.import_tasks: tasks/essential.yml
+    tags:
+      - always
   tags:
     - all
 

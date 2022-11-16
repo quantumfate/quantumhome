@@ -1,3 +1,6 @@
 [submodule "roles/security/ansible-ssh-port"]
 	path = roles/security/ansible-ssh-port
 	url = git@github.com:notmycloud/ansible-ssh-port.git
+[submodule "roles/security/ansible-ssh-port-probe"]
+	path = roles/security/ansible-ssh-port-probe
+	url = git@github.com:nfaction/ansible-ssh-port-probe.git
