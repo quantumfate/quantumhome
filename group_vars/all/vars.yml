@@ -84,6 +84,7 @@ vpn_network: "10.1.1.0/24"
 lan_gateway: "{{ '.'.join(ipv4lan_network.split('.')[0:3]) }}.1"
 ## dmz
 dmz_network: "{{ '.'.join(lan_gateway.split('.')[0:2]) }}.6.0/24"
+dmz_base: "{{ '.'.join(dmz_network.split('.')[0:3]) }}"
 dmz_gateway: "{{ '.'.join(dmz_network.split('.')[0:3]) }}.1"
 ## swag
 swag_network: "{{ '.'.join(lan_gateway.split('.')[0:2]) }}.3.0/24"

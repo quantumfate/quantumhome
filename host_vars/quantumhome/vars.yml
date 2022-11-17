@@ -21,7 +21,6 @@ specific_packages:
   - tree
 
 enable_powersaving: yes
-parent_interface: eno1
 # MergerFS
 mergerfs_root: /mnt/storage
 cache_root: /mnt/storage_cache

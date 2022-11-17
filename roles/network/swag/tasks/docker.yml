@@ -7,7 +7,7 @@
     pull: yes
     networks:
       - name: swag_internal_macvlan
-        ipv4_address: 10.0.0.24
+        ipv4_address: "{{ swag_base }}.2"
     capabilities: 
       - net_admin
     state: 'started'
@@ -36,7 +36,7 @@
     pull: yes
     networks:
       - name: swag_public_macvlan
-        ipv4_address: "{{ '.'.join(dmz_gateway.split('.')[0:3]) }}.44"
+        ipv4_address: "{{ dmz_base }}.2"
     capabilities: 
       - net_admin
     state: 'started'

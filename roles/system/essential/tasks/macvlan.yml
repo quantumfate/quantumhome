@@ -8,6 +8,6 @@
     mode: 0644
   notify: Restart macvlan service
 
-- name: Rebooting after service installation
-  reboot:
-    msg: Rebooting because macvlan service was installed
+# - name: Rebooting after service installation
+#   reboot:
+#     msg: Rebooting because macvlan service was installed

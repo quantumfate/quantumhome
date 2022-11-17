@@ -2,15 +2,17 @@ network:
   version: 2
   renderer: networkd
   ethernets:
+    {{ main_parent_interface }}:
+      dhcp4: true
     {{ swag_interface }}:
-      adresses: 
+      addresses: 
         - {{ swag_network }}
       routes: 
         - to: {{ swag_base }}.24
           via: {{ swag_gateway }}
     {{ dmz_interface }}:
       dhcp4: yes
-      adresses: 
+      addresses: 
         - {{ dmz_network }}
       routes:
         - to: {{ '.'.join(dmz_gateway.split('.')[0:3]) }}.44

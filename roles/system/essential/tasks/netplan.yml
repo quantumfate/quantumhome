@@ -19,4 +19,5 @@
 - name: Delete the irrelevant configs
   file:
     path: "{{ item.path }}"
+    state: absent
   with_items: "{{ previous_config['files'] }}"
