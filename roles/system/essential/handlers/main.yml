@@ -40,4 +40,4 @@
     daemon_reload: true
     state: restarted
     enabled: true
-    name: macvlan.serice
+    name: macvlan.service

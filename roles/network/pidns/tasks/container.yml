@@ -1,0 +1,17 @@
+---
+- name: Make sure the unbound container is created and running
+  community.docker.docker_container:
+    name: "{{ container_name }}"
+    image: mvance/unbound:latest
+    hostname: 
+    ports:
+      - "53/tcp"
+      - "53/udp"
+    network_mode: 
+      - name: "{{ pi_network }}"
+        ipv4_address: "{{ ip_address }}"
+  register: wait_result
+
+- name: Debug unbound container
+  debug:
+    msg: "{{ 'Failed with message: ' ~ wait_result.msg if wait_result.failed else 'Success enabling and running the container ' ~ container_name }}" 

@@ -3,4 +3,5 @@ container_name: pihole
 url: "pihole.{{ host_local }}"
 homer_category: "Network"
 dashboard_name: "PiHole"
-ip_address: "{{ '.'.join(pihole_network.split('.')[0:3]) }}.12"
+ip_address: "{{ '.'.join(pihole_network.split('.')[0:3]) }}.19"
+pi_dns: "{{ roleswithvariables_to_build['unbound']['ip_address'] }};{{ web_services_to_build['unbound']['ip_address'] }}"

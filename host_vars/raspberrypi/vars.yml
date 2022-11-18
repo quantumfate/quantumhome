@@ -1,6 +1,6 @@
 ---
 # Connection
-ansible_host: 192.168.2.12
+ansible_host: 192.168.9.12
 ansible_user: pi
 ansible_connection: ssh
 ansible_ssh_port: "{{ security_ssh_port }}"
@@ -9,19 +9,13 @@ ansible_ssh_public_key_file: "{{ lookup('file', '~/.ssh/pihole.pub') }}"
 ansible_become_password: "{{ raspberrypi_sudo_password }}"
 host_become_password: "{{ raspberrypi_sudo_password }}"
 
-ssh_keys:
-  - name: default user ssh key
-    user: "{{ ansible_user }}"
-    key: "{{ lookup('file', '~/.ssh/pihole.pub') | default('') }}"
-
-
 docker_install_compose: false
 
-pihole_hostname: piholeunbound
 pi_network: "pi_network"
 
-pihole_network: "{{ '.'.join(ipv4lan_network.split('.')[0:2]) }}.2.0/24"
-pihole_gateway: "{{ '.'.join(pihole_network.split('.')[0:3]) }}.1"
+pihole_network: "{{ '.'.join(ipv4lan_network.split('.')[0:2]) }}.9.0/24"
+pihole_network_base: "{{ '.'.join(pihole_network.split('.')[0:3]) }}"
+pihole_network_gateway: "{{ '.'.join(pihole_network.split('.')[0:3]) }}.1"
 
 # Packages to be installed for specific host
 specific_packages:
@@ -33,8 +27,9 @@ timezone: Europe/Amsterdam
 guid: "1000"
 
 # enable variables
+enable_pidns: yes
+enable_netplan_config: yes
 enable_pihole: yes
 enable_cloudflareddns: yes
 ipv4static_dns: "1.1.1.1"
 ipv6static_dns: "2606:4700:4700"
-pihole_dns: "1.1.1.1;2606:4700:4700::1111"

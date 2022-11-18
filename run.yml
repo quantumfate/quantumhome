@@ -97,11 +97,20 @@
   roles:
 
   ## Network
+  - role: network/pidns
+    tags: 
+      - pihole
+      - containers
+      - docker
+      - network
+    when: enable_pidns | default (False)
+
   - role: webservices/network/pihole
     tags: 
       - pihole
       - containers
       - docker
+      - network
     when: enable_pihole | default(False)
 
   - role: network/cloudflareddns
@@ -109,6 +118,7 @@
       - cloudflareddns
       - containers
       - docker
+      - network
     when: enable_cloudflareddns | default(False)
 
   tags:

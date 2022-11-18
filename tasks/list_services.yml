@@ -18,8 +18,7 @@
   find:
     paths: "{{ webservices_paths }}"
     file_type: directory
-    excludes: homer
-    recurse: no
+    excludes: "{{ include_role_vars }}"
   register: webservices
 - name: Debug webservices variable
   debug:
@@ -32,9 +31,8 @@
     paths: 
       - "{{ playbook_dir }}/roles/"
     file_type: directory
-    patterns:
-      - 'homer'
-    recurse: no
+    patterns: "{{ include_role_vars | flatten | join('') }}"
+    recurse: yes
   register: roleswithvariables
 
 - name: Debug roleswithvariables variable

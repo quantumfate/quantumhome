@@ -1,7 +1,22 @@
 ---
-- name: Create the configuration directory
+- name: Create the configuration directories
   file:
-    path: "{{ docker_dir }}/{{ container_name }}/unbound.conf.d/"
+    path: "{{ item }}"
     state: directory
     recurse: yes
+  with_items:
+    - "{{ docker_dir }}/{{ container_name }}/volume/"
+    - "{{ docker_dir }}/{{ container_name }}/config/"
 
+- name: Copy the config files for pihole host configuration
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ docker_dir }}/{{ container_name }}/config/{{ item }}"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: 0644
+  with_items:
+    - dnsmasq.conf
+    - hosts
+    - pihole-FTL.conf
+    - resolv.conf

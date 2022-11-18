@@ -1,0 +1,10 @@
+[Unit]
+Description=Set the raspberry pi default interface inm promiscuous mode
+
+[Service]
+ExecStart=ip link set {{ pihole_interface }} promisc on
+Type=oneshot
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

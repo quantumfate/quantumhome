@@ -1,0 +1,19 @@
+---
+- name: Set the pi interface in promisc mode
+  ansible.builtin.shell: >
+    set -o pipefail
+    ifconfig {{ pihole_interface }} | grep -q PROMISC
+    && echo -n HOLDED
+    || ifconfig {{ pihole_interface }} promisc
+  register: ifconfig_hold
+  changed_when: ifconfig_hold.stdout != 'HOLDED'
+    
+- name: Create a pi network
+  community.docker.docker_network:
+      name: "{{ pi_network }}"
+      driver: macvlan
+      driver_options:
+          parent: '{{ pihole_interface }}'
+      ipam_config:
+          - subnet: '{{ pihole_network }}'
+            gateway: '{{ pihole_network_gateway }}'

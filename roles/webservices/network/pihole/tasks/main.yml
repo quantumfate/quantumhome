@@ -2,9 +2,6 @@
 - name: Include tasks config
   ansible.builtin.include_tasks: config.yml
 
-- name: Include tasks network
-  ansible.builtin.include_tasks: network.yml
-
 - name: Include tasks unbound
   ansible.builtin.include_tasks: unbound.yml
 

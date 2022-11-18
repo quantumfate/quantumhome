@@ -1,3 +1,6 @@
+address=/gateway/{{ lan_gateway }}
+address=/{{ url }}/{{ ip_address }}
+
 {% for item in web_services_to_build | dict2items if item.url is defined and item.ip_address is defined and item.url != "" and item.ip_address != "" %}
-{{ item.ip_address }} {{ item.url }}
+address=/{{ item.url }}/{{ item.ip_address }} 
 {% endfor %}

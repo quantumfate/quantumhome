@@ -21,10 +21,13 @@ common_packages:
 # Merges common packages with packages on specific hosts
 total_packages: "{{ common_packages + specific_packages }}"
 
+
 # MISC
 my_project_source: /home/leonch/Documents/quantumhome
 colorscheme: dracula
-
+include_role_vars:
+  - homer
+  - unbound
 # Apt mirrors
 version: jammy
 apt_mirror: https://mirror.dogado.de/ubuntu/
@@ -96,7 +99,6 @@ dns_nameservers: ['1.1.1.1', '1.0.0.1']
 ## time/local
 ntp_timezone: '{{ timezone }}'
 locale: en_US.UTF-8
-
 
 # Domains
 subdomains: {
