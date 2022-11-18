@@ -5,7 +5,7 @@
     image: "cbcrowe/pihole-unbound"
     privileged: yes
     hostname: "{{ pihole_hostname }}"
-    domainname: "{{ url }}"
+    # domainname: "{{ url }}"
     pull: yes
     state: 'started'
     network_mode: host
@@ -14,10 +14,10 @@
       - "{{ ipv4static_dns }}"
       - "{{ ipv6static_dns }}"
     env:
-      "ServerIP": "{{ ip_address }}"
       "TZ": "{{ timezone }}"
       "WEBPASSWORD": "{{ pihole_password }}"
       "REV_SERVER": "true"
+      "PIHOLE_DNS_": "{{ pihole_dns }}"
       "REV_SERVER_DOMAIN": "{{ host_local }}"
       "REV_SERVER_TARGET": "{{ lan_gateway }}"
       "REV_SERVER_CIDR": "{{ ipv4lan_network }}"
@@ -26,11 +26,12 @@
       "DNSSEC": "true" # Enable DNSSEC
       "DOMAIN_NAME": "{{ url }}"
       "FTLCONF_REPLY_ADDR4": "{{ ip_address }}"
+      "PIHOLE_DOMAIN": "{{ url }}"
     volumes:
       - "{{ docker_dir }}/{{ container_name }}/pihole:/etc/pihole"
       - "{{ docker_dir }}/{{ container_name }}/dnmasq-unbound:/etc/dnsmasq.d"
       - "{{ docker_dir }}/{{ container_name }}/unbound.conf.d/pi-hole.conf:/etc/unbound/unbound.conf.d/pi-hole.conf"
-    ports:
+    exposed_ports:
       - "80:80/tcp"
       - "443:443/tcp"
       - "67:67/udp"

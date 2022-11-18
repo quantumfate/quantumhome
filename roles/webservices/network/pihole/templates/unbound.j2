@@ -60,14 +60,9 @@ server:
     so-rcvbuf: 1m
 
     # Ensure privacy of local IP ranges
+    private-address: 192.168.0.0/16
     private-address: 169.254.0.0/16
-    private-address: {{ dmz_network }}
-    private-address: {{ ipv4lan_network }}
-    private-address: {{ ipv6lan_network }}
-    private-address: {{ '.'.join(dmz_network.split('.')[0:3]) }}.0/24
-    private-address: {{ swag_network }}
-    private-address: {{ vpn_network }}
-    private-address: fe80::/10
-    private-address: fe80::/10
     private-address: 172.16.0.0/12
     private-address: 10.0.0.0/8
+    private-address: fd00::/8
+    private-address: fe80::/10

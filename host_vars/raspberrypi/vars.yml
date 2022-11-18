@@ -20,6 +20,9 @@ docker_install_compose: false
 pihole_hostname: piholeunbound
 pi_network: "pi_network"
 
+pihole_network: "{{ '.'.join(ipv4lan_network.split('.')[0:2]) }}.2.0/24"
+pihole_gateway: "{{ '.'.join(pihole_network.split('.')[0:3]) }}.1"
+
 # Packages to be installed for specific host
 specific_packages:
   - netplan.io
