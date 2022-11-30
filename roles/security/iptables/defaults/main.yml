@@ -1,0 +1,8 @@
+main_host_interfaces: 
+  - eno1
+  - "{{ swag_interface }}"
+  - "{{ dmz_interface }}"
+pi_host_interfaces: 
+  - eth0
+  - "{{ pihole_interface }}"
+iptables_interfaces: "{% if inventory_hostname in groups['main'] %}{{ main_host_interfaces }}{% elif inventory_hostname in groups['picluster'] %}{{ pi_host_interfaces }}{% endif %}"

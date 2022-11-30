@@ -28,9 +28,7 @@ colorscheme: dracula
 include_role_vars:
   - homer
   - unbound
-# Apt mirrors
-version: jammy
-apt_mirror: https://mirror.dogado.de/ubuntu/
+
 
 # Includes all paths for webservices to be built
 webservices_paths:
@@ -79,20 +77,13 @@ docker_dir: /opt/docker/data
 zsh_antigen_bundles_extras: [ nvm, git ]
 
 # Network
-ipv4lan_network: "192.168.1.0/21"
+ipv4lan_network: "192.168.1.0/18"
 ipv6lan_network: "fd00::/8"
 ## vpn
 vpn_network: "10.1.1.0/24"
 ## lan
 lan_gateway: "{{ '.'.join(ipv4lan_network.split('.')[0:3]) }}.1"
-## dmz
-dmz_network: "{{ '.'.join(lan_gateway.split('.')[0:2]) }}.6.0/24"
-dmz_base: "{{ '.'.join(dmz_network.split('.')[0:3]) }}"
-dmz_gateway: "{{ '.'.join(dmz_network.split('.')[0:3]) }}.1"
-## swag
-swag_network: "{{ '.'.join(lan_gateway.split('.')[0:2]) }}.3.0/24"
-swag_base: "{{ '.'.join(swag_network.split('.')[0:3]) }}"
-swag_gateway: "{{ '.'.join(lan_gateway.split('.')[0:2]) }}.3.1"
+
 ## dns
 dns_nameservers: ['1.1.1.1', '1.0.0.1']
 

@@ -1,3 +1,4 @@
+{% if inventory_hostname in groups['main'] %}
 deb {{ apt_mirror }} {{ version }} main 
 deb-src {{ apt_mirror }} {{ version }} main 
 
@@ -14,3 +15,20 @@ deb {{ apt_mirror }} {{ version }}-backports main restricted universe multiverse
 deb {{ apt_mirror }} {{ version }}-security main restricted
 deb {{ apt_mirror }} {{ version }}-security universe
 deb {{ apt_mirror }} {{ version }}-security multiverse
+{% endif %}
+{% if inventory_hostname in groups ['picluster'] %}
+deb {{ apt_mirror }} {{ version }} main restricted universe multiverse
+deb-src {{ apt_mirror }} {{ version }} main restricted universe multiverse
+
+deb {{ apt_mirror }} {{ version }}-updates main restricted universe multiverse
+deb-src {{ apt_mirror }} {{ version }}-updates main restricted universe multiverse
+
+deb {{ apt_mirror }} {{ version }}-backports main restricted universe multiverse
+deb-src {{ apt_mirror }} {{ version }}-backports main restricted universe multiverse
+
+deb {{ apt_mirror }} {{ version }}-security main restricted universe multiverse
+deb-src {{ apt_mirror }} {{ version }}-security main restricted universe multiverse
+
+deb http://archive.canonical.com/ubuntu {{ version }} partner
+deb-src http://archive.canonical.com/ubuntu {{ version }} partner
+{% endif %}

@@ -1,17 +1,35 @@
 ---
-- name: Make sure the unbound container is created and running
-  community.docker.docker_container:
-    name: "{{ container_name }}"
-    image: mvance/unbound:latest
-    hostname: 
-    ports:
-      - "53/tcp"
-      - "53/udp"
-    network_mode: 
-      - name: "{{ pi_network }}"
-        ipv4_address: "{{ ip_address }}"
-  register: wait_result
+# - name: Make sure the unbound container is created and running
+#   community.docker.docker_container:
+#     name: "{{ container_name }}"
+#     image: mvance/unbound:latest
+#     hostname:
+#     ports:
+#       - "53/tcp"
+#       - "53/udp"
+#     network_mode:
+#       - name: "{{ pi_network }}"
+#         ipv4_address: "{{ ip_address }}"
+#   register: wait_result
 
-- name: Debug unbound container
-  debug:
-    msg: "{{ 'Failed with message: ' ~ wait_result.msg if wait_result.failed else 'Success enabling and running the container ' ~ container_name }}" 
+# - name: Debug unbound container
+#   debug:
+#     msg: "{{ 'Failed with message: ' ~ wait_result.msg if wait_result.failed else 'Success enabling and running the container ' ~ container_name }}" 
+
+- name: Make sure the Homer container is created and running
+  community.docker.docker_container:
+    name: 'homer'
+    image: "b4bz/homer"
+    networks:
+      - name: macvlan_intedrnal_new
+        ipv4_address: 192.168.10.22
+    pull: true
+    state: 'started'
+    env:
+      "INIT_ASSETS": "0"
+      "UID": "{{ guid }}"
+      "GID": "{{ guid }}"
+      "TZ": "{{ timezone }}"
+    volumes:
+      - "{{ docker_dir }}/{{ container_name }}:/www/assets"
+    restart_policy: unless-stopped

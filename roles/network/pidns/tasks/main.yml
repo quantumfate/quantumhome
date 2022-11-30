@@ -1,6 +1,4 @@
 ---
-- name: Include the service network tasks
-  ansible.builtin.include_tasks: service.yml
 
 - name: Include the pihole network tasks
   ansible.builtin.include_tasks: network.yml

@@ -18,7 +18,7 @@
       - open-iscsi
 
   - name: Install the apt mirror list
-    when: ansible_facts['distribution'] == 'Ubuntu'
+    # when: ansible_facts['distribution'] == 'Ubuntu'
     template:
       src: sources.list.j2
       dest: /etc/apt/sources.list

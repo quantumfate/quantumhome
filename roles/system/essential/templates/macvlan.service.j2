@@ -2,10 +2,19 @@
 Description=Initialize macvlan network for netplan on startup and set promiscious mode
 
 [Service]
+{% if inventory_hostname in groups['picluster'] %}
+ExecStart=ip link add {{ pihole_interface }} link {{ pihole_parent_interface }} type macvlan mode bridge
+ExecStart=ip link set dev {{ pihole_interface }} address {{ pihole_network_mac }}
+ExecStart=ip link set {{ pihole_interface }} promisc on
+{% endif %}
+{% if inventory_hostname in groups['main'] %}
 ExecStart=ip link add {{ swag_interface }} link {{ main_parent_interface }} type macvlan mode bridge
 ExecStart=ip link add {{ dmz_interface }} link {{ main_parent_interface }} type macvlan mode bridge
+ExecStart=ip link set dev {{ swag_interface }} address {{ swag_mac }}
+ExecStart=ip link set dev {{ dmz_interface }} address {{ dmz_mac }}
 ExecStart=ip link set {{ swag_interface }} promisc on
 ExecStart=ip link set {{ dmz_interface }} promisc on
+{% endif %}
 Type=oneshot
 RemainAfterExit=yes
 

@@ -1,0 +1,56 @@
+---
+- name: Juggling the port and gather no facts is off
+  hosts: picluster
+  become: yes
+  gather_facts: no
+
+  pre_tasks:
+  - name: Importing the task to juggle ports
+    import_tasks: tasks/ssh_juggle_port.yml
+    tags:
+      - always
+      - port
+      - ssh
+            
+  - name: Run very essential tasks against server to ensure success of subsequent runs
+    ansible.builtin.import_tasks: tasks/essential.yml
+    tags:
+      - always
+  tags:
+    - all
+
+
+- name: Implement basic security and prepare the system for docker specific tasks
+  hosts: picluster
+  become: yes
+  gather_facts: yes
+  
+  pre_tasks:
+    - name: Making sure the correct port is set
+      import_tasks: tasks/ensure_ssh_port.yml
+      tags:
+        - port
+  
+  roles:
+  - role: network/pidns
+    tags: 
+      - pihole
+      - containers
+      - docker
+      - network
+    when: enable_pidns | default (False)
+  # - role: system/essential
+  #   tags: 
+  #     - system
+  #   when: enable_essential | default(False)
+
+  # - role: security/iptables
+  #   tags:
+  #     - iptables
+  #     - security
+  #   when: (enable_iptables | default(False)) and (security_ssh_port == ansible_ssh_port | default(False))
+
+  # - role: system/docker
+  #   tags: 
+  #     - docker
+  #   when: enable_docker | default(False)

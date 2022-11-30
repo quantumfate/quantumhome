@@ -19,7 +19,9 @@ ssh_keys:
 # Packages to be installed for specific host
 specific_packages:
   - tree
-
+# Apt mirrors
+version: jammy
+apt_mirror: https://mirror.dogado.de/ubuntu/
 enable_powersaving: yes
 # MergerFS
 mergerfs_root: /mnt/storage
@@ -35,7 +37,8 @@ enable_snapraid: yes
 enable_homer: yes
 enable_nextcloud: yes
 ## Networking
-enable_netplan_config: yes
+enable_network_interface: yes
+enable_macvlan_interface: yes
 enable_swag: yes
 enable_bunkerizednginx: no
 ## Security
@@ -88,3 +91,14 @@ cache_disks:
 docker_backup_data: yes
 docker_backup_src: "{{ mergerfs_root }}/docker_data/data" # The path where your backups are stored
 
+# Network
+## dmz
+dmz_network: "{{ '.'.join(lan_gateway.split('.')[0:2]) }}.6.0/24"
+dmz_base: "{{ '.'.join(dmz_network.split('.')[0:3]) }}"
+dmz_gateway: "{{ dmz_base }}.1"
+dmz_mac: "a6:38:8b:a3:e5:0c"
+## swag
+swag_network: "{{ '.'.join(lan_gateway.split('.')[0:2]) }}.3.0/24"
+swag_base: "{{ '.'.join(swag_network.split('.')[0:3]) }}"
+swag_gateway: "{{ swag_base }}.1"
+swag_mac: "be:1c:ab:e4:c2:1a"

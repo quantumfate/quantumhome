@@ -2,18 +2,37 @@ network:
   version: 2
   renderer: networkd
   ethernets:
+{% if inventory_hostname in groups['picluster'] %}
+    {{ pihole_parent_interface }}:
+      dhcp4: true
+    {{ pihole_interface }}:
+      dhcp4: true
+      addresses:
+        - {{ pihole_network }}
+      routes:
+        - to: {{ pihole_network_base }}.0/24
+          via: {{ pihole_network_gateway }}
+      routing-policy:
+        - from: {{ ipv4lan_network }}
+{% endif %}
+{% if inventory_hostname in groups['main'] %}
     {{ main_parent_interface }}:
       dhcp4: true
     {{ swag_interface }}:
       addresses: 
         - {{ swag_network }}
       routes: 
-        - to: {{ swag_base }}.24
+        - to: {{ swag_base }}.0/24
           via: {{ swag_gateway }}
+      routing-policy:
+        - from: {{ ipv4lan_network }}
     {{ dmz_interface }}:
-      dhcp4: yes
+      dhcp4: no
       addresses: 
         - {{ dmz_network }}
       routes:
-        - to: {{ '.'.join(dmz_gateway.split('.')[0:3]) }}.44
+        - to: {{ dmz_base }}.0/24
           via: {{ dmz_gateway }}
+      routing-policy:
+        - from: {{ ipv4lan_network }}
+{% endif -%}

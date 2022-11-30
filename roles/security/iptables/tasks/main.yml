@@ -32,6 +32,17 @@
     comment: Ansible managed
     jump: ACCEPT
 
+# - name: Allow established and related connections for additional interfaces
+#   iptables:
+#     chain: INPUT
+#     match: conntrack
+#     in_interface: "{{ item }}"
+#     ctstate: ESTABLISHED,RELATED
+#     comment: Ansible managed
+#     jump: ACCEPT
+#   with_items:
+#     - "{{ iptables_interfaces }}"
+
 - name: Log port scans
   iptables:
     chain: INPUT
@@ -59,7 +70,22 @@
       - "443"
     jump: ACCEPT
     comment: Ansible managed
-  when: ((enable_bunkerizednginx | default(False)) or (enable_swag | default(False))) and (inventory_hostname in groups['main'])
+  # when: ((enable_bunkerizednginx | default(False)) or (enable_swag | default(False))) and (inventory_hostname in groups['main'])
+
+# - name: Allow HTTP and HTTPS on defined interfaces
+#   ansible.builtin.iptables:
+#     chain: INPUT
+#     protocol: tcp
+#     ctstate: NEW,ESTABLISHED
+#     in_interface: "{{ item }}"
+#     destination: 
+#     jump: ACCEPT
+#     destination_ports: 
+#       - "80"
+#       - "443"
+#     comment: Ansible managed
+#   with_items:
+#     - "{{ iptables_interfaces }}"
 
 - name: Allow IKEv2
   ansible.builtin.iptables:
