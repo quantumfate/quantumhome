@@ -1,0 +1,16 @@
+---
+# Enable variables
+## Filesystem
+enable_drives: yes
+enable_mergerfs: yes
+enable_mount: yes
+enable_snapraid: yes
+## Services
+enable_homer: yes
+enable_nextcloud: yes
+## Networking
+enable_network_interface: yes
+enable_macvlan_interface: yes
+enable_swag: yes
+enable_bunkerizednginx: no
+enable_powersaving: yes

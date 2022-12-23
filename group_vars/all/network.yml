@@ -1,0 +1,15 @@
+---
+# Network
+ipv4lan_network: "192.168.1.0/18"
+ipv6lan_network: "fd00::/8"
+## vpn
+vpn_network: "10.1.1.0/24"
+## lan
+lan_gateway: "{{ '.'.join(ipv4lan_network.split('.')[0:3]) }}.1"
+
+# Domains
+subdomains: {
+      'www': www,
+      'home': 'home',
+      'nextcloud': 'nextcloud',
+}

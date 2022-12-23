@@ -1,0 +1,44 @@
+---
+# Drives
+## Label
+parity_label: parity
+data_label: data
+cache_label: cache
+## lvm 
+main_volume_group: ubuntu-vg
+vg_cache_drive: cache1
+## src
+src_parity1: /dev/sda
+src_data1: /dev/sdb
+src_data2: /dev/sdc
+src_data3: /dev/sdd
+src_cache1: "/dev/{{ main_volume_group }}/{{ vg_cache_drive }}"
+src_cache2: /dev/sde
+
+# Mount Points
+## Parity
+mnt_parity1: /mnt/parity1
+## Data
+mnt_data1: /mnt/data1
+mnt_data2: /mnt/data2
+mnt_data3: /mnt/data3
+## Cache
+mnt_cache1: /mnt/cache1
+mnt_cache2: /mnt/cache2
+
+# actual disks
+parity_disks: 
+  - { path: "{{ mnt_parity1 }}", src: "{{ src_parity1 }}" , content: true }
+
+data_disks:
+  - { path: "{{ mnt_data1 }}", src: "{{ src_data1 }}", content: true }
+  - { path: "{{ mnt_data2 }}", src: "{{ src_data2 }}", content: true }
+  - { path: "{{ mnt_data3 }}", src: "{{ src_data3 }}", content: true }
+
+cache_disks:
+  - { path: "{{ mnt_cache1 }}", src: "{{ src_cache1 }}", content: true }
+  - { path: "{{ mnt_cache2 }}", src: "{{ src_cache2 }}", content: true }
+
+# MergerFS
+mergerfs_root: /mnt/storage
+cache_root: /mnt/storage_cache

@@ -1,0 +1,20 @@
+---
+common_packages:
+  - neovim
+  - neofetch
+  - lm-sensors
+  - glances
+  - zsh
+  - git
+  - curl
+  - wget
+  - iptables
+  - net-tools
+  - vlan
+  - dnsutils
+  - network-manager
+  - tmux
+  - ifupdown
+
+# Merges common packages with packages on specific hosts
+total_packages: "{{ common_packages + specific_packages }}"

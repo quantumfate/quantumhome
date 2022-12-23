@@ -2,25 +2,6 @@ gitmail: leonconnorholm@gmail.com
 gituser: Leon Holm
 email: leon-holm@outlook.de
 shell: /bin/zsh
-common_packages:
-  - neovim
-  - neofetch
-  - lm-sensors
-  - glances
-  - zsh
-  - git
-  - curl
-  - wget
-  - iptables
-  - net-tools
-  - vlan
-  - dnsutils
-  - network-manager
-  - tmux
-  - ifupdown
-# Merges common packages with packages on specific hosts
-total_packages: "{{ common_packages + specific_packages }}"
-
 
 # MISC
 my_project_source: /home/leonch/Documents/quantumhome
@@ -29,85 +10,16 @@ include_role_vars:
   - homer
   - unbound
 
-
 # Includes all paths for webservices to be built
 webservices_paths:
   - "roles/webservices/network"
   - "roles/webservices/services"
 
-# Enable variables
-## Security
-enable_security: yes
-enable_dns: yes
-enable_iptables: yes
-## System
-enable_essential: yes
-enable_docker: yes
-# Snapraid
-snapraid_runner_email_address: "{{ email }}"
-snapraid_data_disks: "{{ data_disks }}"
-snapraid_parity_disks: "{{ parity_disks }}"
-snapraid_content_files:
-  - /var/snapraid.content
-
-snapraid_config_excludes:
-  - "*.unrecoverable"
-  - /lost+found/
-  - "*.!sync"
-  - /tmp/
-  - "/Downloads/*"
-
-snapraid_runner_cron_jobs:
-- { job: 'docker stop $(docker ps -q); rsync -avz --delete --exclude cache {{ docker_dir }} {{ mergerfs_root }}/docker_data; docker start $(docker ps -a -q) && {{ snapraid_runner_command }} ', name: 'snapraid_runner', weekday: '0', hour: '3' }
-
-snapraid_scrub_schedule:
-  minute: 0
-  hour: 02
-  weekday: 1
-
-# Docker
-## Pip packages
-pip_install_packages: 
-  - name: docker
-  - name: awscli
-
-docker_dir: /opt/docker/data 
-
-# ZSH
-zsh_antigen_bundles_extras: [ nvm, git ]
-
-# Network
-ipv4lan_network: "192.168.1.0/18"
-ipv6lan_network: "fd00::/8"
-## vpn
-vpn_network: "10.1.1.0/24"
-## lan
-lan_gateway: "{{ '.'.join(ipv4lan_network.split('.')[0:3]) }}.1"
-
-## dns
-dns_nameservers: ['1.1.1.1', '1.0.0.1']
-
 ## time/local
 ntp_timezone: '{{ timezone }}'
 locale: en_US.UTF-8
-
-# Domains
-subdomains: {
-      'www': www,
-      'home': 'home',
-      'nextcloud': 'nextcloud',
-}
 
 # Security
 default_ssh_port: "22"
 security_ssh_allowed_users:
   - "{{ ansible_user }}"
-# SSH (geerlingguy.security)
-security_sudoers_passwordless: ['{{ ansible_user }}']
-security_autoupdate_reboot: true
-security_autoupdate_mail_to: '{{ email }}'
-security_autoupdate_reboot_time: '23:00'
-security_autoupdate_mail_on_error: false
-security_fail2ban_enabled: false
-security_ssh_restart_handler_state: restarted
-security_sshd_state: started

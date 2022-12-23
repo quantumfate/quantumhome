@@ -1,0 +1,4 @@
+---
+# Activate backing up and restoring of backups 
+docker_backup_data: yes
+docker_backup_src: "{{ mergerfs_root }}/docker_data/data" # The path where your backups are stored

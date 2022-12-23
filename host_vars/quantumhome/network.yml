@@ -1,0 +1,12 @@
+---
+# Network
+## dmz
+dmz_network: "{{ '.'.join(lan_gateway.split('.')[0:2]) }}.6.0/24"
+dmz_base: "{{ '.'.join(dmz_network.split('.')[0:3]) }}"
+dmz_gateway: "{{ dmz_base }}.1"
+dmz_mac: "a6:38:8b:a3:e5:0c"
+## swag
+swag_network: "{{ '.'.join(lan_gateway.split('.')[0:2]) }}.3.0/24"
+swag_base: "{{ '.'.join(swag_network.split('.')[0:3]) }}"
+swag_gateway: "{{ swag_base }}.1"
+swag_mac: "be:1c:ab:e4:c2:1a"

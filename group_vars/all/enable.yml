@@ -1,0 +1,9 @@
+---
+# Enable variables
+## Security
+enable_security: yes
+enable_dns: yes
+enable_iptables: yes
+## System
+enable_essential: yes
+enable_docker: yes

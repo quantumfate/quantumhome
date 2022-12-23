@@ -2,13 +2,6 @@
 #
 # Connection
 #
-ansible_host: 192.168.1.23
-ansible_user: sao
-ansible_connection: ssh
-ansible_ssh_port: "{{ security_ssh_port }}"
-ansible_ssh_private_key_file: /home/leonch/.ssh/quantumhome
-ansible_ssh_public_key_file: "{{ lookup('file', '~/.ssh/quantumhome.pub') }}"
-ansible_become_password: "{{ quantumhome_sudo_password }}"
 host_become_password: "{{ quantumhome_sudo_password }}"
 
 ssh_keys:
@@ -16,89 +9,13 @@ ssh_keys:
     user: "{{ ansible_user }}"
     key: "{{ lookup('file', '~/.ssh/quantumhome.pub') | default('') }}"
 
-# Packages to be installed for specific host
-specific_packages:
-  - tree
+
 # Apt mirrors
 version: jammy
 apt_mirror: https://mirror.dogado.de/ubuntu/
-enable_powersaving: yes
-# MergerFS
-mergerfs_root: /mnt/storage
-cache_root: /mnt/storage_cache
 
-# Enable variables
-## Filesystem
-enable_drives: yes
-enable_mergerfs: yes
-enable_mount: yes
-enable_snapraid: yes
-## Services
-enable_homer: yes
-enable_nextcloud: yes
-## Networking
-enable_network_interface: yes
-enable_macvlan_interface: yes
-enable_swag: yes
-enable_bunkerizednginx: no
-## Security
 
 # System specific variables
 timezone: Europe/Amsterdam
 guid: "1000"
 
-# Drives
-## Label
-parity_label: parity
-data_label: data
-cache_label: cache
-## lvm 
-main_volume_group: ubuntu-vg
-vg_cache_drive: cache1
-## src
-src_parity1: /dev/sda
-src_data1: /dev/sdb
-src_data2: /dev/sdc
-src_data3: /dev/sdd
-src_cache1: "/dev/{{ main_volume_group }}/{{ vg_cache_drive }}"
-src_cache2: /dev/sde
-
-# Mount Points
-## Parity
-mnt_parity1: /mnt/parity1
-## Data
-mnt_data1: /mnt/data1
-mnt_data2: /mnt/data2
-mnt_data3: /mnt/data3
-## Cache
-mnt_cache1: /mnt/cache1
-mnt_cache2: /mnt/cache2
-
-# actual disks
-parity_disks: 
-  - { path: "{{ mnt_parity1 }}", src: "{{ src_parity1 }}" , content: true }
-
-data_disks:
-  - { path: "{{ mnt_data1 }}", src: "{{ src_data1 }}", content: true }
-  - { path: "{{ mnt_data2 }}", src: "{{ src_data2 }}", content: true }
-  - { path: "{{ mnt_data3 }}", src: "{{ src_data3 }}", content: true }
-
-cache_disks:
-  - { path: "{{ mnt_cache1 }}", src: "{{ src_cache1 }}", content: true }
-  - { path: "{{ mnt_cache2 }}", src: "{{ src_cache2 }}", content: true }
-
-# Activate backing up and restoring of backups 
-docker_backup_data: yes
-docker_backup_src: "{{ mergerfs_root }}/docker_data/data" # The path where your backups are stored
-
-# Network
-## dmz
-dmz_network: "{{ '.'.join(lan_gateway.split('.')[0:2]) }}.6.0/24"
-dmz_base: "{{ '.'.join(dmz_network.split('.')[0:3]) }}"
-dmz_gateway: "{{ dmz_base }}.1"
-dmz_mac: "a6:38:8b:a3:e5:0c"
-## swag
-swag_network: "{{ '.'.join(lan_gateway.split('.')[0:2]) }}.3.0/24"
-swag_base: "{{ '.'.join(swag_network.split('.')[0:3]) }}"
-swag_gateway: "{{ swag_base }}.1"
-swag_mac: "be:1c:ab:e4:c2:1a"

@@ -1,0 +1,4 @@
+---
+# Packages to be installed for specific host
+specific_packages:
+  - tree
